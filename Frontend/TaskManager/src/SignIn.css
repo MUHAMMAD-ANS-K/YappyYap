@@ -1,0 +1,16 @@
+
+.background_signin{
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.background_signin div{
+    background-color: azure;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div button {
+    background-color: rgb(114, 19, 169);
+    border: none;
+    border-radius: 20%;
+}
