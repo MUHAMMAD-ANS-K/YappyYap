@@ -2,8 +2,11 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timedelta, timezone
 import psycopg2
+import os
+from dotenv import load_dotenv, find_dotenv
 
-DB_URL = "postgresql+psycopg2://postgres:postgres@localhost:5432/yappy"
+load_dotenv()
+DB_URL = f"postgresql+psycopg2://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASS")}@localhost:5432/yappy"
 engine = create_engine(DB_URL)
 Base = declarative_base()
 session = sessionmaker(bind=engine)
@@ -20,4 +23,3 @@ class OTP_enter(Base):
     otp = Column(String)
     creation_time = Column(DateTime, default=datetime.now(timezone.utc))
     expiry_time = Column(DateTime, default=get_expiry_time)
-
