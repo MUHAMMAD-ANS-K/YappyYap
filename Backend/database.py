@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import psycopg2
 import os
 from dotenv import load_dotenv, find_dotenv
+from pydantic import BaseModel, EmailStr
 
 load_dotenv()
 DB_URL = f"postgresql+psycopg2://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASS")}@localhost:5432/yappy"
@@ -23,3 +24,9 @@ class OTP_enter(Base):
     otp = Column(String)
     creation_time = Column(DateTime, default=datetime.now(timezone.utc))
     expiry_time = Column(DateTime, default=get_expiry_time)
+
+class Email_req(BaseModel):
+    email: EmailStr
+
+class OTP_veriication(Email_req):
+    otp : str
