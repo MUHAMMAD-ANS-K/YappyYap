@@ -12,7 +12,7 @@ engine = create_engine(DB_URL)
 Base = declarative_base()
 session = sessionmaker(bind=engine)
 
-class OTP_enter(Base):
+class OTP_entry(Base):
     __tablename__ = "otps"
 
     @staticmethod
@@ -28,5 +28,5 @@ class OTP_enter(Base):
 class Email_req(BaseModel):
     email: EmailStr
 
-class OTP_veriication(Email_req):
+class OTP_verification(Email_req):
     otp : str
