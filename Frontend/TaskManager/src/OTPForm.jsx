@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import { Link } from "react-router-dom";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
@@ -8,6 +8,7 @@ export default function OTPForm(props) {
         try {
             //check otp verification
             setMsg("Successfully logged in");
+            props.setSignedin(true);
         }
         catch (err) {
             setMsg("Invalid or expired OTP");
@@ -16,13 +17,21 @@ export default function OTPForm(props) {
 
     return (
         <div className="background_signin">
-            <h2>Enter the OTP sent to {props.email}</h2>
-
+            <h1>Enter the OTP sent to {props.email}</h1>
+            <ul style={{alignItems:"center"}}>
+                <li>  
+            <div className="input">
             <input type="text" value = {otp}
             onChange={(e) => setOtp(e.target.value)}/>
+            </div>
+                </li>
+                <li>
+                    
             
-            <button onClick={otpVerification}>Verify</button>
+            <button onClick={otpVerification} className="sign-button">Verify</button>
             <p style = {msg == "Successfully logged in" ? {color : "green"} : {color : "red"}}>{msg}</p>
+                </li>
+            </ul>
         </div>
     )
 }

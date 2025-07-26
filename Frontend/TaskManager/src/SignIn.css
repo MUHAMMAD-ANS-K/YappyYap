@@ -1,16 +1,52 @@
-
 .background_signin{
-    background-color: black;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.background_signin div{
-    background-color: azure;
+    width: 100vw;
+    height: 80vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+    line-height: 25px;
 }
-div button {
-    background-color: rgb(114, 19, 169);
+.signin-up-p{
+    font-size: medium;
+    color: rgb(95, 93, 93);
+}
+.signin-up-a{
+    color: antiquewhite;
+}
+.signin-up-a:hover{
+    color: rgb(95, 93, 93);
+}
+hr{
+    border: 0.5px solid rgb(54, 52, 52);
+    margin: 40px 0px;
+}
+ul{
+    display: flex ;
+    flex-direction: column;
+    gap: 10px;
+}
+.sign-button{
+    background-color: antiquewhite;
+    color: rgb(54, 52, 52);
     border: none;
-    border-radius: 20%;
+    border-radius: 14px;
+    width: 90px;
+    height: 35px;
+    cursor: pointer;
+    padding: 10px;
+}
+.sign-button a{
+    color: rgb(54, 52, 52);
+}
+.input input{
+    width: 215px;
+    background-color: rgb(54, 52, 52);
+    border: none;
+    border-bottom: 1px solid rgb(154, 154, 154);
+    height: 30px;
+    padding: 5px;
+    padding-bottom: 1px;
+    color: beige;
 }
