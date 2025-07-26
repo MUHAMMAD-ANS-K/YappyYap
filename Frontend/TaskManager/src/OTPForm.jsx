@@ -1,12 +1,16 @@
 import { useState } from "react"
 import { Link } from "react-router-dom";
+import axios from "axios";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
 
-    function otpVerification(){
+    async function otpVerification(){
         try {
-            //check otp verification
+            const response = await axios.post("http://localhost:8000/verify",{
+                email : props.email,
+                otp : otp
+            })
             setMsg("Successfully logged in");
             props.setSignedin(true);
         }
@@ -17,7 +21,7 @@ export default function OTPForm(props) {
 
     return (
         <div className="background_signin">
-            <h1>Enter the OTP sent to {props.email}</h1>
+            <h2>Enter the OTP sent to your mail</h2>
             <ul style={{alignItems:"center"}}>
                 <li>  
             <div className="input">

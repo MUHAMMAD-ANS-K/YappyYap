@@ -1,14 +1,17 @@
 import {useState} from "react"
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import axios from "axios"
 import "./SignIn.css"
 
 export default function SignIn(props) {
     const [email, setEmail] = useState("");
     function sendOtp(){
         try{
+            const resp = axios.post("http://localhost:8000/", {
+                email: email
+            })
             props.setEmail(email);
             props.setOtpSent(true);
-            console.log("OTP sent");
         }
         catch{
             console.log("OTP sent failed");
@@ -27,7 +30,7 @@ export default function SignIn(props) {
                     Enter your email
                 </label>
                 <div className="input">                    
-                <input type="email" placeholder="Enter your email"/>
+                <input type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
         </li>
 
