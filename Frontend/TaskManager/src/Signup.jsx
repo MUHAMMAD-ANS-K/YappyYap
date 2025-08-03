@@ -3,34 +3,33 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./SignIn.css"
 
-export default function SignIn(props) {
+export default function SignUp(props) {
     const [email, setEmail] = useState("");
+    const [username, setusername] = useState("");
     const [err, setErr] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     async function sendOtp(e){
         setLoading(true);
-        e.preventDefault()
+        e.preventDefault();
         try{
-            const resp = await axios.post("http://localhost:8000/signin", {
-                email: email
+            const resp = await axios.post("http://localhost:8000/signup", {
+                email: email,
+                username: username
             })
             if (resp.data.message == "Successful"){
                 props.setEmail(email);
                 props.setOtpSent(true);
                 navigate("otp");
             }
-            else{
-                setErr(resp.data.message)
-            }
         }
         catch(exception){
-            console.log(exception)
-            if (exception.response && exception.response.data){
+            if (exception.response && exception.response.data) {
                 setErr(exception.response.data.detail[0].msg);
             }
-            else
-                setErr("Something went wrong. Try Again");
+            else{
+                setErr("Something went wrong. Try Again")
+            }
         }
         finally{
             setLoading(false);
@@ -39,11 +38,19 @@ export default function SignIn(props) {
     return (
         <form onSubmit={sendOtp} className="background_signin">
             <div className="signin-up">
-                <h2 className="signin-up-heading">Sign In</h2>
-                <p className="signin-up-p">Don't have an account. <a className="signin-up-a" href="/signup">Sign Up</a></p>
+                <h2 className="signin-up-heading">Sign Up</h2>
+                <p className="signin-up-p">Already have an account. <a className="signin-up-a" href="/signin">Sign In</a></p>
                 <hr />
             </div>
         <ul>
+            <li className="margin-10px">
+                <label>
+                    Username
+                </label>
+                <div className="input">                    
+                <input type="text" placeholder="Any name" value={username} onChange={(e) => setusername(e.target.value)} required/>
+                </div>
+        </li>
             <li>
                 <label>
                     Enter your email
@@ -54,8 +61,8 @@ export default function SignIn(props) {
         </li>
 
         <li>
-        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Sending...":"Send OTP"}</button></li>
-        {err && (<li><p>{err}</p></li>)}
+        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Sending..." : "Send OTP"}</button></li>
+        <li><p>{err}</p></li>
         </ul>
         </form>
     )

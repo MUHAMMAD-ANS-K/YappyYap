@@ -1,0 +1,21 @@
+span{
+    display: inline-block;
+}
+.main-h1{
+    margin-top: 50px;
+    padding: 4.5vw;
+}
+.main-h1 .first-part{
+    font-size: 14vw;
+}
+.main-h1 .second-part{
+    margin-left: 10vw;
+    font-size: 10vw;
+}
+.svg-rotate-right{
+    display: inline-block;
+    position: relative;
+    z-index: 10;
+    width: 8vw;
+    color: #FF774B;
+}

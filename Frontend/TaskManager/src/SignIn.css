@@ -8,12 +8,16 @@
     gap: 50px;
     line-height: 25px;
 }
+.signin-up h2{
+    overflow: hidden;
+
+}
 .signin-up-p{
     font-size: medium;
     color: rgb(95, 93, 93);
 }
 .signin-up-a{
-    color: antiquewhite;
+    color: beige;
 }
 .signin-up-a:hover{
     color: rgb(95, 93, 93);
@@ -26,9 +30,11 @@ ul{
     display: flex ;
     flex-direction: column;
     gap: 10px;
+    flex-wrap: wrap;
+    width: 230px;
 }
 .sign-button{
-    background-color: antiquewhite;
+    background-color: beige;
     color: rgb(54, 52, 52);
     border: none;
     border-radius: 14px;
@@ -49,4 +55,7 @@ ul{
     padding: 5px;
     padding-bottom: 1px;
     color: beige;
+}
+.margin-10px{
+    margin-bottom: 10px;
 }

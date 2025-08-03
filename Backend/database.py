@@ -12,6 +12,19 @@ engine = create_engine(DB_URL)
 Base = declarative_base()
 session = sessionmaker(bind=engine)
 
+class Users(Base):
+    __tablename__ = "users"
+
+    user = Column(String, primary_key=True, index=True)
+    email = Column(String, index=True)
+
+class Pending_users(Base):
+    __tablename__ = "pending_users"
+
+    user = Column(String, primary_key=True, index=True)
+    email = Column(String, index=True)
+
+
 class OTP_entry(Base):
     __tablename__ = "otps"
 
@@ -21,12 +34,18 @@ class OTP_entry(Base):
     
     id = Column(Integer, primary_key=True)
     email = Column(String, index=True)
+    user = Column(String)
     otp = Column(String)
     creation_time = Column(DateTime, default=datetime.now(timezone.utc))
     expiry_time = Column(DateTime, default=get_expiry_time)
 
-class Email_req(BaseModel):
+class Email_signin(BaseModel):
     email: EmailStr
 
-class OTP_verification(Email_req):
+class Email_signup(Email_signin):
+    username:str
+
+class OTP_verification(Email_signin):
+    otp : str
+class SignUp_verification(Email_signup):
     otp : str

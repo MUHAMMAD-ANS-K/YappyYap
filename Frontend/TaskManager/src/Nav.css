@@ -1,3 +1,6 @@
+.navbar-header{
+    overflow: hidden;
+}
 .navbar{
     display: flex;
     justify-content: space-between;
@@ -26,7 +29,7 @@
     font-size: 1.1rem;
 }
 .navbar-items li a:hover{    
-    color: antiquewhite;
+    color: beige;
 }
 nav hr{
     margin: -10px 30px 0 30px;
@@ -35,7 +38,7 @@ nav hr{
     font-size: 1.5rem;
     margin-top: 35px;
     display: none;
-    color: antiquewhite;
+    color: beige;
     background: none;
     border: none;
 }

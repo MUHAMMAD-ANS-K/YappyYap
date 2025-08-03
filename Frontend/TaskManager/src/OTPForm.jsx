@@ -4,10 +4,11 @@ import axios from "axios";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
-
+    const [loading, setLoading] = useState(false);
     async function otpVerification(){
+        setLoading(true);
         try {
-            const response = await axios.post("http://localhost:8000/verify",{
+            const response = await axios.post(props.link,{
                 email : props.email,
                 otp : otp
             })
@@ -16,6 +17,9 @@ export default function OTPForm(props) {
         }
         catch (err) {
             setMsg("Invalid or expired OTP");
+        }
+        finally{
+            setLoading(false);
         }
     }
 
@@ -32,7 +36,7 @@ export default function OTPForm(props) {
                 <li>
                     
             
-            <button onClick={otpVerification} className="sign-button">Verify</button>
+            <button onClick={otpVerification} className="sign-button" disabled={loading}>{loading ? "Verifying..." : "Verify"}</button>
             <p style = {msg == "Successfully logged in" ? {color : "green"} : {color : "red"}}>{msg}</p>
                 </li>
             </ul>

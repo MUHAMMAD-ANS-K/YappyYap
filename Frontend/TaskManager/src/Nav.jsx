@@ -5,21 +5,29 @@ import { gsap } from "gsap"
 import logo from "./assets/logo.png"
 export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
+    const [animating, setAnimating] = useState(false);
     function hoverEnter() {
         gsap.to(".hoverEff", {
             width : "100%",
-            duration : 0.1
+            duration : 0.1,
         })
+        setAnimating(true);
     }
     function hoverLeave() {
-        console.log("hii")
         gsap.to(".hoverEff", {
             width : "0%",
-            duration : 0.1
+            duration : 0.1,
         })
+        setAnimating(false);
     }
     function func() {
         if (!navOpen) {
+            const nav = document.querySelector(".navbar-header");
+            const nav_sib = Array.from(nav.parentNode.children).filter(element => element != nav);
+            nav_sib.forEach(element => {
+                element.style.display="none";
+            });
+
             document.querySelector(".ham").style.display = "none";
             document.querySelector(".cross").style.display = "inline";
             document.querySelector(".nav-hr").style.display = "none";
@@ -36,6 +44,11 @@ export default function Nav(props) {
             setnavOpen(true);
         }
         else{
+            const nav = document.querySelector(".navbar-header");
+            const nav_sib = Array.from(nav.parentNode.children).filter(element => element != nav);
+            nav_sib.forEach(element => {
+                element.style.display = "block"
+            });
             const element = document.querySelector(".navbar").style;
             element.width = "auto";
             element.height = "auto";
@@ -48,20 +61,28 @@ export default function Nav(props) {
             document.querySelector(".ham").style.display = "inline";
             document.querySelector(".navbar-items").style.display = "none";
             document.querySelector(".nav-hr").style.display = "block";
+            
             setnavOpen(false);
         }
     }
+    document.querySelectorAll(".navbar a").forEach(element => {
+        element.addEventListener("click",() => {
+            if (navOpen){
+                func();
+            }
+        })
+    })
     return (
-        <nav>
+        <nav className="navbar-header">
             <div className="navbar">
 
                 <Link to="/"><img src={logo} alt="YappyYap" /></Link>
                 
-                <button className="menubar" onClick={func} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}><span className="hoverEff"></span><span style={{ fontSize: "0.8rem" }}>Menu</span><span className="ham">≡</span> <span className="cross">X</span> </button>
+                <button className="menubar" onClick={() => {func(); animating ? hoverLeave(): hoverEnter();}} onMouseEnter={hoverEnter} onMouseLeave={hoverLeave}><span className="hoverEff"></span><span style={{ fontSize: "0.8rem" }}>Menu</span><span className="ham">≡</span> <span className="cross">X</span> </button>
                 <ul className="navbar-items">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li>{props.logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin">SignIn</Link> <span>|</span> <Link to="signin">SignUp</Link></>)}</li>
+                    <li>{props.logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin">SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
                 </ul>
             </div>
             <hr className="nav-hr"/>
