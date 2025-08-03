@@ -1,0 +1,39 @@
+.main-box{
+    background-color: rgb(62, 156, 62);
+    width: 1400px;
+    height: 600px;
+    border-radius: 60px;
+    padding: 30px 20px;
+    margin-top: 200px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.image-box{
+    width: 55%;
+    height: 100%;
+    border-radius: 40px;
+    overflow: hidden;
+}
+.main-box .image-box img{
+    object-fit: contain;
+}
+.content-box{
+    width: 40%;
+}
+.content-box h2{
+    font-size: 3.2rem;
+    font-weight: 900;
+}
+.content-box p{
+    font-size: 1.3rem;
+}
+@media (max-width: 1700px){
+.main-box{
+    width: 1400px;
+    height: 600px;
+    border-radius: 60px;
+    padding: 30px 20px;
+}
+}
