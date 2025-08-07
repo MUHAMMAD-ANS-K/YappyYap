@@ -8,7 +8,7 @@
     "predeploy": "cross-env DEPLOY_FROM=GIT  npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
-    "build": "vite build",
+    "build": "cross-env DEPLOY_FROM=VRC vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
