@@ -8,7 +8,7 @@ import About from "./About.jsx";
 import Footer from "./Footer.jsx";
 import ContactUs from "./ContactUs.jsx";
 import Blog from "./Blog.jsx";
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from "./Dashboard.jsx";
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
     const [otpSent, setOtpSent] = useState(false);
     const [signedin, setSignedin] = useState(false);
     return (
-        <BrowserRouter>
+        <HashRouter>
         <div>
             <Nav logged = {signedin}></Nav>
             {/* {otpSent == false? (<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>):(<OTPForm email = {email} setSignedin = {setSignedin}/>)} */}
@@ -33,6 +33,6 @@ export default function App() {
             </Routes>
             <Footer></Footer>
        </div>
-       </BrowserRouter>
+       </HashRouter>
     );
 }
