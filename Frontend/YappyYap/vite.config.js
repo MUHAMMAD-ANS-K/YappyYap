@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-const test = process.env.DEPLOY_FROM
+const test = process.env.VITE_DEPLOY_FROM
 console.log(test)
 export default defineConfig({
-  base : process.env.DEPLOY_FROM === 'VRC' ? "/": '/YappyYap/',
+  base : process.env.VITE_DEPLOY_FROM === 'VRC' ? "/": '/YappyYap/',
   plugins: [react()],
 })

@@ -5,10 +5,10 @@
   "type": "module",
   "homepage": "https://muhammad-ans-k.github.io/YappyYap",
   "scripts": {
-    "predeploy": "cross-env DEPLOY_FROM=GIT  npm run build",
+    "predeploy": "cross-env VITE_DEPLOY_FROM=GIT  npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
-    "build": "cross-env DEPLOY_FROM=VRC vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
