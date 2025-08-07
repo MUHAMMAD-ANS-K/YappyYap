@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://MUHAMMAD-ANS-K.github.io/YappyYap",
+  "homepage": "https://muhammad-ans-k.github.io/YappyYap",
   "scripts": {
     "predeploy":"npm run build",
     "deploy": "gh-pages -d dist",
