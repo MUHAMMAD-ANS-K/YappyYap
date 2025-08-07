@@ -17,7 +17,7 @@ span{
     font-size: 10vw;
 }
 .main-join-button{
-    border: 2px solid rgb(89, 221, 89);
+    border: 2px solid rgba(89, 221, 89);
     width: 20vw;
     position: relative;
     left: 35vw;
@@ -65,11 +65,28 @@ span{
     overflow-x:visible;
     text-transform: uppercase;
     font-size: 60vh;
-    color: rgba(31, 31, 31, 0.769);
+    color: rgba(31, 31, 31, 0.8);
 }
 .boxes{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.scroll-msg img{
+    position: relative;
+    top: 30px;
+    height: 8rem;
+}
+.scroll-msg{
+    width: 100vw;
+    height: 12rem;
+    background-color: rgb(83, 128, 83);
+    font-size: 4.5rem;
+    font-weight: 900;
+    text-wrap: nowrap;
+    display: flex;
+}
+.scroll-msg p{
+    overflow-x:visible;
 }

@@ -1,8 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+// import {axios}
 import "./Footer.css"
 export default function Footer(){
-    
+    function emailhHandler(e) {
+        
+    }
     return (
         <footer>
         <nav className="footer-navigation">

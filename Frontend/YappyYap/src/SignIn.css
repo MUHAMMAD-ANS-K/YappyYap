@@ -46,15 +46,19 @@ ul{
 .sign-button a{
     color: rgb(54, 52, 52);
 }
-.input input{
+.email-input, .username-input{
     width: 215px;
     background-color: rgb(54, 52, 52);
     border: none;
     border-bottom: 1px solid rgb(154, 154, 154);
-    height: 30px;
+    height: 34px;
     padding: 5px;
     padding-bottom: 1px;
     color: beige;
+}
+.input input:focus{
+    outline: none;
+    border: 2px solid rgb(89, 221, 89);
 }
 .margin-10px{
     margin-bottom: 10px;

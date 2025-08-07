@@ -1,0 +1,41 @@
+.boxmain-add{
+    border: 2px solid white;
+    /* height: 300px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 50px;
+}
+textarea{
+    resize: none;
+    background-color: rgba(71, 70, 70, 0.397);
+    color: rgba(245, 245, 220, 0.751);
+    border: none;
+}
+.boxmain-add .heading{
+    width: 400px;
+    height: 200px;
+    padding: 8px;
+}
+textarea:focus{
+    outline: none;
+    border: 3px solid rgb(89, 221, 89);
+}
+.boxmain-add .content{
+    width: 700px;
+    height: 500px;
+}
+.boxmain-add #file{
+    display: none;
+}
+#file-chose{
+    width: 200px;
+    height: auto;
+    text-align: center;
+}
+#file-chose:hover{
+    background-color: rgb(89, 221, 89);
+    color: beige;
+}

@@ -6,7 +6,10 @@ import Nav from "./Nav.jsx"
 import Home from "./Home.jsx";
 import About from "./About.jsx";
 import Footer from "./Footer.jsx";
+import ContactUs from "./ContactUs.jsx";
+import Blog from "./Blog.jsx";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Dashboard from "./Dashboard.jsx";
 
 export default function App() {
     const [email, setEmail] = useState("");
@@ -22,8 +25,11 @@ export default function App() {
                 <Route path="/signup" element={<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
                 <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"http://localhost:8000/acc-verify"}/>}/>
                 <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"http://localhost:8000/acc-create"}/>}/>
+                <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path = "/contactus" element={<ContactUs/>}/>
+                <Route path="/dashboard" element={<Dashboard/>}/>
             </Routes>
             <Footer></Footer>
        </div>

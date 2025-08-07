@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { gsap} from "gsap/gsap-core";
 import {useGSAP} from "@gsap/react"
 import { ScrollTrigger } from "gsap/all";
+import { horizontalLoop } from "@andresclua/infinite-marquee-gsap";
 import "./Home.css"
 import img1 from "./assets/dummy1.jpg"
 import img2 from "./assets/dummy2.jpg"
 import img3 from "./assets/dummy3.jpg"
+import logo from "./assets/logo.png"
 export default function Home() {
     let box_heading = ["Hi", "By"];
     let box_para = ["wfhuifhuifhcacnbweciewcuibeicbwe", "dwu3283dubd   gedvwyegdweygdeuygjcbcjdeu"]
@@ -80,6 +82,16 @@ export default function Home() {
         },
         ease: "sine.inOut"
     })
+    const ribbon1 = document.querySelector("#scroll-msg-p1");
+    const ribbon2 = document.querySelector("#scroll-msg-p2");
+    const items = gsap.utils.toArray([ribbon1, ribbon2]);
+
+    gsap.set(items, {xPercent:0});
+    horizontalLoop(items, {
+        repeat: -1,
+        speed: 1,
+        paused: false
+    });
     setInterval(()=>{
     gsap.to(".animation-line", {
         color : "rgb(89, 221, 89)",
@@ -166,12 +178,16 @@ export default function Home() {
             <button className="main-join-button"><Link to="/signup">Join Now</Link></button>
             </div>
             <hr />
-            <div className="scroll-pin">
-                <p className="scroll-pin-text">Chat in an environment with no restrictions and anonymity.</p>
+            <div className="scroll-msg">
+                <p id="scroll-msg-p1">Yap <img src={logo}></img> Make Jokes <img src={logo}></img> Be Free <img src={logo}></img> Be Anonymous <img src={logo}></img></p>
+                <p id="scroll-msg-p2">Yap <img src={logo}></img> Make Jokes <img src={logo}></img> Be Free <img src={logo}></img> Be Anonymous <img src={logo}></img></p>
             </div>
             <div className="boxes">
             <BoxMain heading = {box_heading[0]} content = {box_para[0]} display_stuff = {box_img[0]}/>
             <BoxMain heading = {box_heading[1]} content = {box_para[1]} display_stuff = {box_img[1]}/>
+            </div>
+            <div className="scroll-pin">
+                <p className="scroll-pin-text">Chat in an environment with no restrictions and anonymity.</p>
             </div>
             {/* {box_heading.map((heading) => document.createElement)} */}
         </main>

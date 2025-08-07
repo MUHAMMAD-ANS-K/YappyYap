@@ -1,0 +1,100 @@
+.contact-us-nav{
+    margin-top: 70px;
+    margin-left: 90px;
+    height: 50px;
+    width: 100vw;
+    position: relative;
+}
+.contact-us-nav .contact-us a{
+    padding: 8px 5px 5px 30px;
+    color: beige;
+    display: inline-block;
+    background-color: #53544b;
+    border: 1px solid #53544b;
+    height: 36px;
+}
+.contact-us-nav .contact-us::after{
+    content: "";
+    width: 30px;
+    height: 36px;
+    display: inline-block;
+    background-size: fill;
+    background-repeat: no-repeat;
+    background-image: url("./assets/contact-us-arr-gray.svg");
+}
+.home{
+    position: absolute;
+    left: 38px;
+    z-index: 2;
+}
+.contact-us{
+    position: absolute;
+    left: 100px;
+}
+.contact-us-nav .home a{
+    display: inline-block;
+    padding: 8px 5px 5px 12px;
+    height: 36px;
+    color: #53544b;
+    border-radius: 5px 0 0 5px;
+    border: 2px solid #fffce1;
+    border-right: none;
+}
+.contact-us-nav .home::after{
+    content: "";
+    display: inline-block;
+    background-repeat: no-repeat !important;
+    width: 30px;
+    height: 36px;
+    background-image: url("./assets/contact-us-arr-white.svg");
+}
+#select-contact{
+    appearance: none;
+    display: block;
+    font-size: 1.2rem;
+    width: 500px;
+    height: 45px;
+    padding: 10px;
+    background-color: rgba(71, 70, 70, 0.397);
+    color: beige;
+    border: 0;
+    border-bottom: 1px solid rgb(89, 221, 89);
+}
+#select-contact:focus{
+    outline: none;
+}
+.email-contact{
+    width: 500px;
+    height: 40px;
+    margin-top: 15px;
+}
+.contact-us-container{
+    margin-top: 120px;
+    align-items: center;
+    gap: 60px;
+    display: flex;
+    flex-direction: column;
+}
+.input label{
+    color: #787873;
+    line-height: 30px;
+}
+.contact-us-container h2{
+    font-size: 2.8rem;
+}
+.contact-us-container .input{
+    margin-bottom: 20px;   
+}
+.text-contact{
+    width: 500px;
+    height: 400px;
+    background-color: transparent;
+    border: 3px solid rgba(71, 70, 70, 0.397);
+    margin-top: 15px;
+    padding: 10px;
+    color: rgba(245, 245, 220, 0.751);
+    resize: none;
+}
+.ul-contactus{
+    width: auto;
+}

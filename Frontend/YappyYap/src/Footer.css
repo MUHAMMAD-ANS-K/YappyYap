@@ -78,3 +78,8 @@ footer a{
     margin-bottom: 20px;
 }
 }
+@media(max-width : 500px) {
+    .footer-navigation{
+        flex-direction: column;
+    }
+}
