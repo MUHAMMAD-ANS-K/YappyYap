@@ -5,8 +5,8 @@
   "type": "module",
   "homepage": "https://muhammad-ans-k.github.io/YappyYap",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "cross-env DEPLOY_FROM=GIT gh-pages -d dist",
+    "predeploy": "cross-env DEPLOY_FROM=GIT  npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
