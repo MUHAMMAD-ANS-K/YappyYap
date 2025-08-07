@@ -5,12 +5,12 @@
   "type": "module",
   "homepage": "https://MUHAMMAD-ANS-K.github.io/YappyYap",
   "scripts": {
+    "predeploy":"npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "predeploy":"npm run build",
-    "deploy": "gh-pages -d build"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@andresclua/infinite-marquee-gsap": "^0.0.15",
