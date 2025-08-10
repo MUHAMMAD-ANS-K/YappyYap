@@ -8,7 +8,7 @@ import About from "./About.jsx";
 import Footer from "./Footer.jsx";
 import ContactUs from "./ContactUs.jsx";
 import Blog from "./Blog.jsx";
-import { HashRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route, BrowserRouter } from 'react-router-dom'
 import Dashboard from "./Dashboard.jsx";
 
 export default function App() {
@@ -16,15 +16,15 @@ export default function App() {
     const [otpSent, setOtpSent] = useState(false);
     const [signedin, setSignedin] = useState(false);
     return (
-        <HashRouter>
+        <BrowserRouter>
         <div>
             <Nav logged = {signedin}></Nav>
             {/* {otpSent == false? (<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>):(<OTPForm email = {email} setSignedin = {setSignedin}/>)} */}
             <Routes>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
-                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"http://localhost:8000/acc-verify"}/>}/>
-                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"http://localhost:8000/acc-create"}/>}/>
+                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://localhost:8000/acc-verify"}/>}/>
+                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://localhost:8000/acc-create"}/>}/>
                 <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
@@ -33,6 +33,6 @@ export default function App() {
             </Routes>
             <Footer></Footer>
        </div>
-       </HashRouter>
+       </BrowserRouter>
     );
 }

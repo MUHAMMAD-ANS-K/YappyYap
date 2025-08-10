@@ -12,10 +12,11 @@ export default function SignIn(props) {
         setLoading(true);
         e.preventDefault()
         try{
-            const resp = await axios.post("http://localhost:8000/signin", {
-                email: email
+            const resp = await axios.post("https://localhost:8000/signin", {
+                email: email,
+                withCredentials:true
             })
-            if (resp.data.message == "Successful"){
+            if (resp.data.message == "Success"){
                 props.setEmail(email);
                 props.setOtpSent(true);
                 navigate("otp");

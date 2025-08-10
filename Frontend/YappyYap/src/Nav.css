@@ -72,5 +72,6 @@ nav hr{
         background-color: beige;
         height: 100%;
         z-index: -1;
+        border-radius: 8px;
     }
 }

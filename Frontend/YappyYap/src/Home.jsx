@@ -1,15 +1,39 @@
 import BoxMain from "./BoxMain";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { gsap} from "gsap/gsap-core";
 import {useGSAP} from "@gsap/react"
 import { ScrollTrigger } from "gsap/all";
 import { horizontalLoop } from "@andresclua/infinite-marquee-gsap";
 import "./Home.css"
+import axios from "axios"
 import img1 from "./assets/dummy1.jpg"
 import img2 from "./assets/dummy2.jpg"
 import img3 from "./assets/dummy3.jpg"
 import logo from "./assets/logo.png"
-export default function Home() {
+export default function Home(props) {
+    
+    useEffect(()=>{
+        async function checklogin(){
+            console.log("Check 12 3")
+            try{
+                const loggedin = await axios.get("https://localhost:8000/prelogin",{
+                    withCredentials:true
+                })
+                console.log(loggedin)
+                if (loggedin.data.message === "Success") {
+                    props.setSignedin(true)
+                }
+                else{
+                    props.setSignedin(false);
+                }
+            }
+            catch(err){
+                console.error(err);
+            }
+        }
+        checklogin();
+    }, [])
     let box_heading = ["Hi", "By"];
     let box_para = ["wfhuifhuifhcacnbweciewcuibeicbwe", "dwu3283dubd   gedvwyegdweygdeuygjcbcjdeu"]
     let box_img = [img1, img2, img3]
@@ -25,7 +49,15 @@ export default function Home() {
         duration:1,
         stagger: 0.2,
         ease: "sine.inOut"
-    })
+    });
+    upsideTimeline.to(".invert-infinite", {
+        scaleY: -1,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        repeatDelay: 2,
+        delay: 2,
+    });
     timeline1.from(".left-side-rotating", {
         x: -20,
         scale: 0.5,
@@ -33,14 +65,14 @@ export default function Home() {
         stagger: 0.2,
         rotate: "500deg",
         ease: "sine.inOut"
-    })
+    });
     timeline1.from(".left-side", {
         scale: 0.5,
         translateX: -30,
         opacity: 0,
         stagger: 0.2,  
         ease: "sine.inOut"
-    })
+    });
     timeline2.from(".down-rotating", {
         scale: 0.5,
         translateY: 30,
@@ -48,20 +80,12 @@ export default function Home() {
         rotate: "600deg",
         ease: "sine.inOut",
         stagger: 0.2
-    })
+    });
     timeline2.from(".down", {
         opacity: 0,
         translateY: 20,
         stagger: 0.2,
         ease: "sine.inOut"
-    })
-    upsideTimeline.from(".invert-infinite", {
-        scaleY: 1,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        repeatDelay: 2,
-        delay: 2,
     });
     gsap.to(".svg-rotate", {
         rotate: 180,
@@ -92,22 +116,20 @@ export default function Home() {
         speed: 1,
         paused: false
     });
-    setInterval(()=>{
-    gsap.to(".animation-line", {
-        color : "rgb(89, 221, 89)",
-        duration:0.8,
-        stagger: 0.2, 
+    const colorLine = gsap.timeline({repeat: -1, repeatDelay: 2, delay: 3});
+    colorLine.to(".animation-line", {
+        color: "rgb(89, 221, 89)",
+        duration: 0.8,
+        stagger: 0.2,
         ease: "power1.inOut"
     })
-    gsap.to(".animation-line", {
+    colorLine.to(".animation-line", {
         color: "beige",
         duration: 0.8,
         stagger: 0.2,
-        delay: 1,
         ease: "power1.inOut"
-    })
-    }, 6000);
-
+    }, "-=4.2")
+    
 },[])
     return (
         <main>
@@ -115,7 +137,7 @@ export default function Home() {
                 <div className="first-part">
 <span className="animation-line"><span className="upside-down">A</span></span>
             <span className="animation-line"><span className="left-side-rotating">n</span></span>
-            <span ><svg className="svg-rotate svg-rotate-style" viewBox="0 0 137 135" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" ariaHidden="true">
+            <span ><svg className="svg-rotate svg-rotate-style" viewBox="0 0 137 135" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" aria-hidden="true">
 <path d="M84.1148 67.3453H136.194C136.637 67.3453 137 67.7028 137 68.1397V134.043C137 134.484 136.633 134.845 136.186 134.841C99.0222 134.416 68.9737 104.827 68.502 68.2191V134.206C68.502 134.643 68.1392 135 67.6958 135H0.814284C0.366822 135 -2.06673e-05 134.639 0.00401052 134.198C0.439379 97.2879 30.9354 67.5042 68.498 67.5002H0.806238C0.362807 67.5002 0 67.1427 0 66.7057V0.802561C0 0.361644 0.366822 0.000171863 0.814284 0.00414409C37.9778 0.429172 68.0263 30.0183 68.498 66.6263V0.794617C68.498 0.357672 68.8608 0.000171819 69.3042 0.000171819H136.186C136.633 0.000171819 137 0.361644 136.996 0.802561C136.621 32.4969 114.079 58.94 83.9334 65.7802C83.0022 65.9907 83.1594 67.3453 84.1189 67.3453H84.1148Z" fill="url(#paint0_linear_1655_45397)"></path>
 <path d="M84.1148 67.3453H136.194C136.637 67.3453 137 67.7028 137 68.1397V134.043C137 134.484 136.633 134.845 136.186 134.841C99.0222 134.416 68.9737 104.827 68.502 68.2191V134.206C68.502 134.643 68.1392 135 67.6958 135H0.814284C0.366822 135 -2.06673e-05 134.639 0.00401052 134.198C0.439379 97.2879 30.9354 67.5042 68.498 67.5002H0.806238C0.362807 67.5002 0 67.1427 0 66.7057V0.802561C0 0.361644 0.366822 0.000171863 0.814284 0.00414409C37.9778 0.429172 68.0263 30.0183 68.498 66.6263V0.794617C68.498 0.357672 68.8608 0.000171819 69.3042 0.000171819H136.186C136.633 0.000171819 137 0.361644 136.996 0.802561C136.621 32.4969 114.079 58.94 83.9334 65.7802C83.0022 65.9907 83.1594 67.3453 84.1189 67.3453H84.1148Z" fill="url(#pattern-home-hero-windmill-0)" fillOpacity="0.6" style={{mixBlendMode:"multiply"}}></path>
 <defs>

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
 import "./Nav.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { gsap } from "gsap"
 import logo from "./assets/logo.png"
+import axios from "axios"
 export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
@@ -82,7 +83,7 @@ export default function Nav(props) {
                 <ul className="navbar-items">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li>{props.logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin">SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
+                    <li>{props.logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin" >SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
                 </ul>
             </div>
             <hr className="nav-hr"/>

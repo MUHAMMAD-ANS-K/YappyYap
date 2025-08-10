@@ -7,7 +7,7 @@
   "scripts": {
     "predeploy": "cross-env VITE_DEPLOY_FROM=GIT  npm run build",
     "deploy": "gh-pages -d dist",
-    "dev": "vite",
+    "dev": "cross-env VITE_DEV_HTTPS=true vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -16,6 +16,7 @@
     "@andresclua/infinite-marquee-gsap": "^0.0.15",
     "@gsap/react": "^2.1.2",
     "axios": "^1.11.0",
+    "fs": "^0.0.1-security",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

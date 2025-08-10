@@ -13,11 +13,12 @@ export default function SignUp(props) {
         setLoading(true);
         e.preventDefault();
         try{
-            const resp = await axios.post("http://localhost:8000/signup", {
+            const resp = await axios.post("https://localhost:8000/signup", {
                 email: email,
-                username: username
+                username: username,
+                withCredentials: true
             })
-            if (resp.data.message == "Successful"){
+            if (resp.data.message == "Success"){
                 props.setEmail(email);
                 props.setOtpSent(true);
                 navigate("otp");

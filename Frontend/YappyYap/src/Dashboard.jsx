@@ -11,9 +11,7 @@ export default function Dashboard() {
                 Fill the contents to add a box on the home page.
             </h1>
             <div className="boxmain-add">
-                <h2>
-                    Enter Heading
-                </h2>
+                <label htmlFor=""></label>
                 <textarea placeholder="Heading" ref={heading} className="heading"></textarea>
                 <textarea placeholder="Content" ref={content} className="content"></textarea>
                 <label htmlFor="file" className="sign-button" id="file-chose">{file}</label>

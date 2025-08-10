@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Link } from "react-router-dom";
 import axios from "axios";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
@@ -10,7 +9,8 @@ export default function OTPForm(props) {
         try {
             const response = await axios.post(props.link,{
                 email : props.email,
-                otp : otp
+                otp : otp,
+                withCredentials:true
             })
             setMsg("Successfully logged in");
             props.setSignedin(true);
