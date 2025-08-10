@@ -8,7 +8,7 @@ app = FastAPI()
 app.include_router(auth.router)
 
 origins = [
-    "https://yappy-yap.vercel.app",
+    "https://muhammadans.com",
 ]
 
 app.add_middleware(

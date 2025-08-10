@@ -111,7 +111,8 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
         secure = True,
         samesite = "none",
         max_age=1800,
-        path="/"
+        path="/",
+        domain=".muhammadans.com"
         )
     db.delete(otp_entry)
     db.commit()
@@ -141,7 +142,8 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
         secure = True,
         samesite="none",
         max_age=1800,
-        path="/"
+        path="/",
+        domain=".muhammadans.com"
     )
     return {"message":"Success", "username" : user.username, "user" : "email"}
 
@@ -170,7 +172,8 @@ async def guest_login(request: Guest_login, response: Response, db : Session = D
         secure = True,
         samesite="none",
         max_age=1800,
-        path="/"
+        path="/",
+        domain=".muhammadans.com"
     )
     return {"msg" : "success", "username" : request.username}
     
