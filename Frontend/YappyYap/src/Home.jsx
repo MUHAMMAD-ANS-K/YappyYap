@@ -6,19 +6,18 @@ import {useGSAP} from "@gsap/react"
 import { ScrollTrigger } from "gsap/all";
 import { horizontalLoop } from "@andresclua/infinite-marquee-gsap";
 import "./Home.css"
-import axios from "axios"
 import img1 from "./assets/dummy1.jpg"
 import img2 from "./assets/dummy2.jpg"
 import img3 from "./assets/dummy3.jpg"
 import logo from "./assets/logo.png"
+import useAxios from "../hooks/useAxios";
 export default function Home(props) {
     
     useEffect(()=>{
         async function checklogin(){
+            axios = useAxios()
             try{
-                const loggedin = await axios.get("https://yappyyap-production.up.railway.app/prelogin",{
-                    withCredentials:true
-                })
+                const loggedin = await axios.get("/prelogin")
                 console.log(loggedin)
                 if (loggedin.data.message === "Success") {
                     props.setSignedin(true)

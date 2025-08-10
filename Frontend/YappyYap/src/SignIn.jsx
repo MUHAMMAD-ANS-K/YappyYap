@@ -1,6 +1,6 @@
 import {useState} from "react"
 import { useNavigate } from "react-router-dom"
-import useAxios from "./hooks/useAxios"
+import useAxios from "../hooks/useAxios"
 import "./SignIn.css"
 
 export default function SignIn(props) {
