@@ -100,7 +100,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
     otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).order_by(OTP_entry.creation_time.desc()).first()
     if not otp_entry:
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
-    if (otp_entry.expiry_time).replace(tzinfo=timezone.utc) < (datetime.now(timezone.utc)):
+    if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
     user = db.query(Users).filter_by(email = verification_data.email).first()
     token = await createToken({"user":user.username})
@@ -121,7 +121,7 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
     otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()
     if not otp_entry:
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
-    if (otp_entry.expiry_time).replace(tzinfo=timezone.utc) < (datetime.now(timezone.utc)):
+    if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
     pending_user = db.query(Pending_users).filter_by(email = verification_data.email).first()
     user = Users(

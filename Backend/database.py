@@ -31,13 +31,15 @@ class OTP_entry(Base):
     @staticmethod
     def get_expiry_time():
         return datetime.now(timezone.utc) + timedelta(minutes=4)
-    
+    @staticmethod
+    def get_current_time():
+        return datetime.now(timezone.utc)
     id = Column(Integer, primary_key=True)
     email = Column(String, index=True)
     username = Column(String)
     otp = Column(String)
-    creation_time = Column(DateTime, default=datetime.now(timezone.utc))
-    expiry_time = Column(DateTime, default=get_expiry_time)
+    creation_time = Column(DateTime(timezone=True), default=get_current_time)
+    expiry_time = Column(DateTime(timezone=True), default=get_expiry_time)
 
 class Guests(Base):
     __tablename__ = "guests"
