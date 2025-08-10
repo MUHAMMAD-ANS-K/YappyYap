@@ -1,7 +1,7 @@
 import {useState} from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
 import "./SignIn.css"
+import useAxios from "../hooks/useAxios";
 
 export default function SignUp(props) {
     const [email, setEmail] = useState("");
@@ -12,11 +12,11 @@ export default function SignUp(props) {
     async function sendOtp(e){
         setLoading(true);
         e.preventDefault();
+        const axios = useAxios();
         try{
-            const resp = await axios.post("https://yappyyap-production.up.railway.app/signup", {
+            const resp = await axios.post("/signup", {
                 email: email,
-                username: username,
-                withCredentials: true
+                username: username
             })
             if (resp.data.message == "Success"){
                 props.setEmail(email);

@@ -1,16 +1,16 @@
 import { useState } from "react"
-import axios from "axios";
+import useAxios from "../hooks/useAxios";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
     const [loading, setLoading] = useState(false);
     async function otpVerification(){
         setLoading(true);
+        const axios = useAxios();
         try {
             const response = await axios.post(props.link,{
                 email : props.email,
-                otp : otp,
-                withCredentials:true
+                otp : otp
             })
             setMsg("Successfully logged in");
             props.setSignedin(true);
