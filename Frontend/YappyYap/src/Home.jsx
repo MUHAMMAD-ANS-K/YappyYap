@@ -17,7 +17,7 @@ export default function Home(props) {
         async function checklogin(){
             console.log("Check 12 3")
             try{
-                const loggedin = await axios.get("https://localhost:8000/prelogin",{
+                const loggedin = await axios.get("https://yappyyap-production.up.railway.app/prelogin",{
                     withCredentials:true
                 })
                 console.log(loggedin)

@@ -13,7 +13,7 @@ export default function SignUp(props) {
         setLoading(true);
         e.preventDefault();
         try{
-            const resp = await axios.post("https://localhost:8000/signup", {
+            const resp = await axios.post("https://yappyyap-production.up.railway.app/signup", {
                 email: email,
                 username: username,
                 withCredentials: true

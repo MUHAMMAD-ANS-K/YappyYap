@@ -23,8 +23,8 @@ export default function App() {
             <Routes>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
-                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://localhost:8000/acc-verify"}/>}/>
-                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://localhost:8000/acc-create"}/>}/>
+                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://yappyyap-production.up.railway.app/acc-verify"}/>}/>
+                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"https://yappyyap-production.up.railway.app/acc-create"}/>}/>
                 <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
