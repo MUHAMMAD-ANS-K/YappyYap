@@ -15,7 +15,7 @@ export default function Home(props) {
     
     useEffect(()=>{
         async function checklogin(){
-            axios = useAxios()
+            const axios = useAxios()
             try{
                 const loggedin = await axios.get("/prelogin")
                 console.log(loggedin)
