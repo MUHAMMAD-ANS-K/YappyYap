@@ -18,7 +18,6 @@ export default function Home(props) {
             const axios = useAxios()
             try{
                 const loggedin = await axios.get("/prelogin")
-                console.log(loggedin)
                 if (loggedin.data.message === "Success") {
                     props.setSignedin(true)
                 }

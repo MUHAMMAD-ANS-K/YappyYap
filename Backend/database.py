@@ -36,7 +36,6 @@ class OTP_entry(Base):
         return datetime.now(timezone.utc)
     id = Column(Integer, primary_key=True)
     email = Column(String, index=True)
-    username = Column(String)
     otp = Column(String)
     creation_time = Column(DateTime(timezone=True), default=get_current_time)
     expiry_time = Column(DateTime(timezone=True), default=get_expiry_time)
@@ -53,8 +52,6 @@ class Email_signup(Email_signin):
     username:str
 
 class OTP_verification(Email_signin):
-    otp : str
-class SignUp_verification(Email_signup):
     otp : str
 
 class Guest_login(BaseModel):
