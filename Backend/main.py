@@ -1,23 +1,38 @@
-from fastapi import FastAPI
-import auth
-import os
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+# import auth
 from fastapi.middleware.cors import CORSMiddleware
-from uvicorn import run
-port = int(os.environ.get("PORT", 8000))
 app = FastAPI()
-app.include_router(auth.router)
+# app.include_router(auth.router)
 
 origins = [
-    "https://muhammadans.com",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-if __name__=="__main__":
-    run("main:app", host="0.0.0.0", port=port)
+users = []
+
+@app.websocket("/ws")
+async def websoc(user : WebSocket):
+    await user.accept()
+    users.append(user)
+    while True:
+        try:
+            msg = await user.receive_text()
+            for u in users:
+                await u.send_text(msg)
+        except WebSocketDisconnect:
+            print("-->LEfT<--")
+        except:
+            print("Unknown error")
+        finally:
+            if user in users:
+                users.remove(user)
+            break
+

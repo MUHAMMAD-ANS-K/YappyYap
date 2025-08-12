@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SignIn from "./SignIn";
 import SignUp from "./Signup";
 import OTPForm from "./OTPForm";
@@ -8,18 +8,21 @@ import About from "./About.jsx";
 import Footer from "./Footer.jsx";
 import ContactUs from "./ContactUs.jsx";
 import Blog from "./Blog.jsx";
-import { HashRouter, Routes, Route, BrowserRouter } from 'react-router-dom'
+import {Routes, Route, BrowserRouter } from 'react-router-dom'
 import Dashboard from "./Dashboard.jsx";
+import NotFound from "./404.jsx";
+import Chat from "./Chat.jsx";
 
 export default function App() {
     const [email, setEmail] = useState("");
     const [otpSent, setOtpSent] = useState(false);
     const [signedin, setSignedin] = useState(false);
+    const [selectOption, setOption] = useState("NewsLetter");
+    const [footerEmail, setFooterEmail] = useState();
     return (
         <BrowserRouter>
         <div>
             <Nav logged = {signedin}></Nav>
-            {/* {otpSent == false? (<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>):(<OTPForm email = {email} setSignedin = {setSignedin}/>)} */}
             <Routes>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail} setOtpSent = {setOtpSent}/>}/>
@@ -28,10 +31,12 @@ export default function App() {
                 <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
-                <Route path = "/contactus" element={<ContactUs/>}/>
+                <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard" element={<Dashboard/>}/>
+                <Route path="/chat" element={<Chat/>}/>
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
-            <Footer></Footer>
+            <Footer setOption = {setOption} setFooterEmail = {setFooterEmail}></Footer>
        </div>
        </BrowserRouter>
     );

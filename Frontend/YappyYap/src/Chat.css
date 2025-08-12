@@ -1,0 +1,10 @@
+.chat{
+    border: 2px solid white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.chat button{
+    height: 30px;
+}

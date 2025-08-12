@@ -1,9 +1,7 @@
 import "./ContactUs.css"
-import { useRef, useState } from "react"
+import { useRef} from "react"
 import { Link } from "react-router-dom"
-export default function ContactUs() {
-    const emailRef = useRef();
-    const [selectOption, setOption] = useState("NewsLetter");
+export default function ContactUs(props) {
     const issueRef = useRef();
     return(
         <section>
@@ -19,14 +17,14 @@ export default function ContactUs() {
                         
                     <li>
                         <label htmlFor="select-contact">Reason for Contact</label>
-                    <select value={selectOption} onChange={(e)=> setOption(e.target.value)} id="select-contact">
+                    <select value={props.selectOption} onChange={(e)=> props.setOption(e.target.value)} id="select-contact">
                         <option value="NewsLetter">NewsLetter</option>
                         <option value="BugReport">Bug Report</option>
                         <option value="other">Others</option>
                     </select>
                         </li>
                     <li>
-                    {selectOption === "NewsLetter" ? (<input type="email" className="email-input email-contact" placeholder="Enter your email" ref={emailRef}/>): (<textarea type="text"placeholder="Enter your problem here" ref={issueRef} className="text-contact"/>)}
+                    {props.selectOption === "NewsLetter" ? (<input type="email" className="email-input email-contact" placeholder="Enter your email" value={props.footerEmail} onChange={(e)=> props.setFooterEmail(e.target.value)}/>): (<textarea type="text"placeholder="Enter your problem here" ref={issueRef} className="text-contact"/>)}
                     </li>
 
                     <li>

@@ -6,8 +6,6 @@ export default defineConfig(()=>{
   const useHttps = process.env.VITE_DEV_HTTPS === "true"
   let httpsConfig;
   if (useHttps) {
-    console.log("hi")
-    // const fs = require ("fs")
     const keyP = path.resolve(__dirname, "..", "..", "Backend", "certs", "key.pem")
     const certP = path.resolve(__dirname, "..", "..", "Backend", "certs" , "cert.pem")
     httpsConfig = {

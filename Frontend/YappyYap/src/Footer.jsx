@@ -1,20 +1,23 @@
 import { Link } from "react-router-dom";
-// import {axios}
+import { useNavigate } from "react-router-dom";
 import "./Footer.css"
-export default function Footer(){
-    function emailhHandler(e) {
-        
-    }
+export default function Footer(props){
+    const navigation = useNavigate();
+    function emailHandler() {
+        const emailElement = document.querySelector(".footer-email");
+        props.setFooterEmail(emailElement.value)
+        emailElement.value = "";
+        props.setOption("NewsLetter")
+        navigation("contactus");
+    }   
     return (
         <footer>
         <nav className="footer-navigation">
             <div>
             <h3>Stay tuned for any updates.</h3>
             <div className="footer-email-form">
-            <form onSubmit="">
                 <input type="email" placeholder="Enter your Email" className="footer-email"/>
-                <button type="submit" className="footer-button">&rarr;</button>
-            </form>
+                <button onClick={emailHandler} className="footer-button">&rarr;</button>
             <hr className="footer-hr"/>
             </div>
             </div>

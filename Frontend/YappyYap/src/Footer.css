@@ -55,6 +55,7 @@ footer a{
     position: absolute;
     right: 1px;
     top: -2px;
+    overflow: hidden;
 }
 .footer-hr{
     margin: 0;

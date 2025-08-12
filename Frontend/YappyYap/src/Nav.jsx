@@ -8,6 +8,7 @@ export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
     function hoverEnter() {
+        document.querySelector(".menubar").style.color = "rgb(95, 93, 93)";
         gsap.to(".hoverEff", {
             width : "100%",
             duration : 0.1,
@@ -15,6 +16,7 @@ export default function Nav(props) {
         setAnimating(true);
     }
     function hoverLeave() {
+        document.querySelector(".menubar").style.color = "beige";
         gsap.to(".hoverEff", {
             width : "0%",
             duration : 0.1,
@@ -53,11 +55,11 @@ export default function Nav(props) {
             const element = document.querySelector(".navbar").style;
             element.width = "auto";
             element.height = "auto";
-            element.flexDirection = "row"
+            element.flexDirection = "row";
             element.justifyContent = "space-between";
             const element2 = document.querySelector(".menubar").style;
             element2.position = "relative";
-            element2.right = "0px";
+            element2.right = "0px"
             document.querySelector(".cross").style.display = "none";
             document.querySelector(".ham").style.display = "inline";
             document.querySelector(".navbar-items").style.display = "none";
