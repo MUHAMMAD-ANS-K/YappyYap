@@ -18,7 +18,7 @@ export default function SignUp(props) {
                 email: email,
                 username: username
             })
-            if (resp.data.message == "Success"){
+            if (resp.data.msg == "Success"){
                 props.setEmail(email);
                 props.setOtpSent(true);
                 navigate("otp");

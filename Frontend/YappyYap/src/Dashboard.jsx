@@ -1,6 +1,26 @@
 import { useRef, useState } from "react";
+import { Navigate } from "react-router-dom";
+import useDashAuth from "../hooks/useDashAuth";
 import "./Dashboard.css"
 export default function Dashboard() {
+    // const {isAdmin} = useDashAuth();
+    // const {checking} = useDashAuth();
+    const isAdmin = true;
+    const checking = false;
+    if (checking){
+        return(
+            <div className="loading">
+                <p>Loading...</p>
+            </div>
+        )
+    }
+    else{
+
+    
+    if (isAdmin == false){
+        console.log("hwi")
+        return <Navigate to="/" replace/>
+    }
     const heading = useRef();
     const content = useRef();    
     const [file, setFile] = useState("No file choosen");
@@ -19,4 +39,5 @@ export default function Dashboard() {
             </div>
         </main>
     );
+}
 }

@@ -39,3 +39,11 @@ textarea:focus{
     background-color: rgb(89, 221, 89);
     color: beige;
 }
+.loading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    height: 80vh;
+    width: 100vw;
+}

@@ -13,18 +13,21 @@ export default function Chat() {
             console.log("connection closed")
         }
         ws.current.onmessage = (e)=>{
-            // try{
+            try{
                 const el = document.querySelector(".msgs");
                 let text = e.data;
                 let element = document.createElement("li");
                 element.innerHTML = text;
                 el.append(element)
-            // }
-            // catch{
-            //     console.log("Error occured in the message")
-            // }
+            }
+            catch{
+                console.log("Error occured in the message")
+            }
         }
         ws.current.onerror = ()=>{
+            if (ws.current.OPEN) {
+                ws.current.close()
+            }
             console.log("An errro occured")
         }
     },[])
@@ -36,10 +39,9 @@ export default function Chat() {
     }
     return (
         <div className="chat">
-            <input type="text" placeholder="Enter message" ref={msg}/>
+            <textarea placeholder="Enter message" ref={msg} style = {{width : "60vw", height : "100px", resize: "none"}} className="email-input"></textarea>
             <button onClick={sendMsg}>Send</button>
             <ul className="msgs">
-
             </ul>
         </div>
     )

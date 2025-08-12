@@ -1,4 +1,4 @@
-from database import Base, engine, session, Guest_login, Email_signin, Email_signup, OTP_entry, Users, OTP_verification, Pending_users, Guests
+from database import Base, engine, session, Guest_login, Email_signin, Email_signup, OTP_entry, Users, OTP_verification, Pending_users, Guests, Admins
 from fastapi import APIRouter, Depends, HTTPException, Cookie, Response, status
 from send_email import send_otp
 import random
@@ -41,7 +41,7 @@ async def verify_session_token(session_token: Annotated[str | None, Cookie()] = 
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg" : "Expired Token"}])
-    return {"message" : "Success"}
+    return payload
 
 
 
@@ -91,7 +91,7 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
     db.delete(otp_entry)
     db.delete(pending_user)
     db.commit()
-    token = await create_session_token({"user": user.username, "exp" : int(time.time()) + 1800})
+    token = await create_session_token({"username": user.username, "exp" : int(time.time()) + 1800})
     response.set_cookie(
         key="session_token",
         value=token,
@@ -130,13 +130,17 @@ async def signin(data : Email_signin, db : Session = Depends(get_db)):
 
 @router.post("/acc-verify")
 async def verify(verification_data : OTP_verification, response: Response, db : Session = Depends(get_db)):
-    otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).order_by(OTP_entry.creation_time.desc()).first()
+    otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()   #.order_by(OTP_entry.creation_time.desc())
     if not otp_entry:
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
     if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
     user = db.query(Users).filter_by(email = verification_data.email).first()
-    token = await create_session_token({"user":user.username, "exp" : int(time.time()) + 1800})
+    payload = {"username" : user.username, "exp" : int(time.time()) + 1800}
+    admin_check = db.query(Admins).filter(email=verification_data.email).first()
+    if admin_check != 0:
+        payload.update(exp = 3600, role = "admin")
+    token = await create_session_token(payload)
     response.set_cookie(
         key="session_token",
         value = token,
@@ -149,7 +153,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
         )
     db.delete(otp_entry)
     db.commit()
-    return {"message":"Successful"}
+    return {"message":"Success"}
 
 
 
@@ -181,12 +185,12 @@ async def guest_login(request: Guest_login, response: Response, db : Session = D
         path="/",
         domain=".muhammadans.com"
     )
-    return {"msg" : "success", "username" : request.username}
+    return {"msg" : "Success", "username" : request.username}
     
 @router.get("/signout")
 async def signout(response: Response):
     response.delete_cookie(key="session_token")
-    return {"msg" : "success"}
+    return {"msg" : "Success"}
 
 @router.post("/delete")
 async def delete_acc(request: Email_signin, response: Response, db: Session = Depends(get_db), msg = Depends(verify_session_token)):
@@ -202,4 +206,11 @@ async def guest_logout(request: Guest_login, response : Response, db : Session= 
     del_user_signout = db.query(Guests).filter(username = request.username).first()
     db.delete(del_user_signout)
     db.commit()
-    return {"msg" : "success"}
+    return {"msg" : "Success"}
+
+@router.get("/admincheck")
+async def adminAuthentication(session_token: Annotated[str | None, Cookie()] = None):
+    payload = verify_session_token(session_token)
+    if (not payload.role) or (payload.role != "admin"):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=[{"msg" : "Not an admin"}])
+    return {"msg" : "Success"}

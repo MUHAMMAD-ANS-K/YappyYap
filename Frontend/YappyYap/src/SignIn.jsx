@@ -16,7 +16,7 @@ export default function SignIn(props) {
             const resp = await axios.post("/signin", {
                 email: email
             })
-            if (resp.data.message == "Success"){
+            if (resp.data.msg == "Success"){
                 props.setEmail(email);
                 props.setOtpSent(true);
                 navigate("otp");

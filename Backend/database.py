@@ -45,6 +45,12 @@ class Guests(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String, index=True)
 
+class Admins(Base):
+    __tablename__ = "admins"
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    email = Column(String)
+
 class Email_signin(BaseModel):
     email: EmailStr
 

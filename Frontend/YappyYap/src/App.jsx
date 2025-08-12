@@ -12,6 +12,7 @@ import {Routes, Route, BrowserRouter } from 'react-router-dom'
 import Dashboard from "./Dashboard.jsx";
 import NotFound from "./404.jsx";
 import Chat from "./Chat.jsx";
+import { DashboardAuthProvider } from "../hooks/useDashAuth.jsx";
 
 export default function App() {
     const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export default function App() {
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
-                <Route path="/dashboard" element={<Dashboard/>}/>
+                <Route path="/dashboard" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
                 <Route path="/chat" element={<Chat/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
