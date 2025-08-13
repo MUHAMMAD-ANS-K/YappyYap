@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
-import { Navigate } from "react-router-dom";
-import useDashAuth from "../hooks/useDashAuth";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Nav from "./DashboardComps/Nav"
+import HomeComp from "./DashboardComps/HomeComp";
 import "./Dashboard.css"
+import NotFound from "./404";
+import { DashboardAuthProvider } from "../hooks/useDashAuth";
+import Deployments from "./DashboardComps/Deployments";
 export default function Dashboard() {
     // const {isAdmin} = useDashAuth();
     // const {checking} = useDashAuth();
@@ -10,34 +14,23 @@ export default function Dashboard() {
     if (checking){
         return(
             <div className="loading">
-                <p>Loading...</p>
+                Loading...
             </div>
         )
     }
     else{
-
-    
-    if (isAdmin == false){
-        console.log("hwi")
-        return <Navigate to="/" replace/>
-    }
-    const heading = useRef();
-    const content = useRef();    
-    const [file, setFile] = useState("No file choosen");
-    const file_ref = useRef();
+        if (!isAdmin){
+            return <Navigate to="/" replace/>
+        }
     return(
-        <main>
-            <h1>
-                Fill the contents to add a box on the home page.
-            </h1>
-            <div className="boxmain-add">
-                <label htmlFor=""></label>
-                <textarea placeholder="Heading" ref={heading} className="heading"></textarea>
-                <textarea placeholder="Content" ref={content} className="content"></textarea>
-                <label htmlFor="file" className="sign-button" id="file-chose">{file}</label>
-                <input type="file" ref={file_ref} onChange={(e)=> setFile(e.target.files[0].name)} id="file"/>
-            </div>
-        </main>
+        <div className="dashboard">
+            <Nav/>
+            <Routes>
+                <Route path="/" element = {<Deployments/>}/>
+                <Route path="/home-comps" element={<HomeComp/>} />
+                <Route path="*" element={<NotFound/>}/>
+            </Routes>
+        </div>
     );
 }
 }

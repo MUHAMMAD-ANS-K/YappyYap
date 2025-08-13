@@ -33,7 +33,7 @@ export default function App() {
                 <Route path="/" element={<Home email = {email} setSignedin = {setSignedin}/>}/>
                 <Route path="/about" element={<About/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
-                <Route path="/dashboard" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
+                <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
                 <Route path="/chat" element={<Chat/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>

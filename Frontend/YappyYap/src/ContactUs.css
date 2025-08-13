@@ -18,7 +18,6 @@
     width: 30px;
     height: 36px;
     display: inline-block;
-    background-size: fill;
     background-repeat: no-repeat;
     background-image: url("./assets/contact-us-arr-gray.svg");
 }
