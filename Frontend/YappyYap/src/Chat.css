@@ -97,6 +97,7 @@
     margin-left: 5px;
     padding: 1px;
     border-radius: 3px;
+    opacity: 0;
 }
 .chat-bold{
     font-weight: bold;
@@ -155,5 +156,6 @@
     font-family: 'Delius', cursive;
 }
 .options-chat-message{
-    
+    display: flex;
+    flex-direction: row;
 }

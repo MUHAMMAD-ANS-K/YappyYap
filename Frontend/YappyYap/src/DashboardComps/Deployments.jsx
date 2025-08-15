@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import "./Deployments.css";
 export default function Deployments() {
-    const VERCEL_TOKEN = "PQFeqPaea3mxE3dZm2leRBbm";
+    const VERCEL_TOKEN = "Token";
     const [loading, setLoading] = useState(false);
     const [option, setOption] = useState("recent");
     const [data, setData] = useState({"msg" : "Loading..."});

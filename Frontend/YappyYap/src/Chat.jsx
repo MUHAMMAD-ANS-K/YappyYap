@@ -11,17 +11,33 @@ export default function Chat() {
     const [bold, setBold] = useState(false);
     const [italic, setItalic] = useState(false);
     const [strike, setStrike] = useState(false);
-    const [optionsOpen, setOptionsOpen] = useState(false); 
-    useGSAP(()=>{
+    const [optionsOpen, setOptionsOpen] = useState(false);
         function optionsAnimation() {
             if (optionsOpen) {
-
+                gsap.to(".chat-message-style-buttons", {
+                    x : -20,
+                    duration: 1,
+                    stagger : 0.1,
+                    yoyo: true,
+                })
+                gsap.to(".chat-message-style-buttons", {
+                    opacity: 1,
+                    duration: 1,
+                })
             }
             else{
-                gsap
+                gsap.from(".chat-message-style-buttons", {
+                    x : 20,
+                    duration: 1,
+                    stagger: 0.1,
+                    yoyo : true
+                })
+                gsap.to(".chat-message-style-buttons", {
+                    opacity: 1,
+                })
             }
+            setOptionsOpen((o) => !o);
         }
-    },[])
     useEffect(() => {
         textArea.current.style.height = "auto";
         if (textArea.current.scrollHeight < 400) {
@@ -158,10 +174,10 @@ export default function Chat() {
                     </div>
                     <div className="message-area-overlay">
                         <div className="message-area">
-                            <span className="options-chat-message"><button className="chat-show-options">Options <span className="arrow">{">"}</span></button>
-                            <button className="chat-bold" onClick={boldHandler}>B</button>
-                            <button className="chat-italic" onClick={italicHandler}>I</button>
-                            <button className="chat-strike" onClick={strikeHandler}>S</button></span>
+                            <span className="options-chat-message"><button className="chat-show-options" onClick={optionsAnimation}>Options <span className="arrow">{">"}</span></button>
+                            <button className="chat-bold chat-message-style-buttons" onClick={boldHandler}>B</button>
+                            <button className="chat-italic chat-message-style-buttons" onClick={italicHandler}>I</button>
+                            <button className="chat-strike chat-message-style-buttons" onClick={strikeHandler}>S</button></span>
                             <textarea placeholder="Enter message" ref={textArea} value={msg} onChange={changeHandler} className="send-message" />
                             <button onClick={sendMsg} className="send-button">
                                 <svg className="chat-sendsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
