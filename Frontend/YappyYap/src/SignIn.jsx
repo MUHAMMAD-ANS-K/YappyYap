@@ -18,7 +18,6 @@ export default function SignIn(props) {
             })
             if (resp.data.msg == "Success"){
                 props.setEmail(email);
-                props.setOtpSent(true);
                 navigate("otp");
             }
             else{
@@ -26,7 +25,6 @@ export default function SignIn(props) {
             }
         }
         catch(exception){
-            console.log(exception)
             if (exception.response && exception.response.data){
                 setErr(exception.response.data.detail[0].msg);
             }

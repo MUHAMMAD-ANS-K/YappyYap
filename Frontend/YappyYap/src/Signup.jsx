@@ -20,7 +20,6 @@ export default function SignUp(props) {
             })
             if (resp.data.msg == "Success"){
                 props.setEmail(email);
-                props.setOtpSent(true);
                 navigate("otp");
             }
         }

@@ -66,6 +66,7 @@ span{
     text-transform: uppercase;
     font-size: 60vh;
     color: rgba(31, 31, 31, 0.8);
+    font-family: "Fredericka the Great", serif;
 }
 .boxes{
     display: flex;

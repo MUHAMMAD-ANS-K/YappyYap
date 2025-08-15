@@ -1,10 +1,159 @@
+.chat *{
+    overflow: hidden;
+    box-sizing: border-box;
+}
 .chat{
-    border: 2px solid white;
+    background-color: rgb(10, 10, 20);
+}
+.chat-sidearea{
     height: 100vh;
+    width: 20vw;
+    border: 2px solid aqua;
+    position: fixed;
+}
+.chat-mainarea{
+    border: 2px solid white;
+    width: 80vw;
+    margin-left: 20vw;
+    padding-bottom: 20px;
+    height: 100vh;
+}
+.chat-header{
+    background-color: purple;
+    width: 100%;
+    height: 15vh;
+    position: fixed;
+    z-index: 2;
+    border: 1px solid white;
+}
+.message-area-overlay{
+    padding-left: calc(1%);
+    background-color: rgb(10, 10, 20);
+    position: fixed;
+    width: calc(100% - 20vw);
+    height: calc(25px);
+    bottom: 0px;
+    z-index: 2;
+}
+.message-area{
+    width: calc(98% - 20vw);
+    padding: 4px 10px 50px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.277);
+    border-radius: 8px;
+    background: linear-gradient(90deg, #111 0%, #112 100%);
+    bottom: 20px;
+    position: fixed;
+    height: auto;
+}
+.message-area:focus-within{
+    border: 1px solid rgba(255, 255, 255, 0.773);
+}
+.send-message{
+    background-color: transparent;
+    width: 100%;
+    padding: calc(1vh) calc(1%);
+}
+.send-message:focus{
+    border: none;
+}
+.send-button{
+    height: 35px;
+    width: 40px;
+    position: absolute;
+    right: 2px;
+    bottom: 4px;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.chat-sendsvg{
+    width: 25px;
+}
+.chat-show-options{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: none;
+    gap: 4px;
+    margin-left: 10px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.277);
+    font-size: 1rem;
+    cursor: pointer;
+}
+.chat-show-options .arrow{
+    position: relative;
+    bottom: 0.1rem;
+    font-size: 1.5rem;
+}
+.chat-bold, .chat-italic, .chat-strike{
+    color: rgba(255, 255, 255, 0.277);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 23px;
+    margin-left: 5px;
+    padding: 1px;
+    border-radius: 3px;
+}
+.chat-bold{
+    font-weight: bold;
+}
+.chat-italic{
+    font-style: italic;
+    padding-right: 4px;
+}
+.chat-strike{
+    text-decoration: line-through;
+}
+.msgs{
+    display: block;
+    padding-top: 20vh;
+    padding-bottom: 20vh;
+    width: 75vw;
+    margin-left: 1.1vw;
+    margin-right: 1.1vw;
+    z-index: 1;
+    height: 100vh;
+    overflow: auto;
+}
+.chat-message-block{
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+}
+.chat-message-img{
+    max-width: 100%;
+    border-radius: 4px;
+    height: 22px;
+    flex-shrink: 0;
+}
+.chat-message-block h3{
+    font-family: "Fredericka the Great", serif;
+    font-size: 1.2rem;
+}
+.chat-message{
+    font-family: 'Delius', cursive;
+    font-size: 0.9rem;
+}
+.msgs{
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    gap: 25px;
+}
+.chat-message-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 20px;
 }
-.chat button{
-    height: 30px;
+.timestamp{
+    font-size: 0.6rem;
+    font-family: 'Delius', cursive;
+}
+.options-chat-message{
+    
 }

@@ -20,8 +20,8 @@ textarea{
 }
 .boxmain-add .heading{
     width: 400px;
-    height: 200px;
-    padding: 8px;
+    height: 100px;
+    padding: 10px;
 }
 textarea:focus{
     outline: none;
@@ -30,6 +30,7 @@ textarea:focus{
 .boxmain-add .content{
     width: 700px;
     height: 500px;
+    padding: 20px;
 }
 .boxmain-add #file{
     display: none;
@@ -38,16 +39,12 @@ textarea:focus{
     width: 200px;
     height: auto;
     text-align: center;
+    overflow: hidden;
 }
 #file-chose:hover{
     background-color: rgb(89, 221, 89);
     color: beige;
-}
-.loading{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
-    height: 80vh;
-    width: 100vw;
+    transform: scale(1.2);
+    font-size: 1.2rem;
+    font-weight: bold;
 }
