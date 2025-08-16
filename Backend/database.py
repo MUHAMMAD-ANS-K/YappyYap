@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, EmailStr
 
 load_dotenv()
-DB_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("DB_URL")
 engine = create_engine(DB_URL)
 Base = declarative_base()
 session = sessionmaker(bind=engine)
@@ -50,6 +50,16 @@ class Admins(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String)
     email = Column(String)
+
+class Msgs(Base):
+    __tablename__ = "msgs"
+    @staticmethod
+    def get_expiry(seconds : int):
+        return datetime.now(timezone.utc) + timedelta(seconds=seconds)
+    id = Column(Integer, primary_key=True)
+    msg = Column(String)
+    user = Column(String)
+    expiry = Column(DateTime(timezone=True))
 
 class Email_signin(BaseModel):
     email: EmailStr

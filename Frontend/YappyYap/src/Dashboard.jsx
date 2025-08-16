@@ -4,13 +4,11 @@ import Nav from "./DashboardComps/Nav"
 import HomeComp from "./DashboardComps/HomeComp";
 import "./Dashboard.css"
 import NotFound from "./404";
-import { DashboardAuthProvider } from "../hooks/useDashAuth";
+import useDashAuth from "../hooks/useDashAuth";
 import Deployments from "./DashboardComps/Deployments";
 export default function Dashboard() {
-    // const {isAdmin} = useDashAuth();
-    // const {checking} = useDashAuth();
-    const isAdmin = true;
-    const checking = false;
+    const {isAdmin} = useDashAuth();
+    const {checking} = useDashAuth();
     if (checking){
         return(
             <div className="loading">

@@ -1,8 +1,8 @@
-.chat *{
+.chat-area *{
     overflow: hidden;
     box-sizing: border-box;
 }
-.chat{
+.chat-area{
     background-color: rgb(10, 10, 20);
 }
 .chat-sidearea{
@@ -12,7 +12,7 @@
     position: fixed;
 }
 .chat-mainarea{
-    border: 2px solid white;
+    border-left: 2px solid white;
     width: 80vw;
     margin-left: 20vw;
     padding-bottom: 20px;
@@ -52,6 +52,7 @@
     background-color: transparent;
     width: 100%;
     padding: calc(1vh) calc(1%);
+    font-family: 'Delius', cursive;   
 }
 .send-message:focus{
     border: none;
@@ -82,10 +83,12 @@
     font-size: 1rem;
     cursor: pointer;
 }
-.chat-show-options .arrow{
-    position: relative;
-    bottom: 0.1rem;
-    font-size: 1.5rem;
+.arrow-style{
+    font-size: 1.4rem;
+}
+.arrow-animationb{
+    display: none;
+    width: 60px;
 }
 .chat-bold, .chat-italic, .chat-strike{
     color: rgba(255, 255, 255, 0.277);
@@ -97,7 +100,7 @@
     margin-left: 5px;
     padding: 1px;
     border-radius: 3px;
-    opacity: 0;
+    display: none;
 }
 .chat-bold{
     font-weight: bold;
@@ -113,18 +116,27 @@
     display: block;
     padding-top: 20vh;
     padding-bottom: 20vh;
-    width: 75vw;
-    margin-left: 1.1vw;
-    margin-right: 1.1vw;
+    width: 80vw;
+    padding-left: 1.1vw;
+    padding-right: 1.1vw;
     z-index: 1;
     height: 100vh;
-    overflow: auto;
+    position: fixed;
+    overflow-y: auto;
+    bottom: 20px;
 }
 .chat-message-block{
     display: flex;
     gap: 5px;
     flex-direction: row;
+    margin-bottom: 30px;
+    padding-right: 4vw;
 }
+/* .my-message{               under Development
+position: relative;
+justify-content: flex-end;
+flex-direction: row-reverse;
+} */
 .chat-message-img{
     max-width: 100%;
     border-radius: 4px;
@@ -139,12 +151,6 @@
     font-family: 'Delius', cursive;
     font-size: 0.9rem;
 }
-.msgs{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 25px;
-}
 .chat-message-header{
     display: flex;
     flex-direction: row;
@@ -158,4 +164,178 @@
 .options-chat-message{
     display: flex;
     flex-direction: row;
+}
+.chat-yap-duration{
+    position: absolute;
+    bottom: 4px;
+    right: 60px;
+}
+#chat-yap-duration{
+    font-size: 1rem;
+    background-color:rgb(123, 220, 123);
+    width: 3.2rem;
+    color: #112;
+    margin-left: 10px;
+    text-align: center;
+    padding: 0.2rem 0rem;
+    border-radius: 4px;
+}
+.chat-yap-duration input{
+    cursor: pointer;
+    color: #111;
+    appearance: none;
+    background-color: rgb(63, 63, 103);
+    border-radius: 10px;
+}
+.chat-yap-duration input[type="range"]::-webkit-slider-thumb {
+    background-color: rgb(123, 220, 123);
+    color: #000;
+    border-radius: 30px;
+    border: none;
+}
+.chat-yap-duration input[type="range"]::-moz-range-thumb {
+    background-color: rgb(123, 220, 123);
+    color: #000;
+    border-radius: 30px;
+    border: none;
+}
+.chat-yap-duration input[type="range"]:focus{
+    border: 1px solid rgba(255, 255, 255, 0.277);
+}
+.chat-yap-duration input[type="range"]:active{
+    border: 1px solid rgba(255, 255, 255, 0.773);
+}
+.chat-yap-duration span{
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+.user-profile{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    max-width: 70%;
+    position: absolute;
+    bottom: 30px;
+    left: 15%;
+}
+.user-profile p{
+    font-family: 'Fredericka the Great', 'serif';
+    font-size: 1.3rem;
+}
+.user-profile-pic{
+    max-width: 60px;
+    min-width: 30px;
+    height: 32px;
+    border-radius: 50%;
+}
+.chat-sidearea-heading{
+    width: 100%;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 55%, #10B981 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.realms-r-replacement{
+    font-size: 4rem;
+}
+.chat-sidearea hr{
+    margin-top: 0;
+}
+.realms-list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.277);
+}
+.realms-list li{
+    display: flex;
+    flex-direction: row;
+}
+.realm-button{
+    border: none;
+    cursor: pointer;
+    color: #10B981;
+    background-color: transparent;
+}
+.dot-realm-style{
+    position: relative;
+    top: 10px;
+    margin-right: 5px;
+    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 50%, #10B981 100%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: block;
+}
+@media (max-width : 1100px) {
+    .nav-close-styles .chat-sidearea{
+        width: 5vw;
+    }
+    .nav-close-styles .user-profile p{
+        display: none;
+    }
+    .nav-close-styles .chat-mainarea{
+        width: 95vw;
+        margin-left: 5vw;
+    }
+    .nav-close-styles .message-area-overlay{
+        width: calc(100% - 5vw);
+    }
+    .nav-close-styles .message-area{
+        width: calc(98% - 5vw);
+    }
+    .nav-close-styles .msgs{
+        width: 95vw;
+    }
+    .nav-close-styles .realm-button, .nav-close-styles .channel-hashtag{
+        display: none;
+    }
+    .nav-close-styles .dot-realm-style{
+        top: 0;
+        width: 10px;
+        height: 10px;
+    }
+    .nav-close-styles .chat-sidearea-heading .ealms{
+        display: none;
+    }
+    .nav-open-styles .chat-sidearea{
+        width: 30vw;
+    }
+    .nav-open-styles .user-profile p{
+        display: block;
+    }
+    .nav-open-styles .chat-mainarea{
+        width: 70vw;
+        margin-left: 30vw;
+    }
+    .nav-open-styles .message-area-overlay{
+        width: calc(100% - 30vw);
+    }
+    .nav-open-styles .message-area{
+        width: calc(98% - 30vw);
+    }
+    .nav-open-styles .msgs{
+        width: 70vw;
+    }
+    .nav-open-styles .realm-button, .nav-open-styles .channel-hashtag{
+        display: inline-block;
+    }
+    .nav-open-styles .dot-realm-style{
+        top: 10px;
+        width: 6px;
+        height: 6px;
+    }
+    .nav-open-styles .chat-sidearea-heading .ealms{
+        display: inline-block;
+    }
 }

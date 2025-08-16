@@ -5,6 +5,7 @@ import random
 import jwt
 import os
 from sqlalchemy.orm import Session
+from sqlalchemy import select
 from datetime import datetime, timezone
 import time
 from pydantic import BaseModel
@@ -18,11 +19,8 @@ ALGORITHM = "HS256"
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 
 def get_db():
-    db = session()
-    try:
+    with session() as db:
         yield db
-    finally:
-        db.close()
 
 async def create_session_token(data:dict):
     token = jwt.encode(data, PRIVATE_KEY, algorithm=ALGORITHM)
@@ -48,14 +46,17 @@ async def verify_session_token(session_token: Annotated[str | None, Cookie()] = 
 @router.post("/signup") 
 async def signup(data : Email_signup, db : Session = Depends(get_db)):
     random_otp = str(random.randint(10, 99)) + chr(65 + random.randint(0, 26)) + str(random.randint(10, 99)) + chr(65 + random.randint(0, 26))
-    already_exists = db.query(Users).filter_by(email=data.email).first()
+    already_exists = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=400, detail=[{"msg":"Account already exists"}])
     already_exists = db.query(Users).filter_by(username=data.username).first()
     if already_exists:
         raise HTTPException(status_code=400, detail=[{"msg":"User name already taken"}])
-    already_exists = db.query(Pending_users).filter_by(email = data.email).update({"username" : data.username})
-    if already_exists == 0:
+    already_exists = db.execute(select(Pending_users).where(Pending_users.email == data.email)).scalar_one_or_none()
+    # already_exists = db.query(Pending_users).filter_by(email = data.email).update({"username" : data.username})
+    if already_exists:
+        already_exists.username = data.username
+    else:
         pending_user_data = Pending_users(
             username = data.username,
             email = data.email
@@ -65,24 +66,32 @@ async def signup(data : Email_signup, db : Session = Depends(get_db)):
         email_response = await send_otp(data.email, random_otp)
     except:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=[{"msg" : "Service not available. Try Again."}])
-    already_exists = db.query(OTP_entry).filter_by(email = data.email).update({"otp":random_otp})
-    if already_exists == 0:
+    # already_exists = db.query(OTP_entry).filter_by(email = data.email).update({"otp":random_otp})
+    already_exists = db.execute(select(OTP_entry).where(OTP_entry.email == data.email)).scalar_one_or_none()
+    if already_exists:
+        already_exists.otp = random_otp
+        already_exists.expiry_time = OTP_entry.get_expiry_time()
+        already_exists.creation_time = datetime.now(timezone.utc)
+    else:
         data_for_dbadd = OTP_entry(
             email = data.email,
             otp = random_otp
         )
         db.add(data_for_dbadd)
+
     db.commit()
     return {"msg" : "Success"}
 
 @router.post("/acc-create")
 async def acc_create(verification_data : OTP_verification, response: Response, db : Session = Depends(get_db)):
-    otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()
+    # otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()
+    otp_entry = db.execute(select(OTP_entry).where((OTP_entry.email == verification_data.email) & (OTP_entry.otp == verification_data.otp))).scalar_one_or_none()
     if not otp_entry:
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
     if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
-    pending_user = db.query(Pending_users).filter_by(email = verification_data.email).first()
+    # pending_user = db.query(Pending_users).filter_by(email = verification_data.email).first()
+    pending_user = db.execute(select(Pending_users).where(Pending_users.email == verification_data.email)).scalar_one()
     user = Users(
         username = pending_user.username,
         email = pending_user.email, 
@@ -109,15 +118,19 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
 @router.post("/signin") 
 async def signin(data : Email_signin, db : Session = Depends(get_db)):
     random_otp = str(random.randint(10, 99)) + chr(65 + random.randint(0, 26)) + str(random.randint(10, 99)) + chr(65 + random.randint(0, 26))
-    user = db.query(Users).filter_by(email = data.email).first()
+    # user = db.query(Users).filter_by(email = data.email).first()
+    user = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
     if not user:
         raise HTTPException(status_code=404, detail=[{"msg":"User Not Found"}])
-    already_exists = db.query(OTP_entry).filter_by(email = data.email).update({"otp":random_otp})
+    # already_exists = db.query(OTP_entry).filter_by(email = data.email).update({"otp":random_otp})
+    already_exists = db.execute(select(OTP_entry).where(OTP_entry.email == data.email)).scalar_one_or_none()
     try:
         email_response = await send_otp(data.email, random_otp)
     except:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=[{"msg" : "Service not available. Try Later."}])
-    if already_exists == 0:
+    if already_exists:
+        already_exists.otp = random_otp
+    else:
         data_for_dbadd = OTP_entry(
             email = data.email,
             username = user.username,
@@ -130,15 +143,17 @@ async def signin(data : Email_signin, db : Session = Depends(get_db)):
 
 @router.post("/acc-verify")
 async def verify(verification_data : OTP_verification, response: Response, db : Session = Depends(get_db)):
-    otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()   #.order_by(OTP_entry.creation_time.desc())
+    # otp_entry = db.query(OTP_entry).filter_by(email=verification_data.email, otp=verification_data.otp).first()   #.order_by(OTP_entry.creation_time.desc())
+    otp_entry = db.execute(select(OTP_entry).where((OTP_entry.email == verification_data.email) & (OTP_entry.otp == verification_data.otp))).scalar_one_or_none()
     if not otp_entry:
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
     if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
     user = db.query(Users).filter_by(email = verification_data.email).first()
     payload = {"username" : user.username, "exp" : int(time.time()) + 1800}
-    admin_check = db.query(Admins).filter(email=verification_data.email).first()
-    if admin_check != 0:
+    # admin_check = db.query(Admins).filter(email=verification_data.email).first()
+    admin_check = db.execute(select(Admins).where(Admins.email == verification_data.email)).scalar_one_or_none()
+    if admin_check:
         payload.update(exp = 3600, role = "admin")
     token = await create_session_token(payload)
     response.set_cookie(
@@ -163,10 +178,12 @@ async def logincheck(message = Depends(verify_session_token)):
     
 @router.post("/guestlogin")
 async def guest_login(request: Guest_login, response: Response, db : Session = Depends(get_db)):
-    already_exists = db.query(Users).filter(username = request.username).first()
+    # already_exists = db.query(Users).filter(username = request.username).first()
+    already_exists = db.execute(select(Users).where(Users.username == request.username)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=[{"msg" : "Username already taken"}])
-    already_exists = db.query(Guests).filter(username = request.username).first()
+    # already_exists = db.query(Guests).filter(username = request.username).first()
+    already_exists = db.execute(select(Guests).where(Guests.username == request.username)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=[{"msg" : "Username already taken"}])
     guest_data = Guests(
@@ -195,7 +212,8 @@ async def signout(response: Response):
 @router.post("/delete")
 async def delete_acc(request: Email_signin, response: Response, db: Session = Depends(get_db), msg = Depends(verify_session_token)):
     response.delete_cookie(key="session_token")
-    del_user = db.query(Users).filter(email=request.email).first()
+    # del_user = db.query(Users).filter(email=request.email).first()
+    del_user = db.execute(select(Users).where(Users.email == request.email)).scalar_one()
     db.delete(del_user)
     db.commit()
     return {"msg" : "Success"}
@@ -203,7 +221,8 @@ async def delete_acc(request: Email_signin, response: Response, db: Session = De
 @router.post("/signoutguest")
 async def guest_logout(request: Guest_login, response : Response, db : Session= Depends(get_db), msg = Depends(verify_session_token)):
     response.delete_cookie(key="session_token")
-    del_user_signout = db.query(Guests).filter(username = request.username).first()
+    # del_user_signout = db.query(Guests).filter(username = request.username).first()
+    del_user_signout = db.execute(select(Guests).where(Guests.username == request.username)).scalar_one()
     db.delete(del_user_signout)
     db.commit()
     return {"msg" : "Success"}

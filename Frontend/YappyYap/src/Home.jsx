@@ -17,7 +17,7 @@ export default function Home(props) {
         async function checklogin(){
             const axios = useAxios()
             try{
-                const loggedin = await axios.get("/prelogin")
+                const loggedin = await axios.get("/logincheck")
                 if (loggedin.data.msg === "Success") {
                     props.setSignedin(true)
                 }
@@ -26,7 +26,7 @@ export default function Home(props) {
                 }
             }
             catch(err){
-                console.error(err);
+                // console.error(err);
             }
         }
         checklogin();

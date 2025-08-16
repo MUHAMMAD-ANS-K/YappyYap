@@ -1,4 +1,4 @@
-from database import Base, engine, session, Email_signin, Email_signup, OTP_entry, Users, OTP_verification, SignUp_verification,Pending_users 
+from database import Base, engine, session, Email_signin, Email_signup, OTP_entry, Users,Pending_users 
 
 Base.metadata.create_all(bind=engine)
 db = session()

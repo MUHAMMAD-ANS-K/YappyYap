@@ -3,7 +3,6 @@ import "./Nav.css"
 import { useEffect, useState } from "react"
 import { gsap } from "gsap"
 import logo from "./assets/logo.png"
-import axios from "axios"
 export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
@@ -24,48 +23,20 @@ export default function Nav(props) {
         setAnimating(false);
     }
     function func() {
-        if (!navOpen) {
-            const nav = document.querySelector(".navbar-header");
-            const nav_sib = Array.from(nav.parentNode.children).filter(element => element != nav);
-            nav_sib.forEach(element => {
-                element.style.display="none";
-            });
-
-            document.querySelector(".ham").style.display = "none";
-            document.querySelector(".cross").style.display = "inline";
-            document.querySelector(".nav-hr").style.display = "none";
-            document.querySelector(".navbar-items").style.display = "flex";
-            const element = document.querySelector(".navbar").style;
-            element.flexDirection = "column";
-            element.width = "100vw";
-            element.height = "100vh";
-            element.justifyContent = "flex-start";
-            const element2 = document.querySelector(".menubar").style;
-            element2.position = "absolute";
-            element2.right = "30px";
-            
-            setnavOpen(true);
-        }
-        else{
-            const nav = document.querySelector(".navbar-header");
-            const nav_sib = Array.from(nav.parentNode.children).filter(element => element != nav);
-            nav_sib.forEach(element => {
-                element.style.display = "block"
-            });
-            const element = document.querySelector(".navbar").style;
-            element.width = "auto";
-            element.height = "auto";
-            element.flexDirection = "row";
-            element.justifyContent = "space-between";
-            const element2 = document.querySelector(".menubar").style;
-            element2.position = "relative";
-            element2.right = "0px"
-            document.querySelector(".cross").style.display = "none";
-            document.querySelector(".ham").style.display = "inline";
-            document.querySelector(".navbar-items").style.display = "none";
-            document.querySelector(".nav-hr").style.display = "block";
-            
-            setnavOpen(false);
+        const element = document.querySelector(".navbar-header");
+        const helper = document.querySelector(".main-navbar-helper")
+        if(window.innerWidth <= 600) {
+            if (navOpen) {
+                helper.style.display = "block";
+                element.classList.add("main-nav-close");
+                element.classList.remove("main-nav-open");
+            }
+            else{
+                helper.style.display = "none";
+                element.classList.add("main-nav-open");
+                element.classList.remove("main-nav-close");
+            }
+            setnavOpen((n)=>!n);
         }
     }
     document.querySelectorAll(".navbar a").forEach(element => {
@@ -76,7 +47,7 @@ export default function Nav(props) {
         })
     })
     return (
-        <nav className="navbar-header">
+        <nav className="navbar-header main-nav-close">
             <div className="navbar">
 
                 <Link to="/"><img src={logo} alt="YappyYap" /></Link>
