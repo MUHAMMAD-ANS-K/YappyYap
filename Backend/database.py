@@ -58,8 +58,19 @@ class Msgs(Base):
         return datetime.now(timezone.utc) + timedelta(seconds=seconds)
     id = Column(Integer, primary_key=True)
     msg = Column(String)
-    user = Column(String)
+    username = Column(String)
+    time_sent = Column(DateTime(timezone=True))
     expiry = Column(DateTime(timezone=True))
+
+class Msg_return(BaseModel):
+    # id : int | str
+    msg : str
+    username : str
+    time_sent : datetime | str
+    expiry : datetime | str
+    model_config = {
+        "from_attributes" : True
+    }
 
 class Email_signin(BaseModel):
     email: EmailStr

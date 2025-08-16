@@ -49,7 +49,8 @@ async def signup(data : Email_signup, db : Session = Depends(get_db)):
     already_exists = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=400, detail=[{"msg":"Account already exists"}])
-    already_exists = db.query(Users).filter_by(username=data.username).first()
+    # already_exists = db.query(Users).filter_by(username=data.username).first()
+    already_exists = db.execute(select(Users).where(Users.username == data.username)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=400, detail=[{"msg":"User name already taken"}])
     already_exists = db.execute(select(Pending_users).where(Pending_users.email == data.email)).scalar_one_or_none()
@@ -149,7 +150,9 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
         raise HTTPException(status_code=401, detail=[{"msg":"Invalid OTP"}])
     if otp_entry.expiry_time < (datetime.now(timezone.utc)):
         raise HTTPException(status_code=401, detail=[{"msg":"OTP expired"}])
-    user = db.query(Users).filter_by(email = verification_data.email).first()
+    
+    # user = db.query(Users).filter_by(email = verification_data.email).first()
+    user = db.execute(select(Users).where(Users.email == verification_data.email)).scalar_one()
     payload = {"username" : user.username, "exp" : int(time.time()) + 1800}
     # admin_check = db.query(Admins).filter(email=verification_data.email).first()
     admin_check = db.execute(select(Admins).where(Admins.email == verification_data.email)).scalar_one_or_none()
