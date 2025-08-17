@@ -33,7 +33,7 @@ async def verify_session_token(session_token: Annotated[str | None, Cookie()] = 
         payload = jwt.decode(session_token, PRIVATE_KEY, ALGORITHM)
         if not payload:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
-        if not payload.username:
+        if not payload["username"]:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
@@ -180,7 +180,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
 
 @router.get("/logincheck")
 async def logincheck(message = Depends(verify_session_token), db : Session = Depends(get_db)):
-    username = message.username
+    username = message["username"]
     return {
         "msg" : "Success",
         "username" : username
@@ -240,6 +240,6 @@ async def guest_logout(request: Guest_login, response : Response, db : Session= 
 @router.get("/admincheck")
 async def adminAuthentication(session_token: Annotated[str | None, Cookie()] = None):
     payload = verify_session_token(session_token)
-    if (not payload.role) or (payload.role != "admin"):
+    if (not payload["role"]) or (payload["role"] != "admin"):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=[{"msg" : "Not an admin"}])
     return {"msg" : "Success"}
