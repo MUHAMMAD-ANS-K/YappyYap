@@ -1,13 +1,12 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import auth, websocket
-import websocket
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 app.include_router(auth.router)
 app.include_router(websocket.router)
 
 origins = [
-    "http://localhost:5173",
+    "https://muhammadans.com",
 ]
 
 app.add_middleware(

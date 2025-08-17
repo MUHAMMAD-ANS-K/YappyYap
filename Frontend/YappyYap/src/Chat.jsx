@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import "./Chat.css"
 import { gsap } from "gsap/gsap-core"
-import default_image from "./assets/default_img.png"
 import useAxios from "../hooks/useAxios"
+import default_image from "./assets/default_img.png"
+import ChatSideBar from "./Chat-Modules/ChatSideBar"
+import ChatHeader from "./Chat-Modules/ChatHeader"
 export default function Chat(props) {
     const [msgs, setMsgs] = useState(Array());
     const [msg, setMsg] = useState("");
@@ -14,7 +16,6 @@ export default function Chat(props) {
     const [optionsOpen, setOptionsOpen] = useState(false);
     const [yapDuration, setYapDuration] = useState(10);
     const [realm, setRealm] = useState("global-realm");
-    const [navOpen, setNavopen] = useState(false);
     function optionsAnimation() {
         if (optionsOpen) {
             gsap.to(".chat-message-style-buttons", {
@@ -73,14 +74,20 @@ export default function Chat(props) {
         }
     }, [msg])
     useEffect(() => {
+        // gsap.to(".chat-message-block", {
+        //     transform : "scaleX(2)",
+        //     duration : 1,
+        //     yoyo : true,
+        //     repeat : -1,
+        // })
         const axios = useAxios()
         async function getMessages () {
             try{
-            const messages = await axios.get("/getchatmsgs")
-            if (messages.data.msg == "Success") {
-                const response = messages.data.msgs;
-                const parent_element = document.querySelector(".msgs");
-                parent_element.innerHTML = "";
+                const messages = await axios.get("/getchatmsgs")
+                if (messages.data.msg == "Success") {
+                    const response = messages.data.msgs;
+                    const parent_element = document.querySelector(".msgs");
+                    parent_element.innerHTML = "";
                 response.forEach(element => {
                     let time = new Date(element.time_sent);
                     let expiry = new Date(element.expiry);
@@ -97,20 +104,26 @@ export default function Chat(props) {
                 });
             }
         }
-        catch(e){
-            console.log(e)
+        catch(error){
+            console.warn("Connection to server failed")
         }
     }
-    getMessages();
     const interval1 = setInterval(getMessages, 20000)
     const interval2 = setInterval(()=>msgDisplay(2), 1000);
     const interval3 = setInterval(()=>msgDisplay(-2), 1000);
-    ws.current = new WebSocket(`ws://localhost:8000/ws?username=${props.username}`);
-    ws.current.onopen = () => {
-        console.log("Fetching messages");
-    }
-    ws.current.onclose = () => {
-        console.log("connection closed");
+    let webreconInterval  = 2000;
+    function connect() {
+        ws.current = new WebSocket(`wss://localhost:8000/ws?username=${props.username}`);
+        console.log(ws.current)
+        ws.current.onopen = () => {
+            console.log("Fetching messages");
+            getMessages()
+        }
+        ws.current.onclose = () => {
+            console.log("connection closed");
+            if (ws.current.readyState == 0){
+                reconnect();
+            }
         }
         ws.current.onmessage = (e) => {
             try {
@@ -130,16 +143,23 @@ export default function Chat(props) {
                     element.append(new_element);
                 }
             }
-            catch {
-                console.log("Error occured in the message");
+            catch (error) {
+                console.warn("Error occured in the message");
             }
         }
         ws.current.onerror = () => {
             if (ws.current.OPEN) {
                 ws.current.close();
             }
-            console.log("An error occured");
+            console.warn("An error occured");
         }
+    }
+    connect();
+    function reconnect() {
+        setTimeout(connect, webreconInterval);
+        webreconInterval += 1000;
+    }
+
         return ()=> {
             clearInterval(interval1);
             clearInterval(interval2);
@@ -152,12 +172,14 @@ export default function Chat(props) {
         }
         if (ws.current && ws.current.readyState == WebSocket.OPEN) {
             let message = {
-                "msg" : msg,
+                "msg" : msg.trim(),
                 "expire" : yapDuration
             }
             ws.current.send(JSON.stringify(message));
         }
         textArea.current.value = "";
+        textArea.current.focus()
+        setMsg("");
     }
     function boldHandler(e) {
         if (!bold) {
@@ -198,28 +220,11 @@ export default function Chat(props) {
     function yapDurationhandler(e) {
         setYapDuration(e.target.value);
     }
-    function handleActiveRealm(e) {
-        const classname = `${e.target.textContent}-realm`;
-        document.querySelector(`.${realm}`).style.color = "rgba(255, 255, 255, 0.277)";
-        document.querySelector(`.${classname}`).style.color = "#10B981";
-        setRealm(`${classname}`);
-    }
-    function navbarSimulator() {
-        if (window.innerWidth <= 1100){
-            const element = document.querySelector(".chat-area")
-            if(navOpen){
-                element.classList.add("nav-close-styles");
-                element.classList.remove("nav-open-styles");
-            }
-            else{
-                element.classList.add("nav-open-styles");
-                element.classList.remove("nav-close-styles")
-            }
-            setNavopen((n)=>!n);
-        }
-    }
     function enterKeyHandler(e) {
-        if (e.key == "Enter") sendMsg();
+        if (e.key == "Enter") {
+            sendMsg();
+        e.preventDefault();
+        }
     }
     async function msgDisplay(time) {
         let date = new Date();
@@ -238,26 +243,13 @@ export default function Chat(props) {
             }, 2000)
         }
     }
-    return (
+
+        return (
         <main className="chat-area nav-close-styles">
-                <div className="chat-sidearea" onClick={navbarSimulator}>
-                    <h2 className="chat-sidearea-heading">
-                        <span className="realms-r-replacement">R</span>
-                    <span className="ealms">ealms</span>
-                    </h2>
-                    <hr />
-                    <ul className="realms-list">
-                        <li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><button onClick={handleActiveRealm} className="realm-button global-realm">global</button></li>
-                    </ul>
-                    <div className="user-profile">
-                        <img src={default_image} alt="user" className="user-profile-pic" />
-                        <p>{props.username}</p>
-                    </div>
-                </div>
+                <ChatSideBar username = {props.username} realm={realm} setRealm={setRealm}/>
                 <div className="chat-mainarea">
-                    <div className="chat-header">
-                    </div>
-                    <div>
+                    <ChatHeader realm={realm}/>
+                    <div className="msgs-helper">
                         <ul className="msgs">
                             <li className="chat-message-block">
                                 <img src={default_image} alt="user" className="chat-message-img" />
@@ -268,8 +260,8 @@ export default function Chat(props) {
                             </li>
                         </ul>
                     </div>
-                    <div className="message-area-overlay">
-                        <div className="message-area">
+                    <div className="type-area-overlay">
+                        <div className="type-area" onKeyDown={enterKeyHandler}>
                             <span className="options-chat-message">
                                 <button className="chat-show-options" onClick={optionsAnimation}>Options <span className="arrow-style arrow-animationa">{">"}</span></button>
                                 <button className="chat-bold chat-message-style-buttons" onClick={boldHandler}>B</button>
@@ -277,7 +269,7 @@ export default function Chat(props) {
                                 <button className="chat-strike chat-message-style-buttons" onClick={strikeHandler}>S</button>
                                 <button className="chat-show-options" onClick={optionsAnimation}><span className="arrow-style arrow-animationb">{"<"}</span></button>
                             </span>
-                            <textarea placeholder="Enter message" ref={textArea} value={msg} onChange={changeHandler} className="send-message" onKeyDown={enterKeyHandler} />
+                            <textarea placeholder="Enter message" ref={textArea} value={msg} onChange={changeHandler} className="send-message" />
                             <div className="chat-yap-duration">
                                 <span>Duration: </span>
                                 <input type="range" value={yapDuration} min={10} max={300} step={5} onChange={yapDurationhandler} />
