@@ -5,7 +5,13 @@ import useAxios from "../hooks/useAxios"
 import default_image from "./assets/default_img.png"
 import ChatSideBar from "./Chat-Modules/ChatSideBar"
 import ChatHeader from "./Chat-Modules/ChatHeader"
+import { Navigate } from "react-router-dom"
 export default function Chat(props) {
+    if (!props.signedin){
+        return <Navigate to="/signin" replace/>
+    }
+
+
     const [msgs, setMsgs] = useState(Array());
     const [msg, setMsg] = useState("");
     const textArea = useRef();
@@ -113,7 +119,7 @@ export default function Chat(props) {
     const interval3 = setInterval(()=>msgDisplay(-2), 1000);
     let webreconInterval  = 2000;
     function connect() {
-        ws.current = new WebSocket(`wss://localhost:8000/ws?username=${props.username}`);
+        ws.current = new WebSocket(`wss://api.muhammadans.com/ws`);
         console.log(ws.current)
         ws.current.onopen = () => {
             console.log("Fetching messages");

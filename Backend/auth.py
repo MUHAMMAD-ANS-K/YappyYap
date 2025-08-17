@@ -171,13 +171,17 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
         )
     db.delete(otp_entry)
     db.commit()
-    return {"message":"Success"}
+    return {"msg":"Success", "username" : user.username}
 
 
 
 @router.get("/logincheck")
-async def logincheck(message = Depends(verify_session_token)):
-    return message
+async def logincheck(message = Depends(verify_session_token), db : Session = Depends(get_db)):
+    username = message.username
+    return {
+        "msg" : "Success",
+        "username" : username
+    }
     
 @router.post("/guestlogin")
 async def guest_login(request: Guest_login, response: Response, db : Session = Depends(get_db)):

@@ -20,6 +20,7 @@ export default function Home(props) {
                 const loggedin = await axios.get("/logincheck")
                 if (loggedin.data.msg === "Success") {
                     props.setSignedin(true)
+                    props.setName(loggedin.data.username)
                 }
                 else{
                     props.setSignedin(false);

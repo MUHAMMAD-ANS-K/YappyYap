@@ -1,5 +1,6 @@
 import { useState } from "react"
 import useAxios from "../hooks/useAxios";
+import { Navigate } from "react-router-dom";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
@@ -12,8 +13,12 @@ export default function OTPForm(props) {
                 email : props.email,
                 otp : otp
             })
-            setMsg("Successfully logged in");
-            props.setSignedin(true);
+            if (response.data.msg === "Success"){
+                setMsg("Successfully logged in");
+                props.setSignedin(true);
+                props.setName(response.data.username);
+                <Navigate to="/chat" replace/>
+            }
         }
         catch (err) {
             setMsg("Invalid or expired OTP");

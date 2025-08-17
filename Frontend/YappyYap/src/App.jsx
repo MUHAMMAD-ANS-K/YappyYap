@@ -30,14 +30,14 @@ export default function App() {
             <Routes>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail} logged={signedin}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail} logged={signedin}/>}/>
-                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"/acc-verify"} logged={signedin} />}/>
-                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"/acc-create"} logged={signedin} />}/>
+                <Route path="/signin/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"/acc-verify"} setName={setName}/>}/>
+                <Route path="/signup/otp" element={<OTPForm email = {email} setSignedin = {setSignedin} link={"/acc-create"} setName={setName}/>}/>
                 <Route path="/blogs" element={<Blog logged={signedin}/>}/>
-                <Route path="/" element={<Home email = {email} setSignedin = {setSignedin} logged={signedin}/>}/>
+                <Route path="/" element={<Home email = {email} setSignedin = {setSignedin} logged={signedin} setName = {setName}/>}/>
                 <Route path="/about" element={<About logged={signedin}/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption} logged={signedin}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard logged={signedin}/></DashboardAuthProvider>}/>
-                <Route path="/chat" element={<Chat username = {username}/>}/>
+                <Route path="/chat" element={<Chat username = {username} signedin={signedin}/>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             {!hidePathBoolean && <Footer setOption = {setOption} setFooterEmail = {setFooterEmail}/>}
