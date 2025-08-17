@@ -29,8 +29,8 @@ manager = ConnectionManager()
 
 @router.websocket("/ws")
 async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Depends(verify_session_token)):
-    MAX_TIME = payload.exp
-    username = payload.username
+    MAX_TIME = payload["exp"]
+    username = payload["username"]
     await manager.add_connection(user, username)
     try:
         while True:
