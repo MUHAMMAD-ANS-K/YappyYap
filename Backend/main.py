@@ -9,7 +9,8 @@ app.include_router(auth.router)
 app.include_router(websocket.router)
 
 origins = [
-    "http://localhost:5173",
+    "http://localhost:5173,"
+    "https://muhammadans.com",
 ]
 
 app.add_middleware(
