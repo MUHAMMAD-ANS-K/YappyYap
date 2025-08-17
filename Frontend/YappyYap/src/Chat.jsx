@@ -7,9 +7,9 @@ import ChatSideBar from "./Chat-Modules/ChatSideBar"
 import ChatHeader from "./Chat-Modules/ChatHeader"
 import { Navigate } from "react-router-dom"
 export default function Chat(props) {
-    if (!props.signedin){
-        return <Navigate to="/signin" replace/>
-    }
+    // if (!props.signedin){
+    //     return <Navigate to="/signin" replace/>
+    // }
 
 
     const [msgs, setMsgs] = useState(Array());
