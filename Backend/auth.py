@@ -75,6 +75,7 @@ async def signup(data : Email_signup, db : Session = Depends(get_db)):
         already_exists.creation_time = datetime.now(timezone.utc)
     else:
         data_for_dbadd = OTP_entry(
+            username = data.username,
             email = data.email,
             otp = random_otp
         )

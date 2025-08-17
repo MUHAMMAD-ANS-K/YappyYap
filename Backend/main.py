@@ -9,7 +9,7 @@ app.include_router(auth.router)
 app.include_router(websocket.router)
 
 origins = [
-    "https://muhammadans.com",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(
@@ -20,27 +20,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-users = []
-
-# @app.websocket("/ws")
-# async def websoc(user : WebSocket):
-#     await user.accept()
-#     users.append(user)
-#     # print(user.open)
-#     try:
-#         while True:
-#             try:
-#                 msg = await user.receive_text()
-#                 for u in users:
-#                     await u.send_text(msg)
-#             except WebSocketDisconnect:
-#                 print("-->LEfT<--")
-#                 break
-#             except:
-#                 print("Unknown error")
-#     finally:
-#             if user in users:
-#                 users.remove(user)
+@app.get("/")
+def root():
+    return {"msg" : "Hi vro"}
 
 if __name__=="__main__":
     port = int(os.environ.get("PORT", 8000))
