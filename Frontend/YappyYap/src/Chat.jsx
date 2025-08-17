@@ -119,7 +119,7 @@ export default function Chat(props) {
     const interval3 = setInterval(()=>msgDisplay(-2), 1000);
     let webreconInterval  = 2000;
     function connect() {
-        ws.current = new WebSocket(`wss://api.muhammadans.com/ws`);
+        ws.current = new WebSocket(`ws://api.muhammadans.com/ws`);
         console.log(ws.current)
         ws.current.onopen = () => {
             console.log("Fetching messages");
