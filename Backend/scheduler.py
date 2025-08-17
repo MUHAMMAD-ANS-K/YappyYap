@@ -11,7 +11,6 @@ def del_job():
     db.execute(delete(Msgs).where(Msgs.expiry < datetime.now(timezone.utc)))
     db.commit()
     db.close()
-    print("ji")
 
 executors = {
     "default" : ThreadPoolExecutor(1)
@@ -25,7 +24,7 @@ signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
 
 scheduler = BlockingScheduler(executors=executors, timezone=utc)
-scheduler.add_job(del_job, 'interval', seconds=10)
+scheduler.add_job(del_job, 'interval', seconds=60)
 try:
     scheduler.start()
 except (KeyboardInterrupt, SystemExit):

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import "./Chat.css"
 import { gsap } from "gsap/gsap-core"
-// import {useAxios} from "../hooks/useAxios"
 import default_image from "./assets/default_img.png"
 import useAxios from "../hooks/useAxios"
 export default function Chat(props) {
@@ -13,7 +12,7 @@ export default function Chat(props) {
     const [italic, setItalic] = useState(false);
     const [strike, setStrike] = useState(false);
     const [optionsOpen, setOptionsOpen] = useState(false);
-    const [yapDuration, setYapDuration] = useState(0);
+    const [yapDuration, setYapDuration] = useState(10);
     const [realm, setRealm] = useState("global-realm");
     const [navOpen, setNavopen] = useState(false);
     function optionsAnimation() {
@@ -81,47 +80,55 @@ export default function Chat(props) {
             if (messages.data.msg == "Success") {
                 const response = messages.data.msgs;
                 const parent_element = document.querySelector(".msgs");
+                parent_element.innerHTML = "";
                 response.forEach(element => {
-                    let text = element.msg;
-                    let username = element.username;
                     let time = new Date(element.time_sent);
                     let expiry = new Date(element.expiry);
-                    time = time.toLocaleTimeString([], {hour : "2-digit", minute : "2-digit"})
-                    let new_element = document.createElement("li");
-                    new_element.className = "chat-message-block";
-                    new_element.id = expiry;
-                    new_element.innerHTML = (`<img src=${default_image} alt="user" class="chat-message-img" /><span><span class="chat-message-header"><h3 class="username">${username}</h3> <p class="timestamp">${time}</p></span><p class="chat-message">${text}</p></span>`)
-                    parent_element.append(new_element);
+                    if (expiry - new Date() > 1500){
+                        let text = element.msg;
+                        let username = element.username;
+                        time = time.toLocaleTimeString([], {hour : "2-digit", minute : "2-digit"})
+                        let new_element = document.createElement("li");
+                        expiry = expiry.toString().replace(/\s+/g, "-").replace(/[:+().]/g, "-");
+                        new_element.classList.add(expiry, "chat-message-block")
+                        new_element.innerHTML = (`<img src=${default_image} alt="user" class="chat-message-img" /><span><span class="chat-message-header"><h3 class="username">${username}</h3> <p class="timestamp">${time}</p></span><p class="chat-message">${text}</p></span>`)
+                        parent_element.append(new_element);
+                    }
                 });
             }
-            }
-            catch(e){
-                console.log(e)
-            }
         }
-        getMessages();
-        ws.current = new WebSocket(`ws://localhost:8000/ws?username=${props.username}`);
-        ws.current.onopen = () => {
-            console.log("Fetching messages");
+        catch(e){
+            console.log(e)
         }
-        ws.current.onclose = () => {
-            console.log("connection closed");
+    }
+    getMessages();
+    const interval1 = setInterval(getMessages, 20000)
+    const interval2 = setInterval(()=>msgDisplay(2), 1000);
+    const interval3 = setInterval(()=>msgDisplay(-2), 1000);
+    ws.current = new WebSocket(`ws://localhost:8000/ws?username=${props.username}`);
+    ws.current.onopen = () => {
+        console.log("Fetching messages");
+    }
+    ws.current.onclose = () => {
+        console.log("connection closed");
         }
         ws.current.onmessage = (e) => {
             try {
-                console.log(e)
                 const element = document.querySelector(".msgs");
                 let res = JSON.parse(e.data)
-                let text = res.msg;
-                let username = res.username;
                 let time = new Date(res.time_sent);
                 let expiry = new Date(res.expiry);
-                time = time.toLocaleTimeString([], {hour : "2-digit", minute : "2-digit"});
-                let new_element = document.createElement("li");
-                new_element.className = "chat-message-block";
-                new_element.id = expiry;
-                new_element.innerHTML = (`<img src=${default_image} alt="user" class="chat-message-img" /><span><span class="chat-message-header"><h3 class="username">${username}</h3> <p class="timestamp">${time}</p></span><p class="chat-message">${text}</p></span>`)
-                element.append(new_element);
+                
+                if (expiry - new Date() > 1500){
+                    let text = res.msg;
+                    let username = res.username;
+                    time = time.toLocaleTimeString([], {hour : "2-digit", minute : "2-digit"});
+                    let new_element = document.createElement("li");
+                    expiry = expiry.toString().replace(/\s+/g, "-").replace(/[:+().]/g, "-");
+                    new_element.classList.add(expiry, "chat-message-block")
+                    new_element.innerHTML = (`<img src=${default_image} alt="user" class="chat-message-img" /><span><span class="chat-message-header"><h3 class="username">${username}</h3> <p class="timestamp">${time}</p></span><p class="chat-message">${text}</p></span>`)
+                    element.append(new_element);
+                }
             }
             catch {
                 console.log("Error occured in the message");
@@ -133,12 +140,17 @@ export default function Chat(props) {
             }
             console.log("An error occured");
         }
+        return ()=> {
+            clearInterval(interval1);
+            clearInterval(interval2);
+            clearInterval(interval3);
+        }
     }, [])
     function sendMsg() {
+        if (msg.trim() == "") {
+            return;
+        }
         if (ws.current && ws.current.readyState == WebSocket.OPEN) {
-            if (msg.trim() == "") {
-                return;
-            }
             let message = {
                 "msg" : msg,
                 "expire" : yapDuration
@@ -209,14 +221,23 @@ export default function Chat(props) {
     function enterKeyHandler(e) {
         if (e.key == "Enter") sendMsg();
     }
-    function msgDisplay(time) {
+    async function msgDisplay(time) {
         let date = new Date();
-        console.log(date)
-        date.setSeconds(date.getSeconds() + 15)
-        console.log(date)
-        // const element = document.querySelector("")
+        date.setSeconds(date.getSeconds() + time)
+        date = date.toString().replace(/\s/g, "-").replace(/[:+().]/g, "-");
+        const el = document.querySelectorAll(`.${date}`);
+        if (el.length > 0) {
+            gsap.to(`.${date}`,{
+                opacity : 0,
+                duration : 2,
+            })
+            setTimeout(()=>{
+                for (const element of el) {
+                    element.style.display = "none";
+                }
+            }, 2000)
+        }
     }
-    msgDisplay();
     return (
         <main className="chat-area nav-close-styles">
                 <div className="chat-sidearea" onClick={navbarSimulator}>
@@ -242,7 +263,7 @@ export default function Chat(props) {
                                 <img src={default_image} alt="user" className="chat-message-img" />
                                 <span>
                                     <span className="chat-message-header"><h3 className="username">Username</h3> <p className="timestamp">12:00am</p></span>
-                                    <p className="chat-message">Hi Chat</p>
+                                    <p className="chat-message">--Welcome--</p>
                                 </span>
                             </li>
                         </ul>
@@ -259,7 +280,7 @@ export default function Chat(props) {
                             <textarea placeholder="Enter message" ref={textArea} value={msg} onChange={changeHandler} className="send-message" onKeyDown={enterKeyHandler} />
                             <div className="chat-yap-duration">
                                 <span>Duration: </span>
-                                <input type="range" value={yapDuration} min={5} max={300} step={5} onChange={yapDurationhandler} />
+                                <input type="range" value={yapDuration} min={10} max={300} step={5} onChange={yapDurationhandler} />
                                 <span id="chat-yap-duration">{`${yapDuration}s`}</span>
                             </div>
                             <button onClick={sendMsg} className="send-button">

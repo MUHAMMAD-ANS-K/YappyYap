@@ -26,7 +26,7 @@
     z-index: 2;
     border: 1px solid white;
 }
-.message-area-overlay{
+.type-area-overlay{
     padding-left: calc(1%);
     background-color: rgb(10, 10, 20);
     position: fixed;
@@ -35,7 +35,7 @@
     bottom: 0px;
     z-index: 2;
 }
-.message-area{
+.type-area{
     width: calc(98% - 20vw);
     padding: 4px 10px 50px 10px;
     border: 1px solid rgba(255, 255, 255, 0.277);
@@ -45,7 +45,7 @@
     position: fixed;
     height: auto;
 }
-.message-area:focus-within{
+.type-area:focus-within{
     border: 1px solid rgba(255, 255, 255, 0.773);
 }
 .send-message{
@@ -288,10 +288,10 @@ flex-direction: row-reverse;
         width: 95vw;
         margin-left: 5vw;
     }
-    .nav-close-styles .message-area-overlay{
+    .nav-close-styles .type-area-overlay{
         width: calc(100% - 5vw);
     }
-    .nav-close-styles .message-area{
+    .nav-close-styles .type-area{
         width: calc(98% - 5vw);
     }
     .nav-close-styles .msgs{
@@ -318,10 +318,10 @@ flex-direction: row-reverse;
         width: 70vw;
         margin-left: 30vw;
     }
-    .nav-open-styles .message-area-overlay{
+    .nav-open-styles .type-area-overlay{
         width: calc(100% - 30vw);
     }
-    .nav-open-styles .message-area{
+    .nav-open-styles .type-area{
         width: calc(98% - 30vw);
     }
     .nav-open-styles .msgs{

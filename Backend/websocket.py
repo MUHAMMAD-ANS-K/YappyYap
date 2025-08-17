@@ -4,11 +4,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
 from typing import Annotated
 from datetime import datetime, timezone, timedelta
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor
-import os
-from dotenv import load_dotenv
 
 router = APIRouter()
 
@@ -49,9 +44,9 @@ async def websoc(user : WebSocket, username : Annotated[str, Query()], db : Sess
                 )
                 temp = Msg_return.from_orm(message).model_dump_json()
                 print(temp)
-                await manager.send_message(temp)
                 db.add(message)
                 db.commit()
+                await manager.send_message(temp)
             except WebSocketDisconnect:
                 manager.disconnect(user)
                 break
@@ -66,7 +61,8 @@ async def websoc(user : WebSocket, username : Annotated[str, Query()], db : Sess
 
 @router.get("/getchatmsgs")
 async def send_messages(db : Session = Depends(get_db)):
-    msgs = db.execute(select(Msgs)).scalars().all()
+    time = datetime.now(timezone.utc) + timedelta(seconds=5)
+    msgs = db.execute(select(Msgs).where(Msgs.expiry > time)).scalars().all()
     msgs_return = []
     for msg in msgs:
         msgs_return.append(Msg_return.from_orm(msg))
