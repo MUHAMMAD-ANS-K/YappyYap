@@ -132,6 +132,8 @@ async def signin(data : Email_signin, db : Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=[{"msg" : "Service not available. Try Later."}])
     if already_exists:
         already_exists.otp = random_otp
+        already_exists.expiry_time=OTP_entry.get_expiry_time()
+        already_exists.creation_time = datetime.now(timezone.utc)
     else:
         data_for_dbadd = OTP_entry(
             email = data.email,
