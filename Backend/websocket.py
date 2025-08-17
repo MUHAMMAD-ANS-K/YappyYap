@@ -36,7 +36,7 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Dep
         while True:
             
             try:
-                data = await asyncio.wait_for(user.receive_json(), timeout=10)
+                data = await user.receive_json()
                 seconds = int(data["expire"])
                 msg = data["msg"]
                 time = datetime.now(timezone.utc)
