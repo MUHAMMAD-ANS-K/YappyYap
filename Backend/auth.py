@@ -185,6 +185,13 @@ async def logincheck(message = Depends(verify_session_token), db : Session = Dep
         "msg" : "Success",
         "username" : username
     }
+# @router.get("/logincheck")
+# async def logincheck():
+#     username = "ans"
+#     return {
+#         "msg" : "Success",
+#         "username" : username
+#     }
     
 @router.post("/guestlogin")
 async def guest_login(request: Guest_login, response: Response, db : Session = Depends(get_db)):

@@ -2,10 +2,13 @@ import { Link } from "react-router-dom"
 import "./Nav.css"
 import { useEffect, useState } from "react"
 import { gsap } from "gsap"
+import useLogged from "../hooks/useChatAuth"
 import logo from "./assets/logo.png"
 export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
+    const logged = useLogged()
+    
     function hoverEnter() {
         document.querySelector(".menubar").style.color = "rgb(95, 93, 93)";
         gsap.to(".hoverEff", {
@@ -56,7 +59,8 @@ export default function Nav(props) {
                 <ul className="navbar-items">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li>{props.logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin" >SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
+                    <li><Link to="/chat">Chat</Link></li>
+                    <li>{logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin" >SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
                 </ul>
             </div>
             <hr className="nav-hr"/>

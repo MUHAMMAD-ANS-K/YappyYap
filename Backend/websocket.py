@@ -27,10 +27,12 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+# async def websoc(user : WebSocket, db : Session = Depends(get_db)):
 @router.websocket("/ws")
 async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Depends(verify_session_token)):
     MAX_TIME = payload["exp"]
     username = payload["username"]
+    # username = "username"
     await manager.add_connection(user, username)
     try:
         while True:
@@ -66,6 +68,7 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Dep
         if username in manager.connections:
             manager.disconnect(username)
 
+# async def send_messages(db : Session = Depends(get_db)):
 @router.get("/getchatmsgs")
 async def send_messages(db : Session = Depends(get_db), payload = Depends(verify_session_token)):
     time = datetime.now(timezone.utc) + timedelta(seconds=5)

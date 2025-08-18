@@ -10,6 +10,7 @@ app.include_router(websocket.router)
 
 origins = [
     "https://muhammadans.com",
+    "http://localhost:5173"
 ]
 
 app.add_middleware(

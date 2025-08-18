@@ -15,3 +15,7 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     color: beige;
 }
+.loading{
+    font-weight: 4rem;
+    text-align: center;
+}

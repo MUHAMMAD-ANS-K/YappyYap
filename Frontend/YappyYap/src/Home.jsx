@@ -12,26 +12,6 @@ import img3 from "./assets/dummy3.jpg"
 import logo from "./assets/logo.png"
 import useAxios from "../hooks/useAxios";
 export default function Home(props) {
-    
-    useEffect(()=>{
-        async function checklogin(){
-            const axios = useAxios()
-            try{
-                const loggedin = await axios.get("/logincheck")
-                if (loggedin.data.msg === "Success") {
-                    props.setSignedin(true)
-                    props.setName(loggedin.data.username)
-                }
-                else{
-                    props.setSignedin(false);
-                }
-            }
-            catch(err){
-                // console.error(err);
-            }
-        }
-        checklogin();
-    }, [])
     let box_heading = ["Hi", "By"];
     let box_para = ["wfhuifhuifhcacnbweciewcuibeicbwe", "dwu3283dubd   gedvwyegdweygdeuygjcbcjdeu"]
     let box_img = [img1, img2, img3]
@@ -195,7 +175,7 @@ export default function Home(props) {
     <span className="curly-bracket">{"{"}</span>
             <span className="main-text">Yap as much as you want on YappyYap. Say whatever you want.
                 </span><span className="curly-bracket">{"}"}</span>
-            <button className="main-join-button"><Link to="/signup">Join Now</Link></button>
+            <Link to="/signup"><button className="main-join-button">Join Now</button></Link>
             </div>
             <hr />
             <div className="scroll-msg">

@@ -24,16 +24,13 @@ span{
     height: 60px;
     border-radius: 8px;
     background-color: transparent;
-}
-.main-join-button:hover{
-    background-color: rgb(89, 221, 89);
-}
-.main-join-button a{
     color: beige;
     font-weight: 700;
     font-size: 1.1rem;
+    cursor: pointer;
 }
-.main-join-button:hover a{
+.main-join-button:hover{
+    background-color: rgb(89, 221, 89);
     color : rgb(51, 50, 50);
 }
 .curly-bracket{

@@ -1,6 +1,6 @@
 import "./ChatHeader.css"
 import useAxios from "../../hooks/useAxios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 export default function ChatHeader(props) {
     const [online, setOnline] = useState(0)
     
@@ -14,7 +14,10 @@ export default function ChatHeader(props) {
         }
         catch {}
     }
-    setInterval(getOnline, 5000);
+    useEffect(()=>{
+        const onlineInterval = setInterval(getOnline, 5000);
+        return ()=> clearInterval(onlineInterval);
+    }, [])
     return(
             <div className="chat-header">
                 <div className="active-realm">

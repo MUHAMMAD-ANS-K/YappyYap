@@ -6,13 +6,9 @@ import default_image from "./assets/default_img.png"
 import ChatSideBar from "./Chat-Modules/ChatSideBar"
 import ChatHeader from "./Chat-Modules/ChatHeader"
 import { Navigate } from "react-router-dom"
-export default function Chat(props) {
-    // if (!props.signedin){
-    //     return <Navigate to="/signin" replace/>
-    // }
-
-
-    const [msgs, setMsgs] = useState(Array());
+import useChatAuth from "../hooks/useChatAuth"
+export default function Chat() {
+    const {username} = useChatAuth()
     const [msg, setMsg] = useState("");
     const textArea = useRef();
     const ws = useRef(null);
@@ -22,54 +18,6 @@ export default function Chat(props) {
     const [optionsOpen, setOptionsOpen] = useState(false);
     const [yapDuration, setYapDuration] = useState(10);
     const [realm, setRealm] = useState("global-realm");
-    function optionsAnimation() {
-        if (optionsOpen) {
-            gsap.to(".chat-message-style-buttons", {
-                x: -20,
-                duration: 0.5,
-                stagger: 0.1,
-            })
-            gsap.to(".chat-message-style-buttons", {
-                display: "none",
-                duration: 0.2,
-            })
-            gsap.to(".arrow-animationa", {
-                rotate: "0deg",
-                x: 0,
-                duration: 0.6,
-            })
-            gsap.to(".arrow-animationb", {
-                rotate: "0deg",
-                display: "none",
-                duration: 0.1,
-                x: 0,
-            })
-        }
-        else {
-            gsap.to(".arrow-animationb", {
-                delay: 0.4,
-                rotate: "1080deg",
-                display: "inline-block",
-                duration: 0.1,
-                x: 5,
-            })
-            gsap.to(".arrow-animationa", {
-                rotate: "1440deg",
-                x: 150,
-                duration: 0.6,
-            })
-            gsap.to(".chat-message-style-buttons", {
-                x: 20,
-                duration: 0.5,
-                stagger: 0.1,
-            })
-            gsap.to(".chat-message-style-buttons", {
-                display: "inline",
-                duration: 0.2,
-            })
-        }
-        setOptionsOpen((o) => !o);
-    }
     useEffect(() => {
         textArea.current.style.height = "auto";
         if (textArea.current.scrollHeight < 400) {
@@ -80,12 +28,6 @@ export default function Chat(props) {
         }
     }, [msg])
     useEffect(() => {
-        // gsap.to(".chat-message-block", {
-        //     transform : "scaleX(2)",
-        //     duration : 1,
-        //     yoyo : true,
-        //     repeat : -1,
-        // })
         const axios = useAxios()
         async function getMessages () {
             try{
@@ -119,7 +61,8 @@ export default function Chat(props) {
     const interval3 = setInterval(()=>msgDisplay(-2), 1000);
     let webreconInterval  = 2000;
     function connect() {
-        ws.current = new WebSocket(`wss://api.muhammadans.com/ws`);
+        // ws.current = new WebSocket(`wss://api.muhammadans.com/ws`);
+        ws.current = new WebSocket(`ws://localhost:8000/ws`);
         console.log(ws.current)
         ws.current.onopen = () => {
             console.log("Fetching messages");
@@ -172,6 +115,55 @@ export default function Chat(props) {
             clearInterval(interval3);
         }
     }, [])
+    // const [msgs, setMsgs] = useState(Array());
+    function optionsAnimation() {
+        if (optionsOpen) {
+            gsap.to(".chat-message-style-buttons", {
+                x: -20,
+                duration: 0.5,
+                stagger: 0.1,
+            })
+            gsap.to(".chat-message-style-buttons", {
+                display: "none",
+                duration: 0.2,
+            })
+            gsap.to(".arrow-animationa", {
+                rotate: "0deg",
+                x: 0,
+                duration: 0.6,
+            })
+            gsap.to(".arrow-animationb", {
+                rotate: "0deg",
+                display: "none",
+                duration: 0.1,
+                x: 0,
+            })
+        }
+        else {
+            gsap.to(".arrow-animationb", {
+                delay: 0.4,
+                rotate: "1080deg",
+                display: "inline-block",
+                duration: 0.1,
+                x: 5,
+            })
+            gsap.to(".arrow-animationa", {
+                rotate: "1440deg",
+                x: 150,
+                duration: 0.6,
+            })
+            gsap.to(".chat-message-style-buttons", {
+                x: 20,
+                duration: 0.5,
+                stagger: 0.1,
+            })
+            gsap.to(".chat-message-style-buttons", {
+                display: "inline",
+                duration: 0.2,
+            })
+        }
+        setOptionsOpen((o) => !o);
+    }
     function sendMsg() {
         if (msg.trim() == "") {
             return;
@@ -249,10 +241,9 @@ export default function Chat(props) {
             }, 2000)
         }
     }
-
         return (
         <main className="chat-area nav-close-styles">
-                <ChatSideBar username = {props.username} realm={realm} setRealm={setRealm}/>
+                <ChatSideBar username = {username} realm={realm} setRealm={setRealm}/>
                 <div className="chat-mainarea">
                     <ChatHeader realm={realm}/>
                     <div className="msgs-helper">

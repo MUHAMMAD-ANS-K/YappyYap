@@ -1,10 +1,14 @@
 import { useState } from "react"
 import useAxios from "../hooks/useAxios";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useChatAuth from "../hooks/useChatAuth";
 export default function OTPForm(props) {
     const [otp, setOtp] = useState("");
     const [msg, setMsg] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const {setUsername} = useChatAuth();
+    const {setLogged} = useChatAuth();
     async function otpVerification(){
         setLoading(true);
         const axios = useAxios();
@@ -13,11 +17,11 @@ export default function OTPForm(props) {
                 email : props.email,
                 otp : otp
             })
-            if (response.data.msg === "Success"){
+            if (response.data.msg == "Success"){
                 setMsg("Successfully logged in");
-                props.setSignedin(true);
-                props.setName(response.data.username);
-                <Navigate to="/chat" replace/>
+                setLogged(true);
+                setUsername(response.data.username);
+                navigate("/chat")
             }
         }
         catch (err) {

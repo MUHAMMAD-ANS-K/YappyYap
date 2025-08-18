@@ -2,7 +2,7 @@ import { useContext, createContext, useState, useEffect } from "react";
 import useAxios from "./useAxios";
 const DashboardAuth = createContext();
 export default function useDashAuth(){
-    return ()=>useContext(DashboardAuth)
+    return useContext(DashboardAuth)
 } 
 export function DashboardAuthProvider({children}){
     const[isAdmin, setIsAdmin] = useState(false);
