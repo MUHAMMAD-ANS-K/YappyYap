@@ -7,7 +7,7 @@ import logo from "./assets/logo.png"
 export default function Nav(props) {
     const [navOpen, setnavOpen] = useState(false);
     const [animating, setAnimating] = useState(false);
-    const logged = useLogged()
+    const {logged} = useLogged()
     
     function hoverEnter() {
         document.querySelector(".menubar").style.color = "rgb(95, 93, 93)";
