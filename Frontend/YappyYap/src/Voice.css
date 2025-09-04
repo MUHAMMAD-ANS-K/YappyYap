@@ -1,0 +1,30 @@
+.start-record, .pause-button{
+    width: 100px;
+    height: 40px;
+    font-size: 1.5rem;
+    background-color: beige;
+    border: none;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+.voice{
+    width: 100vw;
+    height: 100vh;
+    background-color: bisque;
+}
+.recorder{
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: cadetblue;
+}
+.test-audio{
+    background-color: blue;
+    height: 200px;
+}
+audio{
+    width: 200px;
+    height: 20px;
+}

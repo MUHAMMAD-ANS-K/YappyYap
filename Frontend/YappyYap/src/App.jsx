@@ -15,6 +15,7 @@ import Chat from "./Chat.jsx";
 import { DashboardAuthProvider } from "../hooks/useDashAuth.jsx";
 import { ChatAuthProvider } from "../hooks/useChatAuth.jsx";
 import ChatProtection from "./ChatProtection.jsx";
+import Voice from "./Voice.jsx";
 export default function App() {
     const [email, setEmail] = useState("");
     const [selectOption, setOption] = useState("NewsLetter");
@@ -35,6 +36,7 @@ export default function App() {
                 <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email}/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path="/voice" element={<Voice/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
                 <Route path="/chat" element={<ChatProtection><Chat/></ChatProtection>}/>
