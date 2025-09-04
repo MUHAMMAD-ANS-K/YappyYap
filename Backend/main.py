@@ -26,37 +26,44 @@ app.add_middleware(
 
 @app.post("/voice")
 async def voice(file : UploadFile = File()):
+    print(file.content_type)
+    if file.content_type == "audio/ogg":
+        suffix = ".ogg"
+    elif file.content_type =="audio/webm":
+        suffix = ".webm"
+    else:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Noob effort of sending wrong data")
     try:
-        with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as temp_input:
-            temp_input.write(await file.read())
-            temp_input.flush()
-            output_tmp = tempfile.NamedTemporaryFile( suffix=".webm", delete=False)
-            output_tmp.close()
-            voice_convert = subprocess.run(
-                [
-                    'ffmpeg',
-                    '-y',
-                    '-i', temp_input.name,
-                    '-af', "asetrate=65000,atempo=0.8,afftfilt=real='hypot(re,im)*sin(45)',tremolo=f=50",
-                    output_tmp.name
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
-            return StreamingResponse(open(output_tmp.name, "rb"), media_type="audio/webm")
+        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temp_input:
+            try:
+                temp_input.write(await file.read())
+                temp_input.flush()
+                output_tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
+                output_tmp.close()
+                voice_convert = subprocess.run(
+                    [
+                        'ffmpeg',
+                        '-y',
+                        '-i', temp_input.name,
+                        '-af', "asetrate=55000,atempo=0.85,afftfilt=real='hypot(re,im)*sin(65)',tremolo=f=50,adynamicsmooth=sensitivity=2.5:basefreq=10000",
+                        output_tmp.name
+                    ],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
+                if voice_convert.returncode != 0:
+                    raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=[{"msg" : "Error occured while processing."}])
+                with open(output_tmp.name, "rb") as return_file:
+                    data = BytesIO(return_file.read())
+                    return StreamingResponse(data, media_type="audio/webm")
+            except Exception as e:
+                print(e)
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=[{"msg" : "Error occured while processing the file"}])
     except:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=[{""}])
-        # output, error = voice_convert.communicate()
-    # print(file.content_type)
-    # temp = await file.read()
-    # print(temp[:20])
-    # voice_convert.stdin.write(await file.read())
-    # voice_convert.stdin.close()
-    # voice_convert.wait()
-    # if voice_convert.returncode != 0:
-    #     print("Lost")
-    #     raise RuntimeError("Ffmpeg failed")
-    # print(error)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=[{"msg" : "Error occured in server. Try Later"}])
+    finally:
+        os.remove(output_tmp.name)
+        os.unlink(temp_input.name)
 
 @app.get("/")
 def root():

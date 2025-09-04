@@ -2,10 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import "./Voice.css"
 import useAxios from "../hooks/useAxios";
 export default function Voice() {
-    // const blob = new Blob(chunks, {
-    //                     type : "audio/ogg;codesc=opus"
-   //                 })
-   //    const [recorder, setRecorder] = useState(null);
    const [start, setStart] = useState(false)
    const [pause, setPause] = useState(false)
    const axios = useAxios()
@@ -28,7 +24,7 @@ export default function Voice() {
                         }
                         recorder.current.onstop = async (e)=>{
                             let blob;
-                            if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+                            if (MediaRecorder.isTypeSupported("audio/webm")) {
                                 blob = new Blob(data, {
                                     type: "audio/webm"
                                 })
@@ -36,7 +32,7 @@ export default function Voice() {
                             }
                             else{
                                 blob = new Blob(data, {
-                                    type: "audio/ogg; codecs=opus"
+                                    type: "audio/ogg"
                                 })
                             }
                             let data_send = new FormData()
