@@ -48,7 +48,7 @@ export default function SignUp(props) {
                     Username
                 </label>
                 <div className="input">                    
-                <input className="username-input" type="text" placeholder="Any name" value={username} onChange={(e) => setusername(e.target.value)} required/>
+                <input className="username-input" type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} required/>
                 </div>
         </li>
             <li>

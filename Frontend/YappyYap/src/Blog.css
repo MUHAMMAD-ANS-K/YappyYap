@@ -17,13 +17,15 @@
 }
 .blog-h2{
     padding: 25px;
+    margin-top: 20px;
     position: relative;
-    font-size: 3vw;
+    font-size: 3rem;
     z-index: 1;
 }
 .svg-rotate-style-blog{
-    top: 5px;
-    width: 36px;
+    top: calc(30vh - 4.2rem);
+    right: calc(30vw + 6rem);
+    width: 3rem;
     position: absolute;
     z-index: 2;
 }

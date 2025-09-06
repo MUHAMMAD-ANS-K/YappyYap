@@ -60,7 +60,7 @@ export default function Nav(props) {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/chat">Chat</Link></li>
-                    <li>{logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin" >SignIn</Link> <span>|</span> <Link to="signup">SignUp</Link></>)}</li>
+                    <li className="nav-last-el-manage">{logged ? (<Link to="account">My Account</Link>) : (<><Link to="signin" >SignIn </Link><span>|</span><Link to="signup"> SignUp</Link></>)}</li>
                 </ul>
             </div>
             <hr className="nav-hr"/>

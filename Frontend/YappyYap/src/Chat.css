@@ -266,8 +266,11 @@ flex-direction: row-reverse;
 .realm-button{
     border: none;
     cursor: pointer;
-    color: #10B981;
+    color: rgba(255, 255, 255, 0.277);
     background-color: transparent;
+}
+.global-realm{
+    color : #10B981;
 }
 .dot-realm-style{
     position: relative;
@@ -278,6 +281,9 @@ flex-direction: row-reverse;
     height: 6px;
     border-radius: 50%;
     display: block;
+}
+.channel-hashtag{
+    cursor: pointer;
 }
 @media (max-width : 1100px) {
     .nav-close-styles .chat-sidearea{

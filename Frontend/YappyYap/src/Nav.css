@@ -42,6 +42,15 @@ nav hr{
     background: none;
     border: none;
 }
+.nav-last-el-manage{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:flex-start;
+}
+.nav-last-el-manage span{
+    margin: 0 0.2rem;
+}
 @media(max-width : 600px) {
     .main-nav-open .cross{
         display: inline;

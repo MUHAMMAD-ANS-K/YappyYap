@@ -22,6 +22,12 @@ export default function ChatSideBar(props) {
         document.querySelector(`.${classname}`).style.color = "#10B981";
         props.setRealm(`${classname}`);
     }
+    function handleActiveRealmSib(e) {
+        const classname = `${e.target.parentNode.children[2].textContent}-realm`
+        document.querySelector(`.${props.realm}`).style.color = "rgba(255, 255, 255, 0.277)"
+        document.querySelector(`.${classname}`).style.color = "#10B981"
+        props.setRealm(`${classname}`);
+    }
     return(
         <div className="chat-sidearea" onClick={navbarSimulator}>
             <h2 className="chat-sidearea-heading">
@@ -30,7 +36,8 @@ export default function ChatSideBar(props) {
             </h2>
             <hr />
             <ul className="realms-list">
-                <li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><button onClick={handleActiveRealm} className="realm-button global-realm">global</button></li>
+                <li className="test"><span className="dot-realm-style" onClick={handleActiveRealmSib}></span><span className="channel-hashtag" onClick={handleActiveRealmSib}>#</span><button className="realm-button global-realm" onClick={handleActiveRealm}>global</button></li>
+                <li><span className="dot-realm-style" onClick={handleActiveRealmSib}></span><span className="channel-hashtag" onClick={handleActiveRealmSib}>#</span><button className="realm-button voice-realm" onClick={handleActiveRealm}>voice</button></li>
                 {/* <li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><button onClick={handleActiveRealm} className="realm-button hacker-realm">hacker</button></li> */}
             </ul>
             <div className="user-profile">
