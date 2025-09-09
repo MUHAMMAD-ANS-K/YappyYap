@@ -21,6 +21,8 @@ export default function Global(){
         }
     }, [msg])
     useEffect(() => {
+        const element = document.querySelector(".global-realm");
+        element.classList.add("current-realm");
         const axios = useAxios()
         async function getMessages () {
             try{
@@ -106,6 +108,7 @@ export default function Global(){
             clearInterval(interval1);
             clearInterval(interval2);
             clearInterval(interval3);
+            element.classList.remove("current-realm")
         }
     }, [])
     // const [msgs, setMsgs] = useState(Array());

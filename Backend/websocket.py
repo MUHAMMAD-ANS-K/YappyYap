@@ -27,12 +27,12 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-# async def websoc(user : WebSocket, db : Session = Depends(get_db)):
+# async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Depends(verify_session_token)):
 @router.websocket("/ws")
-async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Depends(verify_session_token)):
-    MAX_TIME = payload["exp"]
-    username = payload["username"]
-    # username = "username"
+async def websoc(user : WebSocket, db : Session = Depends(get_db)):
+    # MAX_TIME = payload["exp"]
+    # username = payload["username"]
+    username = "username"
     await manager.add_connection(user, username)
     try:
         while True:
@@ -68,9 +68,9 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db), payload = Dep
         if username in manager.connections:
             manager.disconnect(username)
 
-# async def send_messages(db : Session = Depends(get_db)):
+# async def send_messages(db : Session = Depends(get_db), payload = Depends(verify_session_token)):
 @router.get("/getchatmsgs")
-async def send_messages(db : Session = Depends(get_db), payload = Depends(verify_session_token)):
+async def send_messages(db : Session = Depends(get_db)):
     time = datetime.now(timezone.utc) + timedelta(seconds=5)
     msgs = db.execute(select(Msgs).where(Msgs.expiry > time)).scalars().all()
     msgs_return = []

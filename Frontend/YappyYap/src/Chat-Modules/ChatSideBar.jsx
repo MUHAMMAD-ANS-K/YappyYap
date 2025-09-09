@@ -1,8 +1,11 @@
 import { useState } from "react"
 import default_image from "./../assets/default_img.png"
+import { Link, useLocation } from "react-router-dom";
 export default function ChatSideBar(props) {
     const [navOpen, setNavopen] = useState(false);
-    function navbarSimulator() {
+    const location = useLocation()
+    function navbarSimulator(e) {
+        console.log(location.pathname)
         if (window.innerWidth <= 1100){
             const element = document.querySelector(".chat-area")
             if(navOpen){
@@ -21,12 +24,28 @@ export default function ChatSideBar(props) {
         document.querySelector(`.${props.realm}`).style.color = "rgba(255, 255, 255, 0.277)";
         document.querySelector(`.${classname}`).style.color = "#10B981";
         props.setRealm(`${classname}`);
+        e.stopPropagation()
     }
     function handleActiveRealmSib(e) {
         const classname = `${e.target.parentNode.children[2].textContent}-realm`
         document.querySelector(`.${props.realm}`).style.color = "rgba(255, 255, 255, 0.277)"
         document.querySelector(`.${classname}`).style.color = "#10B981"
         props.setRealm(`${classname}`);
+        // e.stopPropagation
+    }
+    function testfunc(e) {
+        // const element = e.currentTarget;
+        // console.log(element.parentNode.children)
+        // const temp = element.parentNode.children;
+        // for(const sibling of temp){
+        //     if (sibling.classList.contains("current-realm")) {
+        //         sibling.classList.remove("current-realm")
+        //     }
+        // }
+        // for(let i = 0; i < temp.length; i++)
+        // element.classList.add("current-realm")
+        // props.setRealm(element.classList[0])
+        e.stopPropagation()
     }
     return(
         <div className="chat-sidearea" onClick={navbarSimulator}>
@@ -36,8 +55,8 @@ export default function ChatSideBar(props) {
             </h2>
             <hr />
             <ul className="realms-list">
-                <li className="test"><span className="dot-realm-style" onClick={handleActiveRealmSib}></span><span className="channel-hashtag" onClick={handleActiveRealmSib}>#</span><button className="realm-button global-realm" onClick={handleActiveRealm}>global</button></li>
-                <li><span className="dot-realm-style" onClick={handleActiveRealmSib}></span><span className="channel-hashtag" onClick={handleActiveRealmSib}>#</span><button className="realm-button voice-realm" onClick={handleActiveRealm}>voice</button></li>
+                <Link to="/chat/global" className="global-realm" onClick={testfunc}><li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><span className="realm-button">global</span></li></Link>
+                <Link to="/chat/voice" className="voice-realm" onClick={testfunc}><li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><span className="realm-button">voice</span></li></Link>
                 {/* <li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><button onClick={handleActiveRealm} className="realm-button hacker-realm">hacker</button></li> */}
             </ul>
             <div className="user-profile">

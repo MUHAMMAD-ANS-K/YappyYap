@@ -9,6 +9,7 @@ ul{
 }
 a{
     text-decoration: none;
+    color: inherit;
 }
 body{
     background-color: #0e100f;

@@ -262,19 +262,22 @@ flex-direction: row-reverse;
 .realms-list li{
     display: flex;
     flex-direction: row;
+    cursor: pointer;
+    align-items: center;
 }
 .realm-button{
     border: none;
     cursor: pointer;
     color: rgba(255, 255, 255, 0.277);
     background-color: transparent;
+    font-size: 0.9rem;
 }
-.global-realm{
+.current-realm .realm-button{
     color : #10B981;
 }
 .dot-realm-style{
     position: relative;
-    top: 10px;
+    top: 3px;
     margin-right: 5px;
     background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 50%, #10B981 100%);
     width: 6px;
@@ -284,6 +287,7 @@ flex-direction: row-reverse;
 }
 .channel-hashtag{
     cursor: pointer;
+    font-size: 1.1rem;
 }
 @media (max-width : 1100px) {
     .nav-close-styles .chat-sidearea{
@@ -312,7 +316,7 @@ flex-direction: row-reverse;
         display: none;
     }
     .nav-close-styles .dot-realm-style{
-        top: 0;
+        position: static;
         width: 10px;
         height: 10px;
     }
@@ -324,9 +328,6 @@ flex-direction: row-reverse;
     }
     .nav-open-styles .chat-header{
         width: 70vw;
-    }
-    .nav-open-styles .user-profile p{
-        display: block;
     }
     .nav-open-styles .chat-mainarea{
         width: 70vw;
@@ -341,16 +342,9 @@ flex-direction: row-reverse;
     .nav-open-styles .msgs{
         width: 70vw;
     }
-    .nav-open-styles .realm-button, .nav-open-styles .channel-hashtag{
-        display: inline-block;
-    }
     .nav-open-styles .dot-realm-style{
-        top: 10px;
         width: 6px;
         height: 6px;
-    }
-    .nav-open-styles .chat-sidearea-heading .ealms{
-        display: inline-block;
     }
 }
 

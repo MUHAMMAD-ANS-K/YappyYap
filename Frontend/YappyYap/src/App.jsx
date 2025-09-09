@@ -21,7 +21,7 @@ export default function App() {
     const [selectOption, setOption] = useState("NewsLetter");
     const [footerEmail, setFooterEmail] = useState();
     const loc = useLocation();
-    const hidePaths = ["/chat"]
+    const hidePaths = ["/chat/global", "/chat/voice", "/chat"]
     const hidePathBoolean = hidePaths.includes(loc.pathname);
     return (
         <ChatAuthProvider>
@@ -39,7 +39,7 @@ export default function App() {
                 <Route path="/voice" element={<Voice/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
-                <Route path="/chat" element={<ChatProtection><Chat/></ChatProtection>}/>
+                <Route path="/chat/*" element={<ChatProtection><Chat/></ChatProtection>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             {!hidePathBoolean && <Footer setOption = {setOption} setFooterEmail = {setFooterEmail}/>}

@@ -8,6 +8,7 @@ export default function Voice() {
    const pause = useRef(false)
    const [pauseState, setPause] = useState(false)
    const [timer, setTimer] = useState(0)
+   const spaceFullCheck = useRef(false)
    const [yapDuration, setyapDuration] = useState(10)
    const recorderInterval = useRef()
    const barInterval = useRef()
@@ -17,11 +18,14 @@ export default function Voice() {
     let data = [];
     useEffect(()=>{
         recorderFreq.current = document.querySelector(".recorder-freq")
+        const element = document.querySelector(".voice-realm");
+        element.classList.add("current-realm")
         return ()=>{    
             if (recorderInterval.current)
                 clearInterval(recorderInterval)
             if (barInterval.current)
                 clearInterval(barInterval)
+            element.classList.remove("current-realm")
         }
         
     },[])
@@ -71,7 +75,7 @@ export default function Voice() {
                                 audioEl.setAttribute("controls", "");
                                 audioEl.src = window.URL.createObjectURL(response.data)
                                 document.querySelector(".test-audio").appendChild(audioEl)
-                                console.log("Data Sent")
+                                console.log("Operation Success")
                             }
                             catch (e) {
                                 console.log(e)
@@ -111,7 +115,10 @@ export default function Voice() {
             function barCreator(){
                 if (!pause.current){
                     console.log(recorderFreq.current.offsetWidth)
-                    
+                    // 2rem = 32px so 32px every 7s (1s for uncertainity) plus there is gap too 13.5px 7s = 10 total for 7s = 32 + 13.5=45.5px ~ 50 so ...... 7 is 7 and 7 * 7 is 49 so space will end at approx 45 - 50
+                    // if (spaceFullCheck) {
+                        
+                    // }
                     const element = document.createElement("div")
                     element.style.height = `${Math.random() * 12 + 3}px `
                     element.classList.add("bar")
