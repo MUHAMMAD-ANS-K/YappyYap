@@ -55,6 +55,12 @@
     height: 100%;
     width: 0;
 }
+/* .msg-bar-overlay{
+    background-color: white;
+    -webkit-background-clip:content-box;
+    background-clip: content-box;
+    -webkit-text-fill-color:white;
+} */
 .msg-bars-mover{
     width: 8px;
     height: 8px;
