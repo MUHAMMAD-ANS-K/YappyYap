@@ -22,14 +22,52 @@
 }
 .recorder-freq{
     position: relative;
-    left: 4rem;
-    bottom: 1rem;
+    left: 6rem;
+    bottom: 0.5rem;
     max-width: 60%;
     display: flex;
     align-items: center;
     gap: 1.5px;
     height: 50px;
-    
+}
+.recorder-count{
+    position: absolute;
+    font-family: "Delius", cursive;
+    font-size: 1.4rem;
+}
+.audio-play-button{
+    background: transparent;
+    border: none;
+}
+.audio-play-button svg{
+    width: 1.6rem;
+    height: 1.6rem;
+    position: relative;
+    top: 1px;
+}
+.msg-bars{
+    display: flex;
+    gap: 1.5px;
+    align-items: center;
+}
+.msg-bar-underlay{
+    background-color: white;
+    height: 100%;
+    width: 0;
+}
+.msg-bars-mover{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: white;
+    position: relative;
+    z-index: 2;
+    left: 6px;
+}
+.audio{
+    display: flex;
+    gap: 5px;
+    align-items: center;
 }
 /* .chat-duration input[type="range"]{
     appearance: none;

@@ -176,6 +176,7 @@ flex-direction: row-reverse;
     background-color:rgb(123, 220, 123);
     width: 3.2rem;
     color: #112;
+    font-family: "Delius",cursive;
     margin-left: 10px;
     text-align: center;
     padding: 0.2rem 0rem;
@@ -190,13 +191,11 @@ flex-direction: row-reverse;
 }
 .chat-yap-duration input[type="range"]::-webkit-slider-thumb {
     background-color: rgb(123, 220, 123);
-    color: #000;
     border-radius: 50%;
     border: none;
 }
 .chat-yap-duration input[type="range"]::-moz-range-thumb {
     background-color: rgb(123, 220, 123);
-    color: #000;
     border-radius: 50%;
     border: none;
 }

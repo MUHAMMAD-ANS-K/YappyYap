@@ -19,32 +19,7 @@ export default function ChatSideBar(props) {
             setNavopen((n)=>!n);
         }
     }
-    function handleActiveRealm(e) {
-        const classname = `${e.target.textContent}-realm`;
-        document.querySelector(`.${props.realm}`).style.color = "rgba(255, 255, 255, 0.277)";
-        document.querySelector(`.${classname}`).style.color = "#10B981";
-        props.setRealm(`${classname}`);
-        e.stopPropagation()
-    }
-    function handleActiveRealmSib(e) {
-        const classname = `${e.target.parentNode.children[2].textContent}-realm`
-        document.querySelector(`.${props.realm}`).style.color = "rgba(255, 255, 255, 0.277)"
-        document.querySelector(`.${classname}`).style.color = "#10B981"
-        props.setRealm(`${classname}`);
-        // e.stopPropagation
-    }
     function testfunc(e) {
-        // const element = e.currentTarget;
-        // console.log(element.parentNode.children)
-        // const temp = element.parentNode.children;
-        // for(const sibling of temp){
-        //     if (sibling.classList.contains("current-realm")) {
-        //         sibling.classList.remove("current-realm")
-        //     }
-        // }
-        // for(let i = 0; i < temp.length; i++)
-        // element.classList.add("current-realm")
-        // props.setRealm(element.classList[0])
         e.stopPropagation()
     }
     return(
