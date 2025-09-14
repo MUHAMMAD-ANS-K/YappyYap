@@ -3,9 +3,7 @@ import default_image from "./../assets/default_img.png"
 import { Link, useLocation } from "react-router-dom";
 export default function ChatSideBar(props) {
     const [navOpen, setNavopen] = useState(false);
-    const location = useLocation()
-    function navbarSimulator(e) {
-        console.log(location.pathname)
+    function navbarSimulator() {
         if (window.innerWidth <= 1100){
             const element = document.querySelector(".chat-area")
             if(navOpen){
