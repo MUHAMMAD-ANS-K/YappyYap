@@ -17,6 +17,7 @@
     "@gsap/react": "^2.1.2",
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.11.0",
+    "fflate": "^0.8.2",
     "fs": "^0.0.1-security",
     "gsap": "^3.13.0",
     "quill": "^2.0.3",

@@ -71,7 +71,7 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db)):
 # async def send_messages(db : Session = Depends(get_db), payload = Depends(verify_session_token)):
 @router.get("/getchatmsgs")
 async def send_messages(db : Session = Depends(get_db)):
-    time = datetime.now(timezone.utc) + timedelta(seconds=5)
+    time = datetime.now(timezone.utc) + timedelta(seconds=2)
     msgs = db.execute(select(Msgs).where(Msgs.expiry > time)).scalars().all()
     msgs_return = []
     for msg in msgs:

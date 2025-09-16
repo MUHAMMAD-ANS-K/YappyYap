@@ -1,14 +1,15 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, status, WebSocket
-import auth, websocket
+import auth, websocket, voicewebsoc
 import os
-import tempfile
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from io import BytesIO
+import json
 import subprocess
 app = FastAPI()
 app.include_router(auth.router)
+app.include_router(voicewebsoc.router)
 app.include_router(websocket.router)
 
 origins = [
@@ -23,45 +24,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.websocket("/voice")
-async def voice_conn(user: WebSocket):
-    await user.accept()
-    try:
-        while True:
-            data = await user.receive()
-            if "bytes" in data:
-                try:
-                    with tempfile.NamedTemporaryFile(suffix=".webm", delete=False) as temp_input:
-                        temp_input.write(data["bytes"])
-                        temp_input.flush()
-                        output_tmp = tempfile.NamedTemporaryFile(suffix=".webm", delete=False)
-                        output_tmp.close()
-                        voice_convert = subprocess.run([
-                            'ffmpeg',
-                            '-y',
-                            '-i', temp_input.name,
-                            '-af', "asetrate=55000,atempo=0.85,afftfilt=real='hypot(re,im)*sin(65)',tremolo=f=50,adynamicsmooth=sensitivity=2.5:basefreq=10000",
-                            output_tmp.name
-                        ])
-                        if voice_convert.returncode !=0:
-                            await user.send_text("An error occured")
-                            break
-                        with open(output_tmp.name, "rb") as return_file:
-                            data = return_file.read()
-                            await user.send_bytes(data)
-                except Exception as e:
-                    await user.send_text("An error occured")
-                    break
-                finally:
-                    os.remove(temp_input.name)
-                    os.remove(output_tmp.name)
-
-            elif "text" in data:
-                 pass
-    except Exception as e:
-                    print(e)
-                    await user.send_text("An error occured")
 
 # @app.post("/voice")
 # async def voice(file : UploadFile = File()):

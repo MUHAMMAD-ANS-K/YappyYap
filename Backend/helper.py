@@ -1,4 +1,4 @@
-from database import Base, engine, session, Email_signin, Email_signup, OTP_entry, Users,Pending_users, Msgs
+from database import Base, engine, session, Email_signin, Email_signup, OTP_entry, Users,Pending_users, Msgs, VoiceMsgs
 
 Base.metadata.create_all(bind=engine)
 db = session()
@@ -9,6 +9,7 @@ OTP_entry.__table__.drop(engine)
 Users.__table__.drop(engine)
 Pending_users.__table__.drop(engine)
 Msgs.__table__.drop(engine)
+VoiceMsgs.__table__.drop(engine)
 db.close()
 # from datetime import datetime, timezone
 
