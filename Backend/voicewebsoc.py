@@ -67,10 +67,14 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
 
                         complete_payload = time_sent + expiry_time + username_length.to_bytes(4, "big") + username_payload + payload
                         await user.send_bytes(complete_payload)
+                except WebSocketDisconnect:
+                    print("closed")
                 except Exception as e:
                     print(e)
-                    if (user):
+                    try:
                         await user.send_text("An error occured")
+                    except:
+                         pass
                     break
                 finally:
                     os.remove(temp_input.name)
@@ -79,10 +83,14 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
             elif "text" in data:
                 js = loads(data["text"])
                 expiry_seconds = int(js["expiry"])
+    except WebSocketDisconnect:
+         print("closed")
     except Exception as e:
                     print(e)
-                    if (user):
+                    try:
                         await user.send_text("An error occured")
+                    except:
+                         pass
 
 @router.get("/getmsgs")
 async def get_msgs(db : Session = Depends(get_db)):
@@ -93,6 +101,7 @@ async def get_msgs(db : Session = Depends(get_db)):
         for msg in db_data:
             expiry = pack(">d", msg.expiry.timestamp())
             time_sent = pack(">d", msg.time_sent.timestamp())
-            zipF.writestr(msg.username, time_sent + expiry + msg.msg)
+            username  =  msg.username.encode("utf-8")
+            zipF.writestr(msg.username + str(msg.expiry), time_sent + expiry + len(username).to_bytes(4, "big") + username + msg.msg)
     zip_file.seek(0)
     return StreamingResponse(zip_file)

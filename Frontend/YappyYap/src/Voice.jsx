@@ -17,6 +17,7 @@ export default function Voice() {
     const barMover = useRef()
     const dotMover = useRef()
     const websocket = useRef()
+    const msgRemoverInterval = useRef()
     let data = [];
     useGSAP(() => {
         gsap.ticker.lagSmoothing(0)
@@ -40,6 +41,9 @@ export default function Voice() {
         }
     }, [])
     useEffect(() => {
+        const element = document.querySelector(".voice-realm");
+        element.classList.add("current-realm")
+        msgRemoverInterval.current = setInterval(removeMsg, 1000);
         const axios = useAxios();
         async function getmsgs() {
             try{
@@ -49,38 +53,34 @@ export default function Voice() {
                 const zip = new Uint8Array(response.data)
                 const files = unzipSync(zip)
                 document.querySelector(".msgs").innerHTML = "";
-                console.log(files)
                 for (let filename in files){
-                    console.log("vro")
                     const msg = document.createElement("li")
-                    msg.classList.add("chat-message-block");
                     const file = files[filename]
-                    const buffer = files[filename].buffer.slice(file.byteOffset, file.byteOffset + file.byteLength)
+                    const buffer = file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength)
                     const vw = new DataView(buffer);
                     const timeSent = new Date(vw.getFloat64(0, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
-                    const expiry = new Date(vw.getFloat64(8, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
-                    const unsigned8bit = new Uint8Array(file);
-                    const blobBytes = file.slice(16);
+                    const expiry = new Date(vw.getFloat64(8, false) * 1000).toString().replace(/[\s.:()+]+/g, "");
+                    msg.classList.add("chat-message-block", expiry);
+                    const usernameLength = vw.getUint32(16, false) + 20;
+                    const username = new TextDecoder("utf-8").decode(file.slice(20, usernameLength));
+                    const blobBytes = file.slice(usernameLength);
                     const blob = new Blob([blobBytes], {type : "audio/webm"});
                     msg.innerHTML = `
                         <img src=${default_img} alt="user" class="chat-message-img" />
                         <span>
-                            <span class="chat-message-header"><h3 class="username">${filename}</h3><span class="timestamp">${timeSent}</span></span>
+                            <span class="chat-message-header"><h3 class="username">${username}</h3><span class="timestamp">${timeSent}</span></span>
                             ${helperFunction()}
                         </span>`
                     document.querySelector(".msgs").append(msg);
                     msg.querySelector(".audio-play-button").addEventListener("click", play_pause_audio);
                     msg.querySelector(".audio-play").src = window.URL.createObjectURL(blob);
                 }
-                // console.log(response.data)
             }
             catch(e){
                 console.log(e)
             }
         }
         getmsgs();
-        const element = document.querySelector(".voice-realm");
-        element.classList.add("current-realm")
         websocket.current = new WebSocket("ws://localhost:8000/voice/ws")
         websocket.current.binaryType = "arraybuffer"
         websocket.current.onopen = () => {
@@ -92,10 +92,11 @@ export default function Voice() {
         websocket.current.onmessage = (e) => {
             try{
                     const msg = document.createElement("li");
-                    msg.classList.add("chat-message-block");
                     const vw = new DataView(e.data);
                     const timeSent = new Date(vw.getFloat64(0, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
-                    const expiry = new Date(vw.getFloat64(8, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
+                    let expiry = new Date(vw.getFloat64(8, false) * 1000).toString();
+                    expiry = expiry.replace(/[\s:+().]+/g, "");
+                    msg.classList.add("chat-message-block", expiry);
                     const usernameLength = vw.getUint32(16, false) + 20;
                     const unsigned8bit = new Uint8Array(e.data);
                     const username = new TextDecoder("utf-8").decode(unsigned8bit.slice(20, usernameLength));
@@ -111,15 +112,36 @@ export default function Voice() {
                     msg.querySelector(".audio-play-button").addEventListener("click", play_pause_audio);
                     msg.querySelector(".audio-play").src = window.URL.createObjectURL(blob);
                 }
-            catch{
-                console.log(e.data);
+            catch(e){
+                console.log(e);
             }
 
         }
-        return () => element.classList.remove("current-realm")
+        return () => {
+            clearInterval(msgRemoverInterval.current)
+            element.classList.remove("current-realm")
+            if(websocket.current.OPEN){
+                websocket.current.close()
+            }
+        }
 
     }, [])
-
+    async function removeMsg() {
+        let date = new Date();
+        date = date.toString().replace(/[\s+:().]+/g, "")
+        const elements = document.querySelectorAll(`.${date}`)
+        if (elements.length > 0) {
+            gsap.to(`.${date}`, {
+                opacity : 0,
+                duration : 2,
+            })
+            setTimeout(()=>{
+                for(let element of elements) {
+                    element.remove()
+                }
+            }, 2000)
+        }
+    }
     async function play_pause_audio(e) {
         // const element = 
         const children = e.currentTarget.parentNode.children;

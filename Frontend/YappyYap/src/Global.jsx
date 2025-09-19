@@ -233,7 +233,7 @@ export default function Global(){
             })
             setTimeout(()=>{
                 for (const element of el) {
-                    element.style.display = "none";
+                    element.remove()
                 }
             }, 2000)
         }
