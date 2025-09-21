@@ -1,4 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useRef } from "react";
 import useAxios from "./useAxios";
 const ChatAuth = createContext()
 export default function useChatAuth() {
@@ -6,8 +6,10 @@ export default function useChatAuth() {
 }
 export function ChatAuthProvider({children}){
     const [logged, setLogged] = useState(false);
-    const [username, setUsername] = useState("")
-    const [loading, setLoading] = useState(true)
+    const [username, setUsername] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [errorMsg, setError] = useState("Welcome to our page");
+    const [errorMsgAnimation, setTrigger] = useState(false);
     useEffect(()=>{
         async function makereq() {
             const axios = useAxios();
@@ -27,7 +29,7 @@ export function ChatAuthProvider({children}){
 
     },[])
     return(
-        <ChatAuth.Provider value={{logged, username, loading, setLogged, setUsername}}>
+        <ChatAuth.Provider value={{logged, username, loading, setLogged, setUsername, errorMsg, setError, errorMsgAnimation, setTrigger}}>
             {children}
         </ChatAuth.Provider>
     )

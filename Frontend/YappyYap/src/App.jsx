@@ -16,6 +16,7 @@ import { DashboardAuthProvider } from "../hooks/useDashAuth.jsx";
 import { ChatAuthProvider } from "../hooks/useChatAuth.jsx";
 import ChatProtection from "./ChatProtection.jsx";
 import Voice from "./Voice.jsx";
+import SigninError from "./SigninError.jsx";
 export default function App() {
     const [email, setEmail] = useState("");
     const [selectOption, setOption] = useState("NewsLetter");
@@ -27,10 +28,11 @@ export default function App() {
         <ChatAuthProvider>
         <div>
             {!hidePathBoolean && <Nav />}
+            <SigninError/>
             <div className="main-navbar-helper">
             <Routes>
-                <Route path="/signin" element={<SignIn setEmail = {setEmail} />}/>
-                <Route path="/signup" element={<SignUp setEmail = {setEmail} />}/>
+                <Route path="/signin" element={<SignIn setEmail = {setEmail}/>}/>
+                <Route path="/signup" element={<SignUp setEmail = {setEmail}/>}/>
                 <Route path="/signin/otp" element={<OTPForm email = {email} link={"/acc-verify"}/>}/>
                 <Route path="/signup/otp" element={<OTPForm email = {email} link={"/acc-create"}/>}/>
                 <Route path="/blogs" element={<Blog/>}/>

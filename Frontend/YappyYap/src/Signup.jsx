@@ -1,12 +1,15 @@
 import {useState} from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import "./SignIn.css"
 import useAxios from "../hooks/useAxios";
+import Onfire from "./OnFire";
+import useChatAuth from "../hooks/useChatAuth";
 
 export default function SignUp(props) {
     const [email, setEmail] = useState("");
     const [username, setusername] = useState("");
-    const [err, setErr] = useState("");
+    const {setTrigger} = useChatAuth()
+    const {setError} = useChatAuth()
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
     async function sendOtp(e){
@@ -21,33 +24,36 @@ export default function SignUp(props) {
             if (resp.data.msg == "Success"){
                 props.setEmail(email);
                 navigate("otp");
+                setError("OTP Sent");
             }
         }
         catch(exception){
             if (exception.response && exception.response.data) {
-                setErr(exception.response.data.detail[0].msg);
+                setError(exception.response.data.detail[0].msg);
             }
             else{
-                setErr("Something went wrong. Try Again")
+                setError("Something went wrong. Try Again");
             }
         }
         finally{
+            setTrigger(val => !val);
             setLoading(false);
         }
     }
     return (
-        <form onSubmit={sendOtp} className="background_signin">
+        <div className="background-signin">
+        <form onSubmit={sendOtp} className="sign-form">
             <div className="signin-up">
                 <h2 className="signin-up-heading">Sign Up</h2>
-                <p className="signin-up-p">Already have an account. <a className="signin-up-a" href="/signin">Sign In</a></p>
+                <p className="signin-up-p">Already have an account. <Link className="signin-up-a" to="/signin">Sign In</Link></p>
                 <hr />
             </div>
-        <ul>
+        <ul className="signin-list">
             <li className="margin-10px">
                 <label>
                     Username
                 </label>
-                <div className="input">                    
+                <div className="signform-input">                    
                 <input className="username-input" type="text" placeholder="Username" value={username} onChange={(e) => setusername(e.target.value)} required/>
                 </div>
         </li>
@@ -55,15 +61,16 @@ export default function SignUp(props) {
                 <label>
                     Enter your email
                 </label>
-                <div className="input">                    
+                <div className="signform-input">                    
                 <input className="email-input" type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
                 </div>
         </li>
 
         <li>
-        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Sending..." : "Send OTP"}</button></li>
-        <li><p>{err}</p></li>
+        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Processing..." : "Send OTP"}</button></li>
         </ul>
         </form>
+        <Onfire loading={loading}/>
+        </div>
     )
 }

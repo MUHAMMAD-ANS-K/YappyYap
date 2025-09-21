@@ -12,20 +12,35 @@ import zipfile
 import os
 from json import loads
 from struct import pack
+from auth import verify_session_token
 router = APIRouter(prefix="/voice")
 
 def get_db():
     with session() as db:
         yield db
 
+class Connection_Manager:
+    def __init__(self):
+        self.active_connections : dict[str, WebSocket] = {}
+    async def add_connection(self, websocket : WebSocket, username  : str):
+        await websocket.accept()
+        self.active_connections[username] = websocket
+    def disconnect(self, username : str):
+         if username in self.active_connections:
+              del self.active_connections[username]
+    async def send_message(self, message):
+         for connection in self.active_connections:
+              await self.active_connections[connection].send_bytes(message)
+
+manager = Connection_Manager()
+
 
 @router.websocket("/ws")
 async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
-    await user.accept()
+    username = "username"
+    await manager.add_connection(user, username)
     try:
         expiry_seconds = 0
-        username = "username"
-
         while True:
             data = await user.receive()
             if "bytes" in data:
@@ -66,7 +81,7 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
                         expiry_time = pack(">d", expiry.timestamp())
 
                         complete_payload = time_sent + expiry_time + username_length.to_bytes(4, "big") + username_payload + payload
-                        await user.send_bytes(complete_payload)
+                        await manager.send_message(complete_payload)
                 except WebSocketDisconnect:
                     print("closed")
                 except Exception as e:
@@ -91,6 +106,8 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
                         await user.send_text("An error occured")
                     except:
                          pass
+    finally:
+         manager.disconnect(username)
 
 @router.get("/getmsgs")
 async def get_msgs(db : Session = Depends(get_db)):

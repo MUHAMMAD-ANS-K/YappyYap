@@ -1,17 +1,20 @@
 import {useState} from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import useAxios from "../hooks/useAxios"
+import Onfire from "./OnFire"
 import "./SignIn.css"
+import useChatAuth from "../hooks/useChatAuth"
 
 export default function SignIn(props) {
     const [email, setEmail] = useState("");
-    const [err, setErr] = useState("");
+    const {setError} = useChatAuth();
+    const {setTrigger} = useChatAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const axios = useAxios();
     async function sendOtp(e){
         setLoading(true);
         e.preventDefault()
-        const axios = useAxios();
         try{
             const resp = await axios.post("/signin", {
                 email: email
@@ -19,43 +22,55 @@ export default function SignIn(props) {
             if (resp.data.msg == "Success"){
                 props.setEmail(email);
                 navigate("otp");
+                setError("OTP Sent")
             }
             else{
-                setErr(resp.data.message)
+                setError(resp.data.message)
             }
         }
         catch(exception){
             if (exception.response && exception.response.data){
-                setErr(exception.response.data.detail[0].msg);
+                setError(exception.response.data.detail[0].msg);
             }
             else
-                setErr("Something went wrong. Try Again");
+                setError("Something went wrong. Try Again");
         }
         finally{
             setLoading(false);
+            setTrigger(e => !e);
+        }
+    }
+    async function guestLogin() {
+        try{
+            const response = await axios.get("guestlogin");
+        }
+        catch{
+
         }
     }
     return (
-        <form onSubmit={sendOtp} className="background_signin">
+        <div className="background-signin">
+        <form onSubmit={sendOtp} className="sign-form">
             <div className="signin-up">
                 <h2 className="signin-up-heading">Sign In</h2>
-                <p className="signin-up-p">Don't have an account. <a className="signin-up-a" href="/signup">Sign Up</a></p>
+                <p className="signin-up-p">Don't have an account. <Link className="signin-up-a" to="/signup">Sign Up</Link></p>
                 <hr />
             </div>
-        <ul>
+        <ul className="signin-list">
             <li>
                 <label>
                     Enter your email
                 </label>
-                <div className="input">                    
+                <div className="signform-input">                    
                 <input className="email-input"type="email" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required/>
                 </div>
         </li>
 
         <li>
-        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Sending...":"Send OTP"}</button></li>
-        {err && (<li><p>{err}</p></li>)}
+        <button className="sign-button" type="submit" disabled={loading} >{loading ? "Processing...":"Send OTP"}</button></li>
         </ul>
         </form>
+        <Onfire loading={loading}/>
+        </div>
     )
 }

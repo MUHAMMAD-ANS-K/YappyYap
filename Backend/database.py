@@ -34,7 +34,7 @@ class OTP_entry(Base):
     @staticmethod
     def get_current_time():
         return datetime.now(timezone.utc)
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, primary_key=True)
     email = Column(String, index=True)
     otp = Column(String)
@@ -43,12 +43,12 @@ class OTP_entry(Base):
 
 class Guests(Base):
     __tablename__ = "guests"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, index=True)
 
 class Admins(Base):
     __tablename__ = "admins"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String)
     email = Column(String)
 
@@ -56,7 +56,7 @@ class BaseMsg:
     @staticmethod
     def get_expiry(seconds : int):
         return datetime.now(timezone.utc) + timedelta(seconds=seconds)
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String)
     time_sent = Column(DateTime(timezone=True))
     expiry = Column(DateTime(timezone=True))

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from datetime import datetime, timezone
 import time
-from pydantic import BaseModel
+from coolname import generate_slug
 from dotenv import load_dotenv
 from typing import Annotated
 load_dotenv()
@@ -53,7 +53,7 @@ async def signup(data : Email_signup, db : Session = Depends(get_db)):
     already_exists = db.execute(select(Users).where(Users.username == data.username)).scalar_one_or_none()
     if already_exists:
         raise HTTPException(status_code=400, detail=[{"msg":"User name already taken"}])
-    already_exists = db.execute(select(Pending_users).where(Pending_users.email == data.email)).scalar_one_or_none()
+    already_exists = db.execute(select(Pending_users).where(Pending_users.email == data.email or Pending_users.username == data.username)).scalar_one_or_none()
     # already_exists = db.query(Pending_users).filter_by(email = data.email).update({"username" : data.username})
     if already_exists:
         already_exists.username = data.username
@@ -193,18 +193,20 @@ async def logincheck(message = Depends(verify_session_token), db : Session = Dep
 #         "username" : username
 #     }
     
-@router.post("/guestlogin")
-async def guest_login(request: Guest_login, response: Response, db : Session = Depends(get_db)):
+@router.get("/guestlogin")
+async def guest_login(response: Response, db : Session = Depends(get_db)):
+    username = generate_slug(2)
     # already_exists = db.query(Users).filter(username = request.username).first()
-    already_exists = db.execute(select(Users).where(Users.username == request.username)).scalar_one_or_none()
-    if already_exists:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=[{"msg" : "Username already taken"}])
     # already_exists = db.query(Guests).filter(username = request.username).first()
-    already_exists = db.execute(select(Guests).where(Guests.username == request.username)).scalar_one_or_none()
-    if already_exists:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail=[{"msg" : "Username already taken"}])
+    while True:
+        already_exists_user = db.execute(select(Users).where(Users.username == username)).scalar_one_or_none()
+        already_exists_guest = db.execute(select(Guests).where(Guests.username == username)).scalar_one_or_none()
+        if not already_exists_user and not already_exists_guest:
+            break
+        username = generate_slug(2)
+
     guest_data = Guests(
-        username = request.username
+        username = username
     )
     db.add(guest_data)
     db.commit()
@@ -219,7 +221,7 @@ async def guest_login(request: Guest_login, response: Response, db : Session = D
         path="/",
         domain=".muhammadans.com"
     )
-    return {"msg" : "Success", "username" : request.username}
+    return {"msg" : "Success", "username" : username}
     
 @router.get("/signout")
 async def signout(response: Response):
