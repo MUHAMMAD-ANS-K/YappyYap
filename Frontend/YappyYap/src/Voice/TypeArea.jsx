@@ -1,6 +1,7 @@
 import {useState, useRef, useEffect} from "react"
 import useAxios from "../../hooks/useAxios";
 import Play from "../assets/Play"
+import {gsap} from "gsap/gsap-core"
 import Pause from "../assets/Pause"
 export default function TypeArea(props) {
    const recorderFreq = useRef()
@@ -12,6 +13,7 @@ export default function TypeArea(props) {
     const pause = useRef(false)
     const spaceFullCheck = useRef(false)
     const [yapDuration, setyapDuration] = useState(10)
+    const anonymity = useRef(false)
     const axios = useAxios()
     const recorder = useRef(null);
     useEffect(()=>{
@@ -37,10 +39,8 @@ export default function TypeArea(props) {
                     recorder.current.start()
                     recorderInterval.current = setInterval(inputTimer, 1000);
                     barInterval.current = setInterval(barCreator, 600)
-                    console.log(recorder.current.state)
                     recorder.current.ondataavailable = (e)=>{
                         data.push(e.data)
-                        console.log("Data pushing")
                     }
                     recorder.current.onstop = async (e)=>{
                         clearInterval(recorderInterval.current)
@@ -54,7 +54,6 @@ export default function TypeArea(props) {
                             blob = new Blob(data, {
                                 type: "audio/webm"
                             })
-                            console.log("Webm supported")
                         }
                         else{
                             type = "ogg"
@@ -62,27 +61,18 @@ export default function TypeArea(props) {
                                 type: "audio/ogg"
                             })
                         }
-                        // let data_send = new FormData()
-                        // data_send.append("file", blob)
                         try{
-                            // const response = await axios.post("/voice", data_send, {
-                            //     responseType : "blob"
-                            // })
                             if(props.websocket.current && props.websocket.current.readyState === WebSocket.OPEN){
-                                // message = JSON.stringify(message)
-                                // console.log(message)
-                                props.websocket.current.send(JSON.stringify({
+                                let payloadDetails = {
                                     "expiry" : yapDuration
-                                }))
+                                }
+                                if (anonymity.current){
+                                    payloadDetails["anonymity"] = true;
+                                }
+                                props.websocket.current.send(JSON.stringify(payloadDetails))
                                 props.websocket.current.send(blob)
                             }
                             data = [];
-                            // console.log(response.data)
-                            // const audioEl = document.createElement("audio")
-                            // audioEl.setAttribute("controls", "");
-                            // audioEl.src = window.URL.createObjectURL(response.data)
-                            // document.querySelector(".test-audio").appendChild(audioEl)
-                            console.log("Operation Success")
                         }
                         catch (e) {
                             console.log(e)
@@ -140,6 +130,23 @@ export default function TypeArea(props) {
             recorderFreq.current.append(element)
         }
     }
+    function anonymityHandler() {
+        let xTravel;
+        const element = document.querySelector(".anonymity-button-circle");
+        if(anonymity.current) {
+            element.style.backgroundColor = "grey"
+            xTravel = 0;
+        }
+        else{
+            xTravel = 27;
+            element.style.backgroundColor = "rgb(123, 220, 123)"
+        }
+        gsap.to(".anonymity-button-circle",{
+            x : xTravel,
+            duration : 0.2
+        })
+        anonymity.current = !anonymity.current;
+    }
     return (
         <div className="type-area-overlay">
             <div className="recorder type-area">
@@ -150,10 +157,17 @@ export default function TypeArea(props) {
                     <div className="bar"></div>
                 </div>
                 <div className="chat-yap-duration">
-                    <span className="duration-label">Duration: </span>
+                    <div className="anonymity-button-area">
+                    <span className="input-label">Anonymity: </span>
+                    <button className="anonymity-off" onClick={anonymityHandler}><span className="anonymity-button-circle"></span></button>
+                </div>
+                <div>
+                    <span className="input-label">Duration: </span>
                     <input type="range" min={10} max={300} step={5} value={yapDuration} onChange={(e) => setyapDuration(e.target.value)} />
                     <span id="chat-yap-duration">{`${yapDuration}s`}</span>
                 </div>
+                </div>
+
                 <div className="recorder-buttons">
                     <button className="start-record send-button" onClick={startRecord}>{!start ? (<svg className="chat-sendsvg" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xmlSpace="preserve">
                         <g stroke="none" strokeWidth="0" strokeDasharray="none" strokeLinecap="butt" strokeLinejoin="miter" strokeMiterlimit="10" fill="none" fillRule="nonzero" opacity="1" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">

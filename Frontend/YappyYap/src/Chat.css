@@ -170,6 +170,9 @@ flex-direction: row-reverse;
     position: absolute;
     bottom: 4px;
     right: 60px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
 }
 #chat-yap-duration{
     font-size: 1rem;
@@ -205,7 +208,7 @@ flex-direction: row-reverse;
 .chat-yap-duration input[type="range"]:active{
     border: 1px solid rgba(255, 255, 255, 0.773);
 }
-.chat-yap-duration span{
+.input-label{
     font-size: 0.8rem;
     margin-right: 5px;
 }

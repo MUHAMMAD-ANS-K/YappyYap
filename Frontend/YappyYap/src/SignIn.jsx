@@ -7,8 +7,7 @@ import useChatAuth from "../hooks/useChatAuth"
 
 export default function SignIn(props) {
     const [email, setEmail] = useState("");
-    const {setError} = useChatAuth();
-    const {setTrigger} = useChatAuth();
+    const {setError, setTrigger} = useChatAuth();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const axios = useAxios();
@@ -38,14 +37,6 @@ export default function SignIn(props) {
         finally{
             setLoading(false);
             setTrigger(e => !e);
-        }
-    }
-    async function guestLogin() {
-        try{
-            const response = await axios.get("guestlogin");
-        }
-        catch{
-
         }
     }
     return (

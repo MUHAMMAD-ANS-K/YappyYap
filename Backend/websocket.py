@@ -1,11 +1,12 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, Query 
-from database import session, Msgs, Msg_return
+from database import session, Msgs, Msg_return, Users
 from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
 from typing import Annotated
 from datetime import datetime, timezone, timedelta
 from auth import verify_session_token
 import asyncio
+from coolname import generate_slug
 router = APIRouter()
 
 def get_db(): 
@@ -39,6 +40,12 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db)):
             
             try:
                 data = await user.receive_json()
+                if "anonymity" in data and data["anonymity"] == True:
+                    while True:
+                        username = generate_slug(2)
+                        already_exists = db.execute(select(Users).where(Users.username == username)).scalar_one_or_none()
+                        if not already_exists:
+                            break
                 seconds = int(data["expire"])
                 msg = data["msg"]
                 time = datetime.now(timezone.utc)
@@ -52,7 +59,6 @@ async def websoc(user : WebSocket, db : Session = Depends(get_db)):
                 db.add(message)
                 db.commit()
                 await manager.send_message(temp)
-                print("lalreler")
             except WebSocketDisconnect:
                 manager.disconnect(username)
                 break

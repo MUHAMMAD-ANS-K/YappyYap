@@ -74,6 +74,27 @@
     gap: 5px;
     align-items: center;
 }
+.anonymity-off{
+    background-color: rgb(63, 63, 103);
+    width: 45px;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px;
+}
+.anonymity-button-circle{
+    background-color: grey;
+    /* color: rgb(25, 25, 73); */
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+.anonymity-button-area{
+    display: flex;
+    align-items: center;
+}
 /* .chat-duration input[type="range"]{
     appearance: none;
     background-color: rgb(63, 63, 100);

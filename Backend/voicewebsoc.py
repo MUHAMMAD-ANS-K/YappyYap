@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
-from database import session, VoiceMsgs
+from database import session, VoiceMsgs, Users
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 from auth import verify_session_token
@@ -12,6 +12,7 @@ import zipfile
 import os
 from json import loads
 from struct import pack
+from coolname import generate_slug
 from auth import verify_session_token
 router = APIRouter(prefix="/voice")
 
@@ -97,6 +98,12 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
 
             elif "text" in data:
                 js = loads(data["text"])
+                if "anonymity" in js:
+                     while True:
+                        username = generate_slug(2)
+                        already_exists = db.execute(select(Users).where(Users.username == username)).scalar_one_or_none()
+                        if not already_exists:
+                             break
                 expiry_seconds = int(js["expiry"])
     except WebSocketDisconnect:
          print("closed")

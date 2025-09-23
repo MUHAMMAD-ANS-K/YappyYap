@@ -11,6 +11,7 @@ export default function Global(){
     const [strike, setStrike] = useState(false);
     const [optionsOpen, setOptionsOpen] = useState(false);
     const [yapDuration, setYapDuration] = useState(10);
+    const anonymity = useRef(false);
     useEffect(() => {
         textArea.current.style.height = "auto";
         if (textArea.current.scrollHeight < 400) {
@@ -169,6 +170,9 @@ export default function Global(){
                 "msg" : msg.trim(),
                 "expire" : yapDuration
             }
+            if (anonymity.current) {
+                message["anonymity"] = true
+            }
             ws.current.send(JSON.stringify(message));
         }
         
@@ -238,6 +242,23 @@ export default function Global(){
             }, 2000)
         }
     }
+    function anonymityHandler() {
+        let xTravel;
+        const element = document.querySelector(".anonymity-button-circle");
+        if (anonymity.current) {
+            xTravel = 0;
+            element.style.backgroundColor = "grey"
+        }
+        else{
+            xTravel = 27;
+            element.style.backgroundColor = "rgb(123, 220, 123)"
+        }
+        gsap.to(".anonymity-button-circle", {
+            x : xTravel,
+            duration : 0.2
+        })
+        anonymity.current = !anonymity.current;
+    }
         return (
             <>
                     <div className="msgs-helper">
@@ -262,9 +283,15 @@ export default function Global(){
                             </span>
                             <textarea placeholder="Enter message" ref={textArea} value={msg} onChange={changeHandler} className="send-message" />
                             <div className="chat-yap-duration">
-                                <span>Duration: </span>
+                                <div className="anonymity-button-area">
+                                    <span className="input-label">Anonymity: </span>
+                                    <button className="anonymity-off" onClick={anonymityHandler}><span className="anonymity-button-circle"></span></button>
+                                </div>
+                                <div>
+                                <span className="input-label">Duration: </span>
                                 <input type="range" value={yapDuration} min={10} max={300} step={5} onChange={yapDurationhandler} />
                                 <span id="chat-yap-duration">{`${yapDuration}s`}</span>
+                                </div>
                             </div>
                             <button onClick={sendMsg} className="send-button">
                                 <svg className="chat-sendsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
