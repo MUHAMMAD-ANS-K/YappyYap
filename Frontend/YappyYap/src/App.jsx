@@ -17,6 +17,7 @@ import { ChatAuthProvider } from "../hooks/useChatAuth.jsx";
 import ChatProtection from "./ChatProtection.jsx";
 import Voice from "./Voice.jsx";
 import SigninError from "./SigninError.jsx";
+import Account from "./Account.jsx";
 export default function App() {
     const [email, setEmail] = useState("");
     const [selectOption, setOption] = useState("NewsLetter");
@@ -31,6 +32,7 @@ export default function App() {
             <SigninError/>
             <div className="main-navbar-helper">
             <Routes>
+                <Route path="/account" element={<Account/>}/>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail}/>}/>
                 <Route path="/signin/otp" element={<OTPForm email = {email} link={"/acc-verify"}/>}/>

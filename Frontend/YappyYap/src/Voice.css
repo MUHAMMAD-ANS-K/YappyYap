@@ -75,7 +75,6 @@
     align-items: center;
 }
 .anonymity-off{
-    background-color: rgb(63, 63, 103);
     width: 45px;
     border: none;
     border-radius: 8px;
@@ -85,7 +84,7 @@
     padding: 2px;
 }
 .anonymity-button-circle{
-    background-color: grey;
+    /* background-color: grey; */
     /* color: rgb(25, 25, 73); */
     width: 15px;
     height: 15px;

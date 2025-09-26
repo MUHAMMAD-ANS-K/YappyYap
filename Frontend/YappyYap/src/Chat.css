@@ -1,14 +1,65 @@
+:root{
+    --bg-color : rgb(17, 17, 28); 
+    --overlay-color : rgb(10, 10, 20);
+    --gradient-first-color : #111;
+    --gradient-second-color : #112;
+    --buttons-active-color : rgb(123, 220, 123);
+    --input-backgrounds : rgb(63, 63, 103);
+    --text-color: aqua;
+    --header-color : rgb(20, 20, 44);
+    --text-gradient: linear-gradient(135deg, #7C3AED 0%, #22D3EE 55%, #10B981 100%);
+    --anonymity-button : grey;
+}
+html[data-theme="blue"]{
+    --bg-color : rgb(17, 17, 28); 
+    --overlay-color : rgb(10, 10, 20);
+    --gradient-first-color : #111;
+    --gradient-second-color : #112;
+    --buttons-active-color : rgb(123, 220, 123);
+    --input-backgrounds : rgb(63, 63, 103);
+    --text-color: aqua;
+    --header-color : rgb(20, 20, 44);
+    --text-gradient: linear-gradient(135deg, #7C3AED 0%, #22D3EE 55%, #10B981 100%);
+    --anonymity-button : grey;
+}
+html[data-theme="beige"]{
+    --bg-color : #0e100f; 
+    --overlay-color : #0e100f;
+    --gradient-first-color : #0e100f;
+    --gradient-second-color : #0e100f;
+    --buttons-active-color : rgb(123, 220, 123);
+    --input-backgrounds : rgba(245, 222, 179, 0.5);
+    --text-color: wheat;
+    --header-color : #0e100f;
+    --text-gradient: linear-gradient(135deg, wheat 0%, beige 100%);
+    --anonymity-button : rgb(58, 58, 58);
+}
+html[data-theme="green"] {
+    --bg-color : rgb(17, 28, 17); 
+    --overlay-color : rgb(10, 20, 10);
+    --gradient-first-color : #111;
+    --gradient-second-color : rgb(17, 34, 17);
+    --buttons-active-color : rgb(24, 73, 164);
+    --input-backgrounds : rgb(63, 103, 63);
+    --text-color : rgb(0, 255, 200);
+    --header-color : rgb(20, 44, 20);
+    --text-gradient: linear-gradient(135deg, #8eed3a 0%, #22ee3a 55%, #10B981 100%);
+    --anonymity-button : grey;
+}
+/* *{
+    transition: col;
+    } */
 .chat-area *{
-    overflow: hidden;
+        overflow: hidden;
     box-sizing: border-box;
 }
 .chat-area{
-    background-color: rgb(17, 17, 28);
+    background-color: var(--bg-color);
 }
 .chat-sidearea{
     height: 100vh;
     width: 20vw;
-    border: 2px solid aqua;
+    border: 2px solid var(--text-color);
     /* border: 1px solid rgb(70, 68, 68); */
     position: fixed;
 }
@@ -27,7 +78,7 @@
 }
 .type-area-overlay{
     padding-left: calc(1%);
-    background-color: rgb(10, 10, 20);
+    background-color: var(--overlay-color);
     position: fixed;
     width: calc(100% - 20vw);
     height: calc(25px);
@@ -39,7 +90,7 @@
     padding: 4px 10px 50px 10px;
     border: 1px solid rgba(255, 255, 255, 0.277);
     border-radius: 8px;
-    background: linear-gradient(90deg, #111 0%, #112 100%);
+    background: linear-gradient(90deg, var(--gradient-first-color), var(--gradient-second-color));
     bottom: 20px;
     position: fixed;
     height: auto;
@@ -176,9 +227,9 @@ flex-direction: row-reverse;
 }
 #chat-yap-duration{
     font-size: 1rem;
-    background-color:rgb(123, 220, 123);
+    background-color: var(--buttons-active-color);
     width: 3.2rem;
-    color: #112;
+    color: var(--gradient-second-color);
     font-family: "Delius",cursive;
     margin-left: 10px;
     text-align: center;
@@ -189,16 +240,16 @@ flex-direction: row-reverse;
     cursor: pointer;
     color: #111;
     appearance: none;
-    background-color: rgb(63, 63, 103);
+    background-color: var(--input-backgrounds);
     border-radius: 10px;
 }
 .chat-yap-duration input[type="range"]::-webkit-slider-thumb {
-    background-color: rgb(123, 220, 123);
+    background-color: var(--buttons-active-color);
     border-radius: 50%;
     border: none;
 }
 .chat-yap-duration input[type="range"]::-moz-range-thumb {
-    background-color: rgb(123, 220, 123);
+    background-color: var(--buttons-active-color);
     border-radius: 50%;
     border: none;
 }
@@ -241,10 +292,19 @@ flex-direction: row-reverse;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 55%, #10B981 100%);
+    background: var(--text-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+.anonymity-off{
+    background-color: var(--input-backgrounds);
+}
+.anonymity-on .anonymity-button-circle{
+    background-color: var(--buttons-active-color);
+}
+.anonymity-button-circle{
+    background-color: var(--anonymity-button);
 }
 .realms-r-replacement{
     font-family:monospace;
@@ -275,13 +335,14 @@ flex-direction: row-reverse;
     font-size: 0.9rem;
 }
 .current-realm .realm-button{
-    color : #10B981;
+    /* color : #10B981; */
+    color : var(--buttons-active-color);
 }
 .dot-realm-style{
     position: relative;
     top: 3px;
     margin-right: 5px;
-    background: linear-gradient(135deg, #7C3AED 0%, #22D3EE 50%, #10B981 100%);
+    background: var(--text-gradient);
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -290,6 +351,37 @@ flex-direction: row-reverse;
 .channel-hashtag{
     cursor: pointer;
     font-size: 1.1rem;
+}.chat-header{
+    border: 1px solid rgb(70, 68, 68);
+    background-color: var(--header-color);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.active-realm{
+    padding-left: 5vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.online-count-dot{
+    width: 8px;
+    height: 8px;
+    background-color: var(--buttons-active-color);
+    border-radius: 50%;
+    position: relative;
+    bottom: 0.3rem;
+}
+.online-count{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: flex-end;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    font-size: 1rem;   
 }
 @media (max-width : 1100px) {
     .nav-close-styles .chat-sidearea{

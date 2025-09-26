@@ -132,14 +132,14 @@ export default function TypeArea(props) {
     }
     function anonymityHandler() {
         let xTravel;
-        const element = document.querySelector(".anonymity-button-circle");
+        const element = document.querySelector(".anonymity-off");
         if(anonymity.current) {
-            element.style.backgroundColor = "grey"
             xTravel = 0;
+            element.classList.remove("anonymity-on");
         }
         else{
             xTravel = 27;
-            element.style.backgroundColor = "rgb(123, 220, 123)"
+            element.classList.add("anonymity-on");
         }
         gsap.to(".anonymity-button-circle",{
             x : xTravel,

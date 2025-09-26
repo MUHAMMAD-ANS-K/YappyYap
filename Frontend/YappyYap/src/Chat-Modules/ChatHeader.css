@@ -1,33 +1,14 @@
-.chat-header{
-    border: 1px solid rgb(70, 68, 68);
-    background-color: rgb(20, 20, 44);
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.chat-theme{
+    position: absolute;
+    width: 80px;
+    right: 5px;
 }
-.active-realm{
-    padding-left: 5vw;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.online-count-dot{
-    width: 8px;
-    height: 8px;
-    background-color: rgb(132, 233, 132);
-    border-radius: 50%;
-    position: relative;
-    bottom: 0.3rem;
-}
-.online-count{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: flex-end;
-    padding-bottom: 10px;
-    padding-right: 10px;
-    font-size: 1rem;
-    
+.chat-theme select{
+    width: 100%;
+    background-color: var(--input-backgrounds);
+    outline: none;
+    border: none;
+    height: 25px;
+    border-radius: 4px;
+    padding-left: 4px;
 }

@@ -244,18 +244,18 @@ export default function Global(){
     }
     function anonymityHandler() {
         let xTravel;
-        const element = document.querySelector(".anonymity-button-circle");
+        const element = document.querySelector(".anonymity-off");
         if (anonymity.current) {
             xTravel = 0;
-            element.style.backgroundColor = "grey"
+            element.classList.remove("anonymity-on");
         }
         else{
             xTravel = 27;
-            element.style.backgroundColor = "rgb(123, 220, 123)"
+            element.classList.add("anonymity-on");
         }
         gsap.to(".anonymity-button-circle", {
             x : xTravel,
-            duration : 0.2
+            duration : 0.1
         })
         anonymity.current = !anonymity.current;
     }
