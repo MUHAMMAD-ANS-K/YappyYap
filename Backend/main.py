@@ -1,15 +1,20 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, status, Depends
+from fastapi import FastAPI, UploadFile, File, HTTPException, status, Depends, Form, Response
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-import auth, websocket, voicewebsoc
+import auth, websocket, voicewebsoc, components
 import os
+import io
+from tempfile import NamedTemporaryFile
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from database import session, VoiceMsgs
+from database import session
+from typing import Annotated
 app = FastAPI()
 app.include_router(auth.router)
 app.include_router(voicewebsoc.router)
 app.include_router(websocket.router)
+app.include_router(components.router)
 
 origins = [
     "https://muhammadans.com",

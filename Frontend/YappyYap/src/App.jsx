@@ -15,9 +15,10 @@ import Chat from "./Chat.jsx";
 import { DashboardAuthProvider } from "../hooks/useDashAuth.jsx";
 import { ChatAuthProvider } from "../hooks/useChatAuth.jsx";
 import ChatProtection from "./ChatProtection.jsx";
-import Voice from "./Voice.jsx";
 import SigninError from "./SigninError.jsx";
 import Account from "./Account.jsx";
+import { HomeCompsProvider } from "../hooks/useHomeComps.jsx";
+import { AboutCompsProvider } from "../hooks/useAboutComps.jsx";
 export default function App() {
     const [email, setEmail] = useState("");
     const [selectOption, setOption] = useState("NewsLetter");
@@ -38,8 +39,8 @@ export default function App() {
                 <Route path="/signin/otp" element={<OTPForm email = {email} link={"/acc-verify"}/>}/>
                 <Route path="/signup/otp" element={<OTPForm email = {email} link={"/acc-create"}/>}/>
                 <Route path="/blogs" element={<Blog/>}/>
-                <Route path="/" element={<Home email = {email}/>}/>
-                <Route path="/about" element={<About/>}/>
+                <Route path="/" element={<HomeCompsProvider><Home email = {email}/></HomeCompsProvider>}/>
+                <Route path="/about" element={<AboutCompsProvider><About/></AboutCompsProvider>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
                 <Route path="/chat/*" element={<ChatProtection><Chat/></ChatProtection>}/>

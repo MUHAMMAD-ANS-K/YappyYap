@@ -6,6 +6,9 @@ import "./Dashboard.css"
 import NotFound from "./404";
 import useDashAuth from "../hooks/useDashAuth";
 import Deployments from "./DashboardComps/Deployments";
+import AboutComp from "./DashboardComps/About";
+import { AboutCompsProvider } from "../hooks/useAboutComps";
+import { HomeCompsProvider } from "../hooks/useHomeComps";
 export default function Dashboard() {
     const {isAdmin} = useDashAuth();
     const {checking} = useDashAuth();
@@ -26,7 +29,8 @@ export default function Dashboard() {
             <Nav/>
             <Routes>
                 <Route path="/" element = {<Deployments/>}/>
-                <Route path="/home-comps" element={<HomeComp/>} />
+                <Route path="/home-comps" element={<HomeCompsProvider><HomeComp/></HomeCompsProvider>} />
+                <Route path="/about-comps" element={<AboutCompsProvider><AboutComp/></AboutCompsProvider>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
         </div>

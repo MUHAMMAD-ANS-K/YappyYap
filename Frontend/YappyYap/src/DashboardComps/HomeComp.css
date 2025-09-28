@@ -1,18 +1,44 @@
 .dashboard-section{
     margin-left: 20rem;
 }
+.dashboard-section h1{
+    text-align: center;
+}
 .boxmain-add{
     margin: 20px;
     padding-bottom: 10px;
     overflow: hidden;
-    border: 2px solid white;
     height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 50px;
-    height: 80vh;
+    gap: 30px;
+    height: 100vh;
+}
+.active-boxes{
+    margin: 50px 0px;
+}
+.active-box{
+    position: relative;
+    margin-top: 50px;
+    margin-right: 20px;
+    border-radius: 4px;
+    padding: 5px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid white;
+}
+.active-box img{
+    height: 150px;
+    border-radius: 6px;
+    object-fit: contain;
+}
+.active-box p{
+    font-size: 0.8rem;
+    margin-left: 10px;
 }
 textarea{
     resize: none;
@@ -50,4 +76,15 @@ textarea:focus{
     transform: scale(1.2);
     font-size: 1.2rem;
     font-weight: bold;
+}
+.delete-svg{
+    width: 20px;
+}
+.delete-button-svg{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }

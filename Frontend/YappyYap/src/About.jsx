@@ -3,9 +3,11 @@ import AboutComp from "./AboutComp";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap/gsap-core";
 import { ScrollTrigger } from "gsap/all";
+import useAboutComps from "../hooks/useAboutComps";
 export default function About() {
-    gsap.registerPlugin(ScrollTrigger);
+    const {contents} = useAboutComps()
     useGSAP(()=>{
+        gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray(".vr-circle-fill").forEach(element => {
             gsap.to(element, {
                 opacity: 1,
@@ -28,7 +30,7 @@ export default function About() {
                 }
             })
         });
-    }, [])
+    }, [contents])
     return (
         <section>
             <div className="about-heading">
@@ -40,9 +42,14 @@ export default function About() {
                 Our Story
             </h1>
 
-            <AboutComp/>
-            <AboutComp left={true}/>
-            <AboutComp/>
+            {
+            contents.map((content, index) => {
+                let left = false;
+                if (index % 2)
+                    left = true;
+                return <AboutComp key={content} content={content} left={left}/>
+            })
+            }
             <div className="about-end-content">
             <h1>Development Onwards...</h1>
             <p className="about-end-para">YappyYap is making progress by each day due to continuous efforts and we are trying our best to make use of this platform an ease for you.</p>

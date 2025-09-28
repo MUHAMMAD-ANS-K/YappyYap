@@ -11,10 +11,9 @@ import img2 from "./assets/dummy2.jpg"
 import img3 from "./assets/dummy3.jpg"
 import logo from "./assets/logo.png"
 import useAxios from "../hooks/useAxios";
+import useHomeComps from "../hooks/useHomeComps";
 export default function Home(props) {
-    let box_heading = ["Hi", "By"];
-    let box_para = ["wfhuifhuifhcacnbweciewcuibeicbwe", "dwu3283dubd   gedvwyegdweygdeuygjcbcjdeu"]
-    let box_img = [img1, img2, img3]
+    let {headings, contents, urls, loading} = useHomeComps();
     gsap.registerPlugin(ScrollTrigger);
     useGSAP(()=>{
     let timeline1 = gsap.timeline();
@@ -185,8 +184,9 @@ export default function Home(props) {
                 <p id="scroll-msg-p2">Yap <img src={logo}></img> Make Jokes <img src={logo}></img> Be Free <img src={logo}></img> Be Anonymous <img src={logo}></img></p>
             </div>
             <div className="boxes">
-            <BoxMain heading = {box_heading[0]} content = {box_para[0]} display_stuff = {box_img[0]}/>
-            <BoxMain heading = {box_heading[1]} content = {box_para[1]} display_stuff = {box_img[1]}/>
+                {loading ? (<></>) : (<>{
+                    headings.map((heading, index) => <BoxMain key={heading} heading={heading} content={contents[index]} display_stuff={urls[index]}/>)
+                }</>)}
             </div>
             <div className="scroll-pin">
                 <p className="scroll-pin-text">Chat in an environment with no restrictions and anonymity.</p>

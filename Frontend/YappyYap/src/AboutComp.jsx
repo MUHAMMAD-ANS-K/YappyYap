@@ -12,7 +12,7 @@ export default function AboutComp(props) {
                 </div>
             </div>
             <div className="about-comp-content" style = {props.left? {left : "52vw"} : {}}>
-            <h2>{props.heading}</h2>
+            {/* <h2>{props.heading}</h2> */}
             <p>{props.content}</p>
             </div>
         </div>

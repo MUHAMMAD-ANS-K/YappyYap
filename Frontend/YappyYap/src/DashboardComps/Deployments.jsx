@@ -68,7 +68,7 @@ export default function Deployments() {
                         <p><span>Creator:</span> {data.Creator}</p>
                         <p><span>Commit Msg:</span> {data.Commit}</p>
                         </div>
-                    ): (<p id="error-msg">{data.msg}</p>)}
+                    ): (<p className="error-msg">{data.msg}</p>)}
                     <div className="dashboard-buttons">
                         <button className="dashboard-buttons-one" onClick={ (e)=> {setOption("production"); setData({"msg" : "Loading..."}); getLatestDeployment(e)}} disabled={loading}>Current Deployment</button>
                         <button className="dashboard-buttons-two" onClick={ (e)=> {setOption("recent"); setData({"msg" : "Loading..."}); getLatestDeployment(e)}} disabled={loading}>Latest Deployment</button>

@@ -35,7 +35,7 @@
     display: inline;
     color: rgb(199, 143, 199);
 }
-#error-msg{
+.error-msg{
     margin-top: 100px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 5rem;
