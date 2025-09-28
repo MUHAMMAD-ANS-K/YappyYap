@@ -102,7 +102,7 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
     db.delete(otp_entry)
     db.delete(pending_user)
     db.commit()
-    token = await create_session_token({"username": user.username, "exp" : int(time.time()) + 1800})
+    token = await create_session_token({"username": user.username, "type" : "Permanent", "exp" : int(time.time()) + 1800})
     response.set_cookie(
         key="session_token",
         value=token,
@@ -156,7 +156,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
     
     # user = db.query(Users).filter_by(email = verification_data.email).first()
     user = db.execute(select(Users).where(Users.email == verification_data.email)).scalar_one()
-    payload = {"username" : user.username, "exp" : int(time.time()) + 1800}
+    payload = {"username" : user.username, "type" : "Permanent", "exp" : int(time.time()) + 1800}
     # admin_check = db.query(Admins).filter(email=verification_data.email).first()
     admin_check = db.execute(select(Admins).where(Admins.email == verification_data.email)).scalar_one_or_none()
     if admin_check:
@@ -210,7 +210,7 @@ async def guest_login(response: Response, db : Session = Depends(get_db)):
     )
     db.add(guest_data)
     db.commit()
-    token = await create_session_token({"username" : guest_data.username, "exp": int(time.time()) + 300})
+    token = await create_session_token({"username" : guest_data.username, "type": "Guest", "exp": int(time.time()) + 300})
     response.set_cookie(
         key="session_token",
         value = token,

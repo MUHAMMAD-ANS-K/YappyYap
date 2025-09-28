@@ -73,17 +73,17 @@ export default function Home(props) {
         stagger: 1,
         ease: "sine.inOut"
     })
-    gsap.to(".scroll-pin-text", {
-        transform: "translateX(-1990vh)",
-        scrollTrigger:{
-            trigger:".scroll-pin",
-            start: "top 0vh",
-            end: "top -8000vh",
-            scrub: 4,
-            pin: ".scroll-pin",
-        },
-        ease: "sine.inOut"
-    })
+        gsap.to(".scroll-pin-text", {
+            transform: "translateX(-1990vh)",
+            scrollTrigger:{
+                trigger:".scroll-pin",
+                start: "top 0vh",
+                end: "top -8000vh",
+                scrub: 4,
+                pin: ".scroll-pin",
+            },
+            ease: "sine.inOut"
+        })
     const ribbon1 = document.querySelector("#scroll-msg-p1");
     const ribbon2 = document.querySelector("#scroll-msg-p2");
     const items = gsap.utils.toArray([ribbon1, ribbon2]);
@@ -111,6 +111,7 @@ export default function Home(props) {
 },[])
     return (
         <main>
+            <div className="view-helper">
             <h1 className="main-h1">
                 <div className="first-part">
 <span className="animation-line"><span className="upside-down">A</span></span>
@@ -171,11 +172,12 @@ export default function Home(props) {
             <span className="animation-line"><span className="down-rotating">s</span></span>
             </div>
 </h1>
-<div>
+<div className="curly-bracket-txt">
     <span className="curly-bracket">{"{"}</span>
             <span className="main-text">Yap as much as you want on YappyYap. Say whatever you want.
                 </span><span className="curly-bracket">{"}"}</span>
             <Link to="/signup"><button className="main-join-button">Join Now</button></Link>
+            </div>
             </div>
             <hr />
             <div className="scroll-msg">

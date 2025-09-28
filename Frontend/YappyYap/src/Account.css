@@ -1,0 +1,71 @@
+.account-area{
+    font-family: 'Fredericka the Great', 'serif';
+    padding-left: 4px;
+}
+.account-details{
+    display: flex;
+    flex-direction: column;
+    margin: 100px auto;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.account-details img{
+    width: 100px;
+    border-radius: 4px;
+}
+.account-type{
+    /* width: 250px; */
+    font-size: 1.2rem;
+}
+.account-username{
+    font-family: 'Fredericka the Great', 'serif';
+    font-size: 1.8rem;
+}
+.active-messages{
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto;
+    gap: 20px;
+    /* justify-content: center; */
+    align-items: center;
+}
+.active-message{
+    position: relative;
+    width: 720px;
+    background-color: rgb(20, 20, 44);
+    min-height: 80px;
+    border-radius: 8px;
+    padding: 6px;
+    padding-bottom: 38px;
+    font-family: "Delius", cursive;
+}
+.timestamp-active-msg{
+    font-size: 0.8rem;
+    text-align: right;
+}
+.active-message-timer{
+    background-color: rgb(214, 92, 92);
+    width: 50px;
+    height: 20px;
+    border-radius: 4px;
+    position : absolute;
+    bottom: 6px;
+    right: 5px;
+}
+.fetch-messages{
+    border: none;
+    background-color: rgb(20, 20, 44);
+    color: beige;
+    width: 80vw;
+    text-align: center;
+    padding: 12px 4px;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+@media (max-width : 750px){
+    .active-message{
+        width: 80vw;
+    }
+}

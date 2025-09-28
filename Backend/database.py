@@ -69,6 +69,18 @@ class VoiceMsgs(BaseMsg, Base):
     __tablename__ = "voices"
     msg = Column(LargeBinary)
 
+class Home_comp(Base):
+    __tablename__="homecomps"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    heading = Column(String)
+    content = Column(String)
+    img = Column(LargeBinary)
+
+class About_comp(Base):
+    __tablename__="aboutcomps"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    content = Column(String)
+
 class Msg_return(BaseModel):
     # id : int | str
     msg : str

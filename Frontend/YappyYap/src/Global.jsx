@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap/gsap-core"
 import useAxios from "../hooks/useAxios"
 import default_image from "./assets/default_img.png"
-export default function Global(){
+export default function Global(props){
     const [msg, setMsg] = useState("");
     const textArea = useRef();
     const ws = useRef(null);
@@ -23,6 +23,7 @@ export default function Global(){
     }, [msg])
     useEffect(() => {
         const element = document.querySelector(".global-realm");
+        props.setRealm("global-realm")
         element.classList.add("current-realm");
         const axios = useAxios()
         async function getMessages () {

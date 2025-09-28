@@ -11,10 +11,12 @@ export default function SigninError() {
         timeline.current = gsap.timeline({paused : true});
         timeline.current.to(".signin-error", {
             x : 0,
-            duration : 1
+            duration : 1,
+            display : "flex"
         }).to(".signin-error", {
             x : 300,
             delay : 3,
+            display : "none",
             duration : 1
         })
     }, [])

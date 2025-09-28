@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
-from database import session, VoiceMsgs, Users
+from database import session, VoiceMsgs, Users, Msgs, Msg_return
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta
 from auth import verify_session_token
@@ -129,3 +129,17 @@ async def get_msgs(db : Session = Depends(get_db)):
             zipF.writestr(msg.username + str(msg.expiry), time_sent + expiry + len(username).to_bytes(4, "big") + username + msg.msg)
     zip_file.seek(0)
     return StreamingResponse(zip_file)
+
+
+@router.get("/accountmsgs")
+def account_msgs(db : Session = Depends(get_db)):
+    time = datetime.now(timezone.utc) + timedelta(seconds=2)
+    msgs = db.execute(select(VoiceMsgs).where(VoiceMsgs.expiry > time)).scalars().all()
+    payload = []
+    for msg in msgs:
+         temp = {"expiry" : msg.expiry, "time_sent" : msg.time_sent, "type" : "Voice"}
+         payload.append(temp)
+    msgs = db.execute(select(Msgs).where(Msgs.expiry > time)).scalars().all()
+    for msg in msgs:
+         payload.append(Msg_return.from_orm(msg))
+    return {"msgs" : payload}

@@ -1,12 +1,11 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, status, WebSocket
+from fastapi import FastAPI, UploadFile, File, HTTPException, status, Depends
+from sqlalchemy.orm import Session
+from sqlalchemy import select
 import auth, websocket, voicewebsoc
 import os
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-from io import BytesIO
-import json
-import subprocess
+from database import session, VoiceMsgs
 app = FastAPI()
 app.include_router(auth.router)
 app.include_router(voicewebsoc.router)
@@ -25,47 +24,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.post("/voice")
-# async def voice(file : UploadFile = File()):
-#     print(file.content_type)
-#     if file.content_type == "audio/ogg":
-#         suffix = ".ogg"
-#     elif file.content_type =="audio/webm":
-#         suffix = ".webm"
-#     else:
-#         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Noob effort of sending wrong data")
-#     try:
-#         with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temp_input:
-#             try:
-#                 temp_input.write(await file.read())
-#                 temp_input.flush()
-#                 output_tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
-#                 output_tmp.close()
-#                 voice_convert = subprocess.run(
-#                     [
-#                         'ffmpeg',
-#                         '-y',
-#                         '-i', temp_input.name,
-#                         '-af', "asetrate=55000,atempo=0.85,afftfilt=real='hypot(re,im)*sin(65)',tremolo=f=50,adynamicsmooth=sensitivity=2.5:basefreq=10000",
-#                         output_tmp.name
-#                     ],
-#                     stdout=subprocess.PIPE,
-#                     stderr=subprocess.PIPE
-#                 )
-#                 if voice_convert.returncode != 0:
-#                     raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=[{"msg" : "Error occured while processing."}])
-#                 with open(output_tmp.name, "rb") as return_file:
-#                     data = BytesIO(return_file.read())
-#                     return StreamingResponse(data, media_type="audio/webm")
-#             except Exception as e:
-#                 print(e)
-#                 raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=[{"msg" : "Error occured while processing the file"}])
-#     except:
-#         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=[{"msg" : "Error occured in server. Try Later"}])
-#     finally:
-#         os.remove(output_tmp.name)
-#         os.unlink(temp_input.name)
+def get_db():
+    with session() as db:
+        yield db
 
+@app.get("/userdetails")
+def user_details():
+    username = "Ghost"
+    user_type = "Permanent"
+    # raise HTTPException(status_code=404)
+    return {
+        "username" : username,
+        "user_type" : user_type
+    }
 @app.get("/")
 def root():
     return {"msg" : "Hi vro"}

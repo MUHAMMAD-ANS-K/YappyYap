@@ -19,8 +19,8 @@ span{
 .main-join-button{
     border: 2px solid rgb(89, 221, 89);
     width: 20vw;
-    position: relative;
-    left: 35vw;
+    position: absolute;
+    right: 10px;
     height: 60px;
     border-radius: 8px;
     background-color: transparent;
@@ -49,7 +49,8 @@ span{
     width: 7vw;
 }
 .scroll-pin{
-    background-color: rgb(68, 111, 68);
+    /* background-color: rgb(68, 111, 68); */
+    background-color: rgb(77, 121, 77);
     height: 100vh;
     width: 100vw;
     padding: 60px 0px;
@@ -61,7 +62,7 @@ span{
 .scroll-pin-text{
     overflow-x:visible;
     text-transform: uppercase;
-    font-size: 60vh;
+    font-size: 58vh;
     color: rgba(31, 31, 31, 0.8);
     font-family: "Fredericka the Great", serif;
 }
@@ -79,7 +80,7 @@ span{
 .scroll-msg{
     width: 100vw;
     height: 12rem;
-    background-color: rgb(83, 128, 83);
+    background-color: rgb(77, 121, 77);
     font-size: 4.5rem;
     font-weight: 900;
     text-wrap: nowrap;
@@ -87,4 +88,48 @@ span{
 }
 .scroll-msg p{
     overflow-x:visible;
+}
+.curly-bracket-txt{
+    position: relative;
+}
+.curly-bracket-txt{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 130px;
+}
+@media (max-width : 1100px){
+.scroll-pin{
+    display: none;
+}
+}
+@media (max-width : 800px){
+    .scroll-msg{
+        font-size: 3.5rem;
+    }
+    .curly-bracket-txt{
+        height: 40vh;
+        padding-bottom: 10vh;
+    }
+    .curly-bracket{
+        font-size: 8rem;
+    }
+    .main-text{
+        font-size: 1rem;
+        position: relative;
+        top: 10px;
+    }
+    .main-join-button{
+        bottom: 0;
+        left: 5vw;
+        width: 90vw;
+        
+    }
+    .main-h1 .first-part{
+        font-size: 15vw;
+    }
+    .main-h1 .second-part{
+        margin-left: 10vw;
+        font-size: 10.5vw;
+    }
 }

@@ -16,8 +16,8 @@ export default function Chat() {
                     <ChatHeader realm={realm}/>
                     <Routes>
                         <Route path="/" element={<DefaultRoot/>}/>
-                        <Route path="/global" element={<Global/>}/>
-                        <Route path="/voice" element={<Voice/>}/>
+                        <Route path="/global" element={<Global setRealm={setRealm}/>} />
+                        <Route path="/voice" element={<Voice setRealm={setRealm}/>} />
                     </Routes>
                     {/* {realm === "global-realm" ? <Global/> : <Voice/>} */}
                 </div>

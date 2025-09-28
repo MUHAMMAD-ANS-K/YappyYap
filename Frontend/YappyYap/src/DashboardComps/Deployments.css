@@ -4,7 +4,8 @@
     height: 100vh;
     width: 100%;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    padding-right: 60px;
 }
 .dashboard-boxes .dashboard-box{
     border-radius: 10%;
@@ -22,7 +23,7 @@
     width: 200px;
 }
 .dashboard-boxes div h3{
-    font-size: 3rem;
+    font-size: 2rem;
     color: rgb(199, 143, 199);
     font-weight: bold;
 }
@@ -40,10 +41,12 @@
     font-size: 5rem;
 }
 .dashboard-buttons{
+    display: flex;
+    gap: 20px;
+}
+.dashboard-buttons button{
     background-color: transparent;
     border: 2px solid rgb(89, 221, 89);
-    position: absolute;
-    bottom: 30px;
     width: 220px;
     height: 50px;
     border-radius: 12px;
@@ -51,15 +54,9 @@
     font-size: 1.3rem;
     padding: 10px;
 }
-.dashboard-buttons:hover{
+.dashboard-buttons button:hover{
     color: beige;
     background-color: rgb(89, 221, 89);
     font-weight: bold;
     font-size: 1.2rem;
-}
-.dashboard-buttons-one{
-    left: 100px;
-}
-.dashboard-buttons-two{
-    right: 100px;
 }

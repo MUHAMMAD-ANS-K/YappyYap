@@ -32,7 +32,7 @@ export default function App() {
             <SigninError/>
             <div className="main-navbar-helper">
             <Routes>
-                <Route path="/account" element={<Account/>}/>
+                <Route path="/account" element={<ChatProtection><Account/></ChatProtection>}/>
                 <Route path="/signin" element={<SignIn setEmail = {setEmail}/>}/>
                 <Route path="/signup" element={<SignUp setEmail = {setEmail}/>}/>
                 <Route path="/signin/otp" element={<OTPForm email = {email} link={"/acc-verify"}/>}/>
@@ -40,7 +40,6 @@ export default function App() {
                 <Route path="/blogs" element={<Blog/>}/>
                 <Route path="/" element={<Home email = {email}/>}/>
                 <Route path="/about" element={<About/>}/>
-                <Route path="/voice" element={<Voice/>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
                 <Route path="/chat/*" element={<ChatProtection><Chat/></ChatProtection>}/>

@@ -28,6 +28,7 @@ html[data-theme="beige"]{
     --gradient-first-color : #0e100f;
     --gradient-second-color : #0e100f;
     --buttons-active-color : rgb(123, 220, 123);
+    /* --buttons-active-color : #FF8709; */
     --input-backgrounds : rgba(245, 222, 179, 0.5);
     --text-color: wheat;
     --header-color : #0e100f;

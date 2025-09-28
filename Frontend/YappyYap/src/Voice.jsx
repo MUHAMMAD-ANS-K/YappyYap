@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import default_img from "./assets/default_img.png"
-import audio1 from "./assets/Hi.m4a"
-import audio2 from "./assets/By.mp3"
 import Play from "./assets/Play"
 import Pause from "./assets/Pause"
 import {unzipSync} from "fflate";
@@ -10,15 +8,14 @@ import { gsap } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
 import useAxios from "../hooks/useAxios";
 import TypeArea from "./Voice/TypeArea"
-export default function Voice() {
+export default function Voice(props) {
     const duration = useRef(0);
     const moveBarAnimation = useRef(new Map())
     const moveBarMover = useRef(new Map())
     const barMover = useRef()
     const dotMover = useRef()
     const websocket = useRef()
-    const msgRemoverInterval = useRef()
-    let data = [];
+    const msgRemoverInterval = useRef();
     useGSAP(() => {
         gsap.ticker.lagSmoothing(0)
         barMover.current = (cls, d, id) => {
@@ -43,6 +40,7 @@ export default function Voice() {
     useEffect(() => {
         const element = document.querySelector(".voice-realm");
         element.classList.add("current-realm")
+        props.setRealm("voice-realm")
         msgRemoverInterval.current = setInterval(removeMsg, 1000);
         const axios = useAxios();
         async function getmsgs() {
@@ -54,12 +52,16 @@ export default function Voice() {
                 const files = unzipSync(zip)
                 document.querySelector(".msgs").innerHTML = "";
                 for (let filename in files){
-                    const msg = document.createElement("li")
                     const file = files[filename]
                     const buffer = file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength)
                     const vw = new DataView(buffer);
                     const timeSent = new Date(vw.getFloat64(0, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
-                    const expiry = new Date(vw.getFloat64(8, false) * 1000).toString().replace(/[\s.:()+]+/g, "");
+                    let expiry = new Date(vw.getFloat64(8, false) * 1000);
+                    if (expiry - new Date() < 1500){
+                        continue;
+                    }
+                    expiry = expiry.toString().replace(/[\s.:()+]+/g, "");
+                    const msg = document.createElement("li")
                     msg.classList.add("chat-message-block", expiry);
                     const usernameLength = vw.getUint32(16, false) + 20;
                     const username = new TextDecoder("utf-8").decode(file.slice(20, usernameLength));
