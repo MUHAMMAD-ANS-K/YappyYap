@@ -1,17 +1,16 @@
 import "./ChatHeader.css"
 import useAxios from "../../hooks/useAxios"
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom";
 export default function ChatHeader(props) {
     const [online, setOnline] = useState(0);
     const [navOpen, setNavopen] = useState(false)
     const axios = useAxios()
-    const location = useLocation();
     async function getOnline() {
         try{
-            const paths = location.pathname.split("/")
-            const activePath = paths[paths.length - 1];
-            const response = await axios.get(`${activePath}/livecount`);
+            let initialPath = "global";
+            if (props.realm == "voice-realm")
+                initialPath = "voice";
+            const response = await axios.get(`${initialPath}/livecount`);
             if (response.data.msg === "Success") {
                 setOnline(response.data.total)
             }

@@ -111,7 +111,7 @@ async def acc_create(verification_data : OTP_verification, response: Response, d
         samesite="none",
         max_age=1800,
         path="/",
-        domain=".muhammadans.com"
+        domain=".yappyyap.xyz"
     )
     return {"msg":"Success", "username" : user.username, "user" : "email"}
 
@@ -170,7 +170,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
         samesite = "none",
         max_age=1800,
         path="/",
-        domain=".muhammadans.com"
+        domain=".yappyyap.xyz"
         )
     db.delete(otp_entry)
     db.commit()
@@ -219,7 +219,7 @@ async def guest_login(response: Response, db : Session = Depends(get_db)):
         samesite="none",
         max_age=300,
         path="/",
-        domain=".muhammadans.com"
+        domain=".yappyyap.xyz"
     )
     return {"msg" : "Success", "username" : username}
     
