@@ -31,8 +31,8 @@ def get_db():
     with session() as db:
         yield db
 
-@app.get("/userdetails", payload = Depends(verify_session_token))
-def user_details():
+@app.get("/userdetails")
+def user_details(payload = Depends(verify_session_token)):
     username = "Ghost"
     user_type = "Permanent"
     # raise HTTPException(status_code=404)
