@@ -4,7 +4,7 @@ import "./HomeComp.css"
 import useAxios from "../../hooks/useAxios";
 import useChatAuth from "../../hooks/useChatAuth";
 import useHomeComps from "../../hooks/useHomeComps";
-import Delete from "./../assets/delete"
+import Delete from "./../assets/Delete"
 import useAboutComps from "../../hooks/useAboutComps";
 export default function AboutComp() {
     const [content, setContent] = useState("");
