@@ -20,8 +20,8 @@ export default function Dashboard() {
         )
     }
     else{
-        // if (!isAdmin){
-        if (false){
+        // if (false){
+        if (!isAdmin){
             return <Navigate to="/" replace/>
         }
     return(

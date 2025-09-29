@@ -1,9 +1,9 @@
 import axios from "axios"
 
+// baseURL : "http://localhost:8000/",
 export default function useAxios(){
-    // baseURL: "https://api.muhammadans.com",
     return axios.create({
-        baseURL : "http://localhost:8000/",
+        baseURL: "https://api.yappyyap.xyz",
         withCredentials: true,
     })
 }

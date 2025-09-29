@@ -37,8 +37,8 @@ manager = Connection_Manager()
 
 
 @router.websocket("/ws")
-async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
-    username = "username"
+async def voice_conn(user: WebSocket, payload = Depends(verify_session_token), db : Session = Depends(get_db)):
+    username = payload["username"]
     await manager.add_connection(user, username)
     try:
         expiry_seconds = 0
@@ -117,7 +117,7 @@ async def voice_conn(user: WebSocket, db : Session = Depends(get_db)):
          manager.disconnect(username)
 
 @router.get("/getmsgs")
-async def get_msgs(db : Session = Depends(get_db)):
+async def get_msgs(db : Session = Depends(get_db), payload = Depends(verify_session_token)):
     time = datetime.now(timezone.utc) + timedelta(seconds=2)
     db_data = db.execute(select(VoiceMsgs).where(VoiceMsgs.expiry > time)).scalars().all()
     zip_file = io.BytesIO()
@@ -132,7 +132,7 @@ async def get_msgs(db : Session = Depends(get_db)):
 
 
 @router.get("/accountmsgs")
-def account_msgs(db : Session = Depends(get_db)):
+def account_msgs(db : Session = Depends(get_db), pd = Depends(verify_session_token)):
     time = datetime.now(timezone.utc) + timedelta(seconds=2)
     msgs = db.execute(select(VoiceMsgs).where(VoiceMsgs.expiry > time)).scalars().all()
     payload = []

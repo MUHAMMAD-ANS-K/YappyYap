@@ -1,11 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, status, Depends, Form, Response
-from fastapi.responses import StreamingResponse
+from fastapi import FastAPI, UploadFile, File, HTTPException, status, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 import auth, websocket, voicewebsoc, components
 import os
-import io
-from tempfile import NamedTemporaryFile
+from auth import verify_session_token
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from database import session, Contact_us, Contact_us_data, NewsLetter, BugsReport
@@ -33,7 +31,7 @@ def get_db():
     with session() as db:
         yield db
 
-@app.get("/userdetails")
+@app.get("/userdetails", payload = Depends(verify_session_token))
 def user_details():
     username = "Ghost"
     user_type = "Permanent"

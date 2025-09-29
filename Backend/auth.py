@@ -248,7 +248,7 @@ async def guest_logout(request: Guest_login, response : Response, db : Session= 
 
 @router.get("/admincheck")
 async def adminAuthentication(session_token: Annotated[str | None, Cookie()] = None):
-    payload = verify_session_token(session_token)
+    payload = await verify_session_token(session_token)
     if (not payload["role"]) or (payload["role"] != "admin"):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=[{"msg" : "Not an admin"}])
     return {"msg" : "Success"}
