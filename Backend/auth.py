@@ -160,7 +160,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
     # admin_check = db.query(Admins).filter(email=verification_data.email).first()
     admin_check = db.execute(select(Admins).where(Admins.email == verification_data.email)).scalar_one_or_none()
     if admin_check:
-        payload.update({"exp" : 3600, "type" : "admin"})
+        payload = {"username" : user.username, "type" : "admin", "exp" : int(time.time()) + 1800}
     token = await create_session_token(payload)
     response.set_cookie(
         key="session_token",
