@@ -1,14 +1,13 @@
 import "./ChatHeader.css"
 import useAxios from "../../hooks/useAxios"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 export default function ChatHeader(props) {
     const [online, setOnline] = useState(0);
     const [navOpen, setNavopen] = useState(false)
     const axios = useAxios()
-    async function getOnline() {
+    const getOnline = useCallback(async ()=> {
         try{
             let initialPath = "global";
-            console.log(props.realm)
             if (props.realm == "voice-realm") {
                 initialPath = "voice";
             }
@@ -18,7 +17,7 @@ export default function ChatHeader(props) {
             }
         }
         catch {}
-    }
+    })
     useEffect(()=>{
         let theme = localStorage.getItem("theme");
         if(theme)
