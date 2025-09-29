@@ -40,6 +40,7 @@ export default function Chat(props) {
                         <li>Permanent users get 30 min login sessions while guest 5 minutes.</li>
                         <li>You will have to sign in again after this time period for true anonymity.</li>
                         <li>The message gets deleted after the n seconds specified.</li>
+                        <li>Filters are applied on voice so that no one can recognize you.</li>
                         <li>We really advise to take a look at these detailed features <Link>Learn more</Link></li>
                     </ul>
                     <div className="default-theme-set">
