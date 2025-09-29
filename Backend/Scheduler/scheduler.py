@@ -25,7 +25,7 @@ signal.signal(signal.SIGINT, shutdown)
 signal.signal(signal.SIGTERM, shutdown)
 
 scheduler = BlockingScheduler(executors=executors, timezone=utc)
-scheduler.add_job(del_job, 'interval', seconds=60)
+scheduler.add_job(del_job, 'interval', seconds=10)
 try:
     scheduler.start()
 except (KeyboardInterrupt, SystemExit):
