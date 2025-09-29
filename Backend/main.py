@@ -33,8 +33,8 @@ def get_db():
 
 @app.get("/userdetails")
 def user_details(payload = Depends(verify_session_token)):
-    username = "Ghost"
-    user_type = "Permanent"
+    username = payload["username"]
+    user_type = payload["type"]
     # raise HTTPException(status_code=404)
     return {
         "username" : username,
