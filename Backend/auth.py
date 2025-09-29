@@ -160,7 +160,7 @@ async def verify(verification_data : OTP_verification, response: Response, db : 
     # admin_check = db.query(Admins).filter(email=verification_data.email).first()
     admin_check = db.execute(select(Admins).where(Admins.email == verification_data.email)).scalar_one_or_none()
     if admin_check:
-        payload.update(exp = 3600, role = "admin")
+        payload.update({"exp" : 3600, "type" : "admin"})
     token = await create_session_token(payload)
     response.set_cookie(
         key="session_token",
@@ -247,8 +247,7 @@ async def guest_logout(request: Guest_login, response : Response, db : Session= 
     return {"msg" : "Success"}
 
 @router.get("/admincheck")
-async def adminAuthentication(session_token: Annotated[str | None, Cookie()] = None):
-    payload = await verify_session_token(session_token)
-    if (not payload["role"]) or (payload["role"] != "admin"):
+async def adminAuthentication(payload = Depends(verify_session_token)):
+    if (not payload["type"]) or (payload["type"] != "admin"):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=[{"msg" : "Not an admin"}])
     return {"msg" : "Success"}
