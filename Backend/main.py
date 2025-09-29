@@ -16,7 +16,7 @@ app.include_router(components.router)
 
 origins = [
     "https://yappyyap.xyz",
-    "http://localhost:5173"
+    "https://www.yappyyap.xyz"
 ]
 
 app.add_middleware(
