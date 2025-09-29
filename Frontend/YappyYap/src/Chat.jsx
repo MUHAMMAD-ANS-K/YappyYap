@@ -35,7 +35,7 @@ export default function Chat(props) {
                 <div className="instructions">
                     <button className="instruction-cross" onClick={removeInstructionsHeader}>X</button>
                     <ul>
-                        <li><span className="red-imp">Note:</span> The options feature for different text styles is under development and doesn't works.</li>
+                        <li><span className="red-imp">Note:</span> The options feature for different text styles is under development and rn only shows animation.</li>
                         <li>There is an anonymity feature to even hide your current name.</li>
                         <li>Permanent users get 30 min login sessions while guest 5 minutes.</li>
                         <li>You will have to sign in again after this time period for true anonymity.</li>

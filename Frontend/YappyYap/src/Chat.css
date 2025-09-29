@@ -265,14 +265,16 @@ flex-direction: row-reverse;
     margin-right: 5px;
 }
 .user-profile{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
     max-width: 70%;
     position: absolute;
     bottom: 30px;
     left: 15%;
+}
+.user-profile a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
 }
 .user-profile p{
     font-family: 'Fredericka the Great', 'serif';
