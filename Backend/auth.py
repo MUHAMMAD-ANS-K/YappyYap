@@ -32,9 +32,9 @@ async def verify_session_token(session_token: Annotated[str | None, Cookie()] = 
     try:
         payload = jwt.decode(session_token, PRIVATE_KEY, ALGORITHM)
         if not payload:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Payload not found"}])
         if not payload["username"]:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Username Not found"}])
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=[{"msg": "Invalid Token"}])
     except jwt.ExpiredSignatureError:

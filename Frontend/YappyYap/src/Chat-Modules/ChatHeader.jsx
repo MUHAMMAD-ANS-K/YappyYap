@@ -8,8 +8,10 @@ export default function ChatHeader(props) {
     async function getOnline() {
         try{
             let initialPath = "global";
-            if (props.realm == "voice-realm")
+            console.log(props.realm)
+            if (props.realm == "voice-realm") {
                 initialPath = "voice";
+            }
             const response = await axios.get(`${initialPath}/livecount`);
             if (response.data.msg === "Success") {
                 setOnline(response.data.total)

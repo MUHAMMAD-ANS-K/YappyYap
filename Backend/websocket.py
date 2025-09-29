@@ -87,7 +87,7 @@ async def send_messages(db : Session = Depends(get_db), payload = Depends(verify
         "msgs" : msgs_return
     }
 
-@router.get("global/livecount")
+@router.get("/global/livecount")
 def total_active(payload = Depends(verify_session_token)):
     return {
         "msg" : "Success",
