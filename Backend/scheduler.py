@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor
-from database import session, Msgs
+from database import session, Msgs, VoiceMsgs
 from sqlalchemy import delete
 import sys
 import signal
@@ -9,6 +9,7 @@ from pytz import utc
 def del_job():
     db = session()
     db.execute(delete(Msgs).where(Msgs.expiry < datetime.now(timezone.utc)))
+    db.execute(delete(VoiceMsgs).where(VoiceMsgs.expiry < datetime.now(timezone.utc)))
     db.commit()
     db.close()
 
