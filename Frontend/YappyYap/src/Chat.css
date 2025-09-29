@@ -384,28 +384,30 @@ flex-direction: row-reverse;
     padding-right: 10px;
     font-size: 1rem;   
 }
-@media (max-width : 1100px) {
+
+
+@media (max-width : 1000px) {
     .nav-close-styles .chat-sidearea{
-        width: 5vw;
+        width: 60px;
     }
     .nav-close-styles .chat-header{
-        width: 95vw;
+        width: calc(100vw - 60px);
     }
     .nav-close-styles .user-profile p{
         display: none;
     }
     .nav-close-styles .chat-mainarea{
-        width: 95vw;
-        margin-left: 5vw;
+        width: calc(100vw - 60px);
+        margin-left: 60px;
     }
     .nav-close-styles .type-area-overlay{
-        width: calc(100% - 5vw);
+        width: calc(100% - 60px);
     }
     .nav-close-styles .type-area{
-        width: calc(98% - 5vw);
+        width: calc(98% - 60px);
     }
     .nav-close-styles .msgs{
-        width: 95vw;
+        width: calc(95vw - 60px);
     }
     .nav-close-styles .realm-button, .nav-close-styles .channel-hashtag{
         display: none;
@@ -419,31 +421,107 @@ flex-direction: row-reverse;
         display: none;
     }
     .nav-open-styles .chat-sidearea{
-        width: 30vw;
+        width: 200px;
     }
     .nav-open-styles .chat-header{
-        width: 70vw;
+        width: calc(100vw - 200px);
     }
     .nav-open-styles .chat-mainarea{
-        width: 70vw;
-        margin-left: 30vw;
+        width: calc(100vw - 200px);
+        margin-left: 200px;
     }
     .nav-open-styles .type-area-overlay{
-        width: calc(100% - 30vw);
+        width: calc(100% - 200px);
     }
     .nav-open-styles .type-area{
-        width: calc(98% - 30vw);
+        width: calc(98% - 200px);
     }
     .nav-open-styles .msgs{
-        width: 70vw;
+        width: calc(100vw - 200px);
     }
     .nav-open-styles .dot-realm-style{
         width: 6px;
         height: 6px;
     }
 }
-
-
+.instructions-overlay{
+    z-index: 11;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.instructions{
+    background-color: #111;
+    width: 550px;
+    padding: 8px;
+    padding-bottom: 20px;
+    position: relative;
+    border-radius: 6px;
+}
+.instructions ul{
+    padding-top: 40px;
+    list-style: disc;
+    list-style-position: inside;
+}
+.instructions ul li{
+    margin-bottom: 10px;
+}
+.instructions ul span{
+    display: inline;
+    color: red;
+}
+.instruction-cross{
+    border: none;
+    background-color: transparent;
+    font-size: 1.5rem;
+    color : beige;
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    cursor: pointer;
+}
+.default-theme-set select{
+    margin-top: 10px;
+    margin-left: 20%;
+}
+@media (max-width : 680px) {
+    .nav-close-styles .chat-sidearea{
+        display: none;
+    }
+    .nav-close-styles .chat-header{
+        width: 100vw;
+    }
+    .nav-close-styles .chat-mainarea{
+        width: 100vw;
+        margin: auto;
+        border: none;
+    }
+    .nav-close-styles .type-area-overlay{
+        width: 100%;
+    }
+    .nav-close-styles .type-area{
+        width: 98%;
+    }
+    .nav-close-styles .msgs{
+        width: 95vw;
+    }
+    .nav-close-styles .realm-button, .nav-close-styles .channel-hashtag{
+        display: none;
+    }
+    .nav-close-styles .chat-sidearea-heading .ealms{
+        display: none;
+    }
+    .nav-open-styles .chat-sidearea{
+        width: 100vw;
+    }
+    .nav-open-styles .chat-mainarea{
+        display: none;
+    }
+}
 
 
 .chat-message-block{

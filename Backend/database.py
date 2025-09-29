@@ -81,6 +81,26 @@ class About_comp(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     content = Column(String)
 
+class Contact_us(Base):
+    __tablename__="contactus"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    type = Column(String)
+    content = Column(String)
+
+class BugsReport(Base):
+    __tablename__="bugs"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    bug = Column(String)
+
+class NewsLetter(Base):
+    __tablename__="emails"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String)
+
+class Contact_us_data(BaseModel):
+    type : str
+    content : str
+
 class Msg_return(BaseModel):
     # id : int | str
     msg : str

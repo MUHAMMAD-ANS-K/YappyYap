@@ -2,11 +2,11 @@ import { useState } from "react"
 import default_image from "./../assets/default_img.png"
 import { Link, useLocation } from "react-router-dom";
 export default function ChatSideBar(props) {
-    const [navOpen, setNavopen] = useState(false);
+    // const [navOpen, setNavopen] = useState(false);
     function navbarSimulator() {
-        if (window.innerWidth <= 1100){
+        if (window.innerWidth <= 1000){
             const element = document.querySelector(".chat-area")
-            if(navOpen){
+            if(props.navOpen){
                 element.classList.add("nav-close-styles");
                 element.classList.remove("nav-open-styles");
             }
@@ -14,11 +14,12 @@ export default function ChatSideBar(props) {
                 element.classList.add("nav-open-styles");
                 element.classList.remove("nav-close-styles")
             }
-            setNavopen((n)=>!n);
+            props.setNavopen((n)=>!n);
         }
     }
     function testfunc(e) {
-        e.stopPropagation()
+        if (!props.navOpen)
+            e.stopPropagation()
     }
     return(
         <div className="chat-sidearea" onClick={navbarSimulator}>
@@ -33,8 +34,10 @@ export default function ChatSideBar(props) {
                 {/* <li><span className="dot-realm-style"></span><span className="channel-hashtag">#</span><button onClick={handleActiveRealm} className="realm-button hacker-realm">hacker</button></li> */}
             </ul>
             <div className="user-profile">
+                <Link to="/account">
                 <img src={default_image} alt="user" className="user-profile-pic" />
                 <p>{props.username}</p>
+                </Link>
             </div>
         </div>
     )

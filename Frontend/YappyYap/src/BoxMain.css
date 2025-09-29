@@ -1,7 +1,7 @@
 .main-box{
     backdrop-filter: blur(20px);
-    background-color: rgba(245, 245, 220, 0.647); 
-    color: #3b7a4bad;
+    background-color: rgb(77, 121, 77); 
+    color: beige;
     width: 1400px;
     height: 600px;
     border-radius: 80px;
@@ -31,10 +31,10 @@
 }
 .content-box h2{
     font-size: 3.2rem;
-    font-weight: 900;
+    font-weight: 800;
 }
 .content-box p{
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 @media (max-width: 1600px){
     .main-box{

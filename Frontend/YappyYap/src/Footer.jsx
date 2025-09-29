@@ -32,11 +32,8 @@ export default function Footer(props){
             <div className="footer-list">
                 <p>Connect</p>
                 <ul className="Footer-flex">
-                    <li><Link to="https://instagram.com">Instagram</Link></li>
-                    <li><Link to="https://youtube.com">Youtube</Link></li>
-                    <li><Link to="https://facebook.com">Facebook</Link></li>
-                    <li><Link to="https://linkedin.com">LinkedIn</Link></li>
-                    <li><Link to="https://github.com">GitHub</Link></li>
+                    <li><a href="https://www.instagram.com/yappy__yap/"target="_blank">Instagram</a></li>
+                    <li><a href="https://github.com/MUHAMMAD-ANS-K/YappyYap" target="_blank">GitHub</a></li>
                 </ul>
             </div>
         </nav>

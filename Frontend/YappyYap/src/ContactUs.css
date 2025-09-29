@@ -1,6 +1,5 @@
 .contact-us-nav{
-    margin-top: 70px;
-    margin-left: 90px;
+    margin-top: 9vh;
     height: 50px;
     width: 100vw;
     position: relative;
@@ -96,4 +95,9 @@
 }
 .ul-contactus{
     width: auto;
+}
+@media (max-width : 550px){
+    .text-contact, .email-contact, #select-contact{
+        width: 80vw;
+    }
 }

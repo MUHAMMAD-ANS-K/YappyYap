@@ -15,6 +15,19 @@ import useHomeComps from "../hooks/useHomeComps";
 export default function Home(props) {
     let {headings, contents, urls, loading} = useHomeComps();
     gsap.registerPlugin(ScrollTrigger);
+    // useGSAP(()=>{
+    //     gsap.to(".scroll-pin-text", {
+    //         transform: "translateX(-1990vh)",
+    //         scrollTrigger:{
+    //             trigger:".scroll-pin",
+    //             start: "top 0vh",
+    //             end: "top -8000vh",
+    //             scrub: 4,
+    //             pin: ".scroll-pin",
+    //         },
+    //         ease: "sine.inOut"
+    //     })
+    // }, [headings])
     useGSAP(()=>{
     let timeline1 = gsap.timeline();
     let timeline2 = gsap.timeline();
@@ -72,17 +85,6 @@ export default function Home(props) {
         stagger: 1,
         ease: "sine.inOut"
     })
-        gsap.to(".scroll-pin-text", {
-            transform: "translateX(-1990vh)",
-            scrollTrigger:{
-                trigger:".scroll-pin",
-                start: "top 0vh",
-                end: "top -8000vh",
-                scrub: 4,
-                pin: ".scroll-pin",
-            },
-            ease: "sine.inOut"
-        })
     const ribbon1 = document.querySelector("#scroll-msg-p1");
     const ribbon2 = document.querySelector("#scroll-msg-p2");
     const items = gsap.utils.toArray([ribbon1, ribbon2]);
@@ -184,13 +186,13 @@ export default function Home(props) {
                 <p id="scroll-msg-p2">Yap <img src={logo}></img> Make Jokes <img src={logo}></img> Be Free <img src={logo}></img> Be Anonymous <img src={logo}></img></p>
             </div>
             <div className="boxes">
-                {loading ? (<></>) : (<>{
+                {loading ? (<div className="error-msg">Loading...</div>) : (<>{
                     headings.map((heading, index) => <BoxMain key={heading} heading={heading} content={contents[index]} display_stuff={urls[index]}/>)
                 }</>)}
             </div>
-            <div className="scroll-pin">
+            {/* <div className="scroll-pin">
                 <p className="scroll-pin-text">Chat in an environment with no restrictions and anonymity.</p>
-            </div>
+            </div> */}
             {/* {box_heading.map((heading) => document.createElement)} */}
         </main>
     );

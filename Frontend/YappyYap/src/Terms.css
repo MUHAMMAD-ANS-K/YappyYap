@@ -1,0 +1,9 @@
+.terms-of-use h1{
+    font-size: 3rem;
+}
+.terms-of-use{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}

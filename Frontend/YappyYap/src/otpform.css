@@ -25,3 +25,9 @@
     justify-content: center;
     gap: 10px;
 }
+@media (max-width : 400px) {
+    .otp-enter-design{
+        font-size: 2.5rem;
+        width: 2.5rem;
+    }
+}

@@ -1,4 +1,4 @@
-from database import Base, engine, session, Email_signin, Email_signup, OTP_entry, Users,Pending_users, Msgs, VoiceMsgs, Home_comp
+from database import Base, engine, session, Email_signin, NewsLetter, Email_signup, OTP_entry, Users,Pending_users, Msgs, VoiceMsgs, Home_comp
 
 Base.metadata.create_all(bind=engine)
 db = session()
@@ -7,6 +7,7 @@ db.query(OTP_entry).delete()
 db.commit()
 OTP_entry.__table__.drop(engine)
 Users.__table__.drop(engine)
+NewsLetter.__table__.drop(engine)
 Pending_users.__table__.drop(engine)
 Msgs.__table__.drop(engine)
 VoiceMsgs.__table__.drop(engine)

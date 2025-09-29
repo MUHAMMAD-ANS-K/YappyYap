@@ -8,7 +8,7 @@ import io
 from tempfile import NamedTemporaryFile
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from database import session
+from database import session, Contact_us, Contact_us_data, NewsLetter, BugsReport
 from typing import Annotated
 app = FastAPI()
 app.include_router(auth.router)
@@ -17,7 +17,7 @@ app.include_router(websocket.router)
 app.include_router(components.router)
 
 origins = [
-    "https://muhammadans.com",
+    "https://yappyyap.xyz",
     "http://localhost:5173"
 ]
 
@@ -42,6 +42,30 @@ def user_details():
         "username" : username,
         "user_type" : user_type
     }
+
+@app.post("/contactus")
+def contactus(data : Contact_us_data, db : Session = Depends(get_db)):
+    if data.type == "NewsLetter":
+        alreadyexists = db.execute(select(NewsLetter).where(NewsLetter.email == data.content)).scalar_one_or_none()
+        if alreadyexists:
+            return {"msg" : "Already signed for newsletter"}
+        else:
+            dbdata = NewsLetter(
+                email = data.content
+            )
+    elif data.type == "Bug":
+        dbdata = BugsReport(
+            bug = data.content
+        )
+    else:
+        dbdata = Contact_us(
+            type=data.type,
+            content = data.content
+        )
+    db.add(dbdata)
+    db.commit()
+    return {"msg" : "Success"}
+
 @app.get("/")
 def root():
     return {"msg" : "Hi vro"}

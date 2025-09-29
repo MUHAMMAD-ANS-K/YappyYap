@@ -5,10 +5,41 @@
 }
 .chat-theme select{
     width: 100%;
+}
+.select-theme-design{
     background-color: var(--input-backgrounds);
     outline: none;
     border: none;
     height: 25px;
     border-radius: 4px;
     padding-left: 4px;
+}
+.chat-menu-bar{
+    position: absolute;
+    font-size: 2rem;
+    top: 0px;
+    left: 5px;
+    cursor: pointer;
+    display: none;
+}
+@media (max-width : 680px) {
+    .chat-menu-bar {
+        display: block;
+    }
+}
+@media (max-width : 500px) {
+    .chat-yap-duration input[type="range"]{
+        width: 100px;
+    }
+    .type-area{
+        bottom: 5px;
+        padding-bottom: 60px;
+    }
+    .chat-yap-duration{
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 0px;
+        align-items: flex-start;
+        left: 10px;
+    }
 }

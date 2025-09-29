@@ -71,6 +71,7 @@ span{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 150px;
 }
 .scroll-msg img{
     position: relative;

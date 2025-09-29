@@ -19,12 +19,15 @@ import SigninError from "./SigninError.jsx";
 import Account from "./Account.jsx";
 import { HomeCompsProvider } from "../hooks/useHomeComps.jsx";
 import { AboutCompsProvider } from "../hooks/useAboutComps.jsx";
+import Terms from "./Terms.jsx";
+import Policy from "./Policy.jsx";
 export default function App() {
     const [email, setEmail] = useState("");
     const [selectOption, setOption] = useState("NewsLetter");
-    const [footerEmail, setFooterEmail] = useState();
+    const [footerEmail, setFooterEmail] = useState("");
+    const [chatInstructions, setChatInstructions] = useState(true);
     const loc = useLocation();
-    const hidePaths = ["/chat/global", "/chat/voice", "/chat"]
+    const hidePaths = ["/chat/global", "/chat/voice", "/chat"];
     const hidePathBoolean = hidePaths.includes(loc.pathname);
     return (
         <ChatAuthProvider>
@@ -39,11 +42,13 @@ export default function App() {
                 <Route path="/signin/otp" element={<OTPForm email = {email} link={"/acc-verify"}/>}/>
                 <Route path="/signup/otp" element={<OTPForm email = {email} link={"/acc-create"}/>}/>
                 <Route path="/blogs" element={<Blog/>}/>
+                <Route path="/terms" element={<Terms/>}/>
+                <Route path="/privacy-policy" element={<Policy/>}/>
                 <Route path="/" element={<HomeCompsProvider><Home email = {email}/></HomeCompsProvider>}/>
                 <Route path="/about" element={<AboutCompsProvider><About/></AboutCompsProvider>}/>
                 <Route path = "/contactus" element={<ContactUs footerEmail = {footerEmail} setFooterEmail={setFooterEmail} selectOption={selectOption} setOption = {setOption}/>}/>
                 <Route path="/dashboard/*" element={<DashboardAuthProvider><Dashboard/></DashboardAuthProvider>}/>
-                <Route path="/chat/*" element={<ChatProtection><Chat/></ChatProtection>}/>
+                <Route path="/chat/*" element={<ChatProtection><Chat chatInstructions={chatInstructions} setChatInstructions={setChatInstructions}/></ChatProtection>}/>
                 <Route path="*" element={<NotFound/>}/>
             </Routes>
             {!hidePathBoolean && <Footer setOption = {setOption} setFooterEmail = {setFooterEmail}/>}
