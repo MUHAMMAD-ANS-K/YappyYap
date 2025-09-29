@@ -1,13 +1,17 @@
 import "./ChatHeader.css"
 import useAxios from "../../hooks/useAxios"
 import { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom";
 export default function ChatHeader(props) {
     const [online, setOnline] = useState(0);
     const [navOpen, setNavopen] = useState(false)
     const axios = useAxios()
+    const location = useLocation();
     async function getOnline() {
         try{
-            const response = await axios.get("/livecount");
+            const paths = location.pathname.split("/")
+            const activePath = paths[paths.length - 1];
+            const response = await axios.get(`${activePath}/livecount`);
             if (response.data.msg === "Success") {
                 setOnline(response.data.total)
             }

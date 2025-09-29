@@ -59,14 +59,11 @@ export default function Global(props){
     let webreconInterval  = 2000;
     function connect() {
         // ws.current = new WebSocket(`wss://api.muhammadans.com/ws`);
-        ws.current = new WebSocket(`ws://localhost:8000/ws`);
-        console.log(ws.current)
+        ws.current = new WebSocket(`wss://api.yappyyap.xyz/ws`);
         ws.current.onopen = () => {
-            console.log("Fetching messages");
             getMessages()
         }
         ws.current.onclose = () => {
-            console.log("connection closed");
             if (ws.current.readyState == 0){
                 reconnect();
             }

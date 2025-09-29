@@ -41,7 +41,6 @@ export default function Voice(props) {
         const element = document.querySelector(".voice-realm");
         element.classList.add("current-realm")
         props.setRealm("voice-realm")
-        msgRemoverInterval.current = setInterval(removeMsg, 1000);
         const axios = useAxios();
         async function getmsgs() {
             try{
@@ -68,11 +67,11 @@ export default function Voice(props) {
                     const blobBytes = file.slice(usernameLength);
                     const blob = new Blob([blobBytes], {type : "audio/webm"});
                     msg.innerHTML = `
-                        <img src=${default_img} alt="user" class="chat-message-img" />
-                        <span>
-                            <span class="chat-message-header"><h3 class="username">${username}</h3><span class="timestamp">${timeSent}</span></span>
-                            ${helperFunction()}
-                        </span>`
+                    <img src=${default_img} alt="user" class="chat-message-img" />
+                    <span>
+                    <span class="chat-message-header"><h3 class="username">${username}</h3><span class="timestamp">${timeSent}</span></span>
+                    ${helperFunction()}
+                    </span>`
                     document.querySelector(".msgs").append(msg);
                     msg.querySelector(".audio-play-button").addEventListener("click", play_pause_audio);
                     msg.querySelector(".audio-play").src = window.URL.createObjectURL(blob);
@@ -82,45 +81,64 @@ export default function Voice(props) {
                 console.log(e)
             }
         }
-        getmsgs();
-        websocket.current = new WebSocket("ws://localhost:8000/voice/ws")
-        websocket.current.binaryType = "arraybuffer"
-        websocket.current.onopen = () => {
-            console.log("hurray")
-        }
-        websocket.current.onclose = () => {
-            console.log("closed")
-        }
-        websocket.current.onmessage = (e) => {
-            try{
-                    const msg = document.createElement("li");
-                    const vw = new DataView(e.data);
-                    const timeSent = new Date(vw.getFloat64(0, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
-                    let expiry = new Date(vw.getFloat64(8, false) * 1000).toString();
-                    expiry = expiry.replace(/[\s:+().]+/g, "");
-                    msg.classList.add("chat-message-block", expiry);
-                    const usernameLength = vw.getUint32(16, false) + 20;
-                    const unsigned8bit = new Uint8Array(e.data);
-                    const username = new TextDecoder("utf-8").decode(unsigned8bit.slice(20, usernameLength));
-                    const blobBytes = unsigned8bit.slice(usernameLength);
-                    const blob = new Blob([blobBytes], {type : "audio/webm"});
-                    msg.innerHTML = `
-                        <img src=${default_img} alt="user" class="chat-message-img" />
-                        <span>
-                            <span class="chat-message-header"><h3 class="username">${username}</h3><span class="timestamp">${timeSent}</span></span>
-                            ${helperFunction()}
-                        </span>`
-                    document.querySelector(".msgs").append(msg);
-                    msg.querySelector(".audio-play-button").addEventListener("click", play_pause_audio);
-                    msg.querySelector(".audio-play").src = window.URL.createObjectURL(blob);
-                }
-            catch(e){
-                console.log(e);
+        const interval1 = setInterval(getmsgs, 20000)
+        msgRemoverInterval.current = setInterval(removeMsg, 1000);
+        let webreconInterval  = 2000;
+        function connect() {
+            websocket.current = new WebSocket("wss://api.yappyyap.xyz/voice/ws")
+            websocket.current.binaryType = "arraybuffer"
+            websocket.current.onopen = () => {
+                getmsgs()
             }
-
+            websocket.current.onclose = () => {
+                if (websocket.current.readyState == 0)
+                    reconnect();
+            }
+            websocket.current.onmessage = (e) => {
+                try{
+                        const msg = document.createElement("li");
+                        const vw = new DataView(e.data);
+                        const timeSent = new Date(vw.getFloat64(0, false) * 1000).toLocaleTimeString([], {"hour" : "2-digit", "minute" : "2-digit"});
+                        let expiry = new Date(vw.getFloat64(8, false) * 1000).toString();
+                        expiry = expiry.replace(/[\s:+().]+/g, "");
+                        msg.classList.add("chat-message-block", expiry);
+                        const usernameLength = vw.getUint32(16, false) + 20;
+                        const unsigned8bit = new Uint8Array(e.data);
+                        const username = new TextDecoder("utf-8").decode(unsigned8bit.slice(20, usernameLength));
+                        const blobBytes = unsigned8bit.slice(usernameLength);
+                        const blob = new Blob([blobBytes], {type : "audio/webm"});
+                        msg.innerHTML = `
+                            <img src=${default_img} alt="user" class="chat-message-img" />
+                            <span>
+                                <span class="chat-message-header"><h3 class="username">${username}</h3><span class="timestamp">${timeSent}</span></span>
+                                ${helperFunction()}
+                            </span>`
+                        document.querySelector(".msgs").append(msg);
+                        msg.querySelector(".audio-play-button").addEventListener("click", play_pause_audio);
+                        msg.querySelector(".audio-play").src = window.URL.createObjectURL(blob);
+                    }
+                catch(e){
+                    console.log(e);
+                }
+    
+            }
+            
+        websocket.current.onerror = () => {
+            if (websocket.current.OPEN) {
+                websocket.current.close();
+            }
+            reconnect()
+            console.warn("An error occured");
         }
+        }
+        connect();
+    function reconnect() {
+        setTimeout(connect, webreconInterval);
+        webreconInterval += 1000;
+    }
         return () => {
-            clearInterval(msgRemoverInterval.current)
+            clearInterval(msgRemoverInterval.current);
+            clearInterval(interval1);
             element.classList.remove("current-realm")
             if(websocket.current.OPEN){
                 websocket.current.close()

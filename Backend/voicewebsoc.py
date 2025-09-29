@@ -143,3 +143,11 @@ def account_msgs(db : Session = Depends(get_db), pd = Depends(verify_session_tok
     for msg in msgs:
          payload.append(Msg_return.from_orm(msg))
     return {"msgs" : payload}
+
+
+@router.get("/livecount")
+def total_active(payload = Depends(verify_session_token)):
+    return {
+        "msg" : "Success",
+        "total":len(manager.connections)
+    }
