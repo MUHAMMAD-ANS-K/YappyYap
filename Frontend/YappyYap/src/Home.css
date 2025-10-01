@@ -81,7 +81,8 @@ span{
 .scroll-msg{
     width: 100vw;
     height: auto;
-    background-color: rgb(77, 121, 77);
+    /* background-color: rgb(77, 121, 77); */
+    background-color: teal;
     font-size: 4.5rem;
     font-weight: 900;
     text-wrap: nowrap;
