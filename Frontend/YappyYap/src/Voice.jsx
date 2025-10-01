@@ -85,8 +85,8 @@ export default function Voice(props) {
                 if(e.response && e.response.data){
                     setError(err => e.response.data.detail[0].msg);
                     setTrigger(t => !t);
-                    if(ws.current && ws.current.readyState == WebSocket.OPEN)
-                        ws.current.close();
+                    if(websocket.current && websocket.current.readyState == WebSocket.OPEN)
+                        websocket.current.close();
                     navigate("/signin");
                 }
 
@@ -151,7 +151,7 @@ export default function Voice(props) {
             clearInterval(msgRemoverInterval.current);
             clearInterval(interval1);
             element.classList.remove("current-realm")
-            if(ws.current && ws.current.readyState == WebSocket.OPEN)
+            if(websocket.current && websocket.current.readyState == WebSocket.OPEN)
                 websocket.current.close()
         }
 
