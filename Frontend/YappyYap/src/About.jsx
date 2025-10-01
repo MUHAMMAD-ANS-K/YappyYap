@@ -5,7 +5,7 @@ import { gsap } from "gsap/gsap-core";
 import { ScrollTrigger } from "gsap/all";
 import useAboutComps from "../hooks/useAboutComps";
 export default function About() {
-    const {contents} = useAboutComps()
+    const {contents, loading} = useAboutComps()
     useGSAP(()=>{
         gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray(".vr-circle-fill").forEach(element => {
@@ -42,13 +42,13 @@ export default function About() {
                 Our Story
             </h1>
 
-            {
+            {loading ? (<div className="error-msg">Loading...</div>) : (
             contents.map((content, index) => {
                 let left = false;
                 if (index % 2)
                     left = true;
                 return <AboutComp key={content} content={content} left={left}/>
-            })
+            }))
             }
             <div className="about-end-content">
             <h1>Development Onwards...</h1>

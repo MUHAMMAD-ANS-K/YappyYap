@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap/gsap-core"
 import useAxios from "../hooks/useAxios"
 import default_image from "./assets/default_img.png"
+import useChatAuth from "../hooks/useChatAuth";
+import { useNavigate } from "react-router-dom";
 export default function Global(props){
     const [msg, setMsg] = useState("");
     const textArea = useRef();
@@ -11,6 +13,8 @@ export default function Global(props){
     const [strike, setStrike] = useState(false);
     const [optionsOpen, setOptionsOpen] = useState(false);
     const [yapDuration, setYapDuration] = useState(10);
+    const {setError, setTrigger} = useChatAuth();
+    const navigate = useNavigate()
     const anonymity = useRef(false);
     useEffect(() => {
         textArea.current.style.height = "auto";
@@ -50,6 +54,13 @@ export default function Global(props){
             }
         }
         catch(error){
+            if(error.response && error.response.data) {
+                setError(e => error.response.data.detail[0].msg);
+                setTrigger(t => !t);
+                if(ws.current && ws.current.readyState == WebSocket.OPEN)
+                    ws.current.close();
+                navigate("/signin")
+            }
             console.warn("Connection to server failed")
         }
     }
@@ -90,8 +101,8 @@ export default function Global(props){
                 console.warn("Error occured in the message");
             }
         }
-        ws.current.onerror = () => {
-            if (ws.current.OPEN) {
+        ws.current.onerror = (e) => {
+            if(ws.current && ws.current.readyState == WebSocket.OPEN){
                 ws.current.close();
             }
             console.warn("An error occured");
@@ -104,6 +115,8 @@ export default function Global(props){
     }
 
         return ()=> {
+            if(ws.current && ws.current.readyState == WebSocket.OPEN)
+                ws.current.close();
             clearInterval(interval1);
             clearInterval(interval2);
             clearInterval(interval3);

@@ -1,10 +1,13 @@
 import "./ChatHeader.css"
 import useAxios from "../../hooks/useAxios"
 import { useEffect, useState, useCallback } from "react"
+import useChatAuth from "../../hooks/useChatAuth";
+import { useNavigate } from "react-router-dom";
 export default function ChatHeader(props) {
     const [online, setOnline] = useState(0);
-    const [navOpen, setNavopen] = useState(false)
-    const axios = useAxios()
+    const axios = useAxios();
+    const {setError, setTrigger} = useChatAuth();
+    const navigate = useNavigate();
     const getOnline = useCallback(async ()=> {
         try{
             let initialPath = "global";
@@ -16,13 +19,19 @@ export default function ChatHeader(props) {
                 setOnline(response.data.total)
             }
         }
-        catch {}
+        catch(e) {
+            if (e.response && e.response.data) {
+                setError(err => e.response.data.detail[0].msg);
+                setTrigger(t => !t);
+                navigate("/signin");
+            }
+        }
     })
     useEffect(()=>{
         let theme = localStorage.getItem("theme");
         if(theme)
             document.documentElement.setAttribute("data-theme", theme);
-        const onlineInterval = setInterval(getOnline, 5000);
+        const onlineInterval = setInterval(getOnline, 4000);
         return ()=> clearInterval(onlineInterval);
     }, [])
     function changeTheme(e) {

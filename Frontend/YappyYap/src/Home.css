@@ -5,7 +5,7 @@ span{
     display: inline;
 }
 .main-h1{
-    margin-top: 50px;
+    margin-top: 40px;
     padding: 4.5vw;
     position: relative;
 }
@@ -80,7 +80,7 @@ span{
 }
 .scroll-msg{
     width: 100vw;
-    height: 12rem;
+    height: auto;
     background-color: rgb(77, 121, 77);
     font-size: 4.5rem;
     font-weight: 900;
@@ -89,6 +89,8 @@ span{
 }
 .scroll-msg p{
     overflow-x:visible;
+    position: relative;
+    bottom: 1rem;
 }
 .curly-bracket-txt{
     position: relative;

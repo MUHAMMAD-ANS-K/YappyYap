@@ -8,6 +8,8 @@ import { gsap } from "gsap/gsap-core";
 import { useGSAP } from "@gsap/react";
 import useAxios from "../hooks/useAxios";
 import TypeArea from "./Voice/TypeArea"
+import useChatAuth from "../hooks/useChatAuth";
+import { useNavigate } from "react-router-dom";
 export default function Voice(props) {
     const duration = useRef(0);
     const moveBarAnimation = useRef(new Map())
@@ -16,6 +18,8 @@ export default function Voice(props) {
     const dotMover = useRef()
     const websocket = useRef()
     const msgRemoverInterval = useRef();
+    const {setError, setTrigger} = useChatAuth();
+    const navigate = useNavigate();
     useGSAP(() => {
         gsap.ticker.lagSmoothing(0)
         barMover.current = (cls, d, id) => {
@@ -78,7 +82,14 @@ export default function Voice(props) {
                 }
             }
             catch(e){
-                console.log(e)
+                if(e.response && e.response.data){
+                    setError(err => e.response.data.detail[0].msg);
+                    setTrigger(t => !t);
+                    if(ws.current && ws.current.readyState == WebSocket.OPEN)
+                        ws.current.close();
+                    navigate("/signin");
+                }
+
             }
         }
         const interval1 = setInterval(getmsgs, 20000)
@@ -140,9 +151,8 @@ export default function Voice(props) {
             clearInterval(msgRemoverInterval.current);
             clearInterval(interval1);
             element.classList.remove("current-realm")
-            if(websocket.current.OPEN){
+            if(ws.current && ws.current.readyState == WebSocket.OPEN)
                 websocket.current.close()
-            }
         }
 
     }, [])
