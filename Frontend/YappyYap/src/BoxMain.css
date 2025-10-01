@@ -1,6 +1,6 @@
 .main-box{
     backdrop-filter: blur(20px);
-    background-color: rgb(77, 121, 77); 
+    background-color: teal; 
     color: beige;
     width: 1400px;
     height: 600px;
